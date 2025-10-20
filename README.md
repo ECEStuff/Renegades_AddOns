@@ -1,5 +1,5 @@
 # Renegades Add-Ons
-Add-Ons for Mayhem 3 Renegades, featuring bug fixes and previously proposed features.
+Add-Ons for Mayhem 3 Renegades, featuring bug fixes and previously proposed features. See the releases folder for changelogs.
 
 Forum: https://forum.egosoft.com/viewtopic.php?t=473331&sid=6ec3f787a72497712255e45341e4512f
 
