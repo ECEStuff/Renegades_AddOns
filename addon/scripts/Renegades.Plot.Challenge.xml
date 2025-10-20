@@ -1,0 +1,3036 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>Renegades.Plot.Challenge</name>
+	<version>54</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments />
+	<sourcetext>
+		<line linenr="001" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="002" indent="">
+			<comment>* SCRIPT NAME: Renegades.Plot.Challenge</comment>
+		</line>
+		<line linenr="003" indent="">
+			<comment>* DESCRIPTION: Issues the plot challenge questions to the player and unlocks the missing gate if successful.</comment>
+		</line>
+		<line linenr="004" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* AUTHOR:      Mr Mordan</comment>
+		</line>
+		<line linenr="006" indent="">
+			<comment>* DATE:        5 April 2024</comment>
+		</line>
+		<line linenr="007" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="">
+			<var>$debug</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="010" indent="" />
+		<line linenr="011" indent="">
+			<var>$entrysector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'RenegadeEntrySector'</text>
+		</line>
+		<line linenr="012" indent="">
+			<var>$sector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'RenegadeSector'</text>
+		</line>
+		<line linenr="013" indent="">
+			<var>$entrycode</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'RenegadeSectorCode'</text>
+		</line>
+		<line linenr="014" indent="" />
+		<line linenr="015" indent="">
+			<comment>* No Challenge needed if we already finished.</comment>
+		</line>
+		<line linenr="016" indent="">
+			<var>$RenegadesGateCreated</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'RenegadesGateCreated'</text>
+		</line>
+		<line linenr="017" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$RenegadesGateCreated</var>
+		</line>
+		<line linenr="018" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="019" indent="" />
+		<line linenr="020" indent="">
+			<comment>* player turned off the feature</comment>
+		</line>
+		<line linenr="021" indent="">
+			<var>$GlobalDisable</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'RenegadesGlobalDisable'</text>
+		</line>
+		<line linenr="022" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$GlobalDisable</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="023" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="024" indent="" />
+		<line linenr="025" indent="" />
+		<line linenr="026" indent="">
+			<var>$answers</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_startingOptionAnswers'</text>
+		</line>
+		<line linenr="027" indent="">
+			<var>$difficulty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$answers</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'ocvDifficulty'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="028" indent="">
+			<var>$isHardDifficulty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>&gt;=</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="029" indent="" />
+		<line linenr="030" indent="">
+			<text>if</text>
+			<text> </text>
+			<text>not</text>
+			<text> </text>
+			<var>$debug</var>
+		</line>
+		<line linenr="031" indent="&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'Pilot Compliance Directive:  Enter Challenge Code'</text>
+		</line>
+		<line linenr="032" indent="&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>convert</text>
+			<text> </text>
+			<text>string</text>
+			<text> </text>
+			<text>case</text>
+			<text>:</text>
+			<text> </text>
+			<text>string</text>
+			<text>=</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>lowercase</text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="033" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>$entrycode</var>
+		</line>
+		<line linenr="034" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="035" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="036" indent="&#160;" />
+		<line linenr="037" indent="&#160;">
+			<var>$rnd</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>random</text>
+			<text> </text>
+			<text>value</text>
+			<text> </text>
+			<text>from</text>
+			<text> </text>
+			<text>zero</text>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<var>5</var>
+		</line>
+		<line linenr="038" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$rnd</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="039" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What is the name of the Paranid deity worshipped by their people?'</text>
+		</line>
+		<line linenr="040" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Xaar'</text>
+		</line>
+		<line linenr="041" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="042" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="043" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What race calls the Terrans “Earthlings”?'</text>
+		</line>
+		<line linenr="044" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Argon'</text>
+		</line>
+		<line linenr="045" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="046" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="047" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$rnd</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="048" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What is the traditional Split home sector?'</text>
+		</line>
+		<line linenr="049" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Family Pride'</text>
+		</line>
+		<line linenr="050" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="051" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="052" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'Who built the original jumpgate network?'</text>
+		</line>
+		<line linenr="053" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Ancients'</text>
+		</line>
+		<line linenr="054" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="055" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="056" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$rnd</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="057" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What is the name of the Goner ship that can repair other ships?'</text>
+		</line>
+		<line linenr="058" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Truelight Seeker'</text>
+		</line>
+		<line linenr="059" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="060" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="061" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What race values Profits above all else?'</text>
+		</line>
+		<line linenr="062" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Teladi'</text>
+		</line>
+		<line linenr="063" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="064" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="065" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$rnd</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>3</var>
+		</line>
+		<line linenr="066" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What race created the Xenon?'</text>
+		</line>
+		<line linenr="067" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Terran'</text>
+		</line>
+		<line linenr="068" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="069" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="070" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What race considers itself chosen by the gods?'</text>
+		</line>
+		<line linenr="071" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Paranid'</text>
+		</line>
+		<line linenr="072" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="073" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="074" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$rnd</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>4</var>
+		</line>
+		<line linenr="075" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What is the Split family name tied to their leadership?'</text>
+		</line>
+		<line linenr="076" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Family Rhonkar'</text>
+		</line>
+		<line linenr="077" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="078" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="079" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What is the traditional Boron home sector?'</text>
+		</line>
+		<line linenr="080" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Kingdom End'</text>
+		</line>
+		<line linenr="081" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="082" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="083" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="084" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What faction is dedicated to enlightenment?'</text>
+		</line>
+		<line linenr="085" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Goner'</text>
+		</line>
+		<line linenr="086" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="087" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="088" indent="&#160;&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What is the traditional Paranid home sector?'</text>
+		</line>
+		<line linenr="089" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'Paranid Prime'</text>
+		</line>
+		<line linenr="090" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="091" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="092" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="093" indent="&#160;" />
+		<line linenr="094" indent="&#160;">
+			<var>$string</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>user</text>
+			<text> </text>
+			<text>input</text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>[String]</var>
+			<text>,</text>
+			<text> </text>
+			<text>title</text>
+			<text>=</text>
+			<text>'What is the air speed velocity of an unladen swallow (mph)?'</text>
+		</line>
+		<line linenr="095" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$string</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'20.1'</text>
+		</line>
+		<line linenr="096" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="097" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="098" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="099" indent="" />
+		<line linenr="100" indent="">
+			<comment>* successful, so recreate the missing gate.</comment>
+		</line>
+		<line linenr="101" indent="">
+			<comment>* When creating the hidden gate, use sound: </comment>
+		</line>
+		<line linenr="102" indent="">
+			<comment>* &quot;Energy Spike Detected&quot;</comment>
+		</line>
+		<line linenr="103" indent="">
+			<var>$speech</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<text>alloc</text>
+			<text>:</text>
+			<text> </text>
+			<text>size</text>
+			<text>=</text>
+			<var>2</var>
+		</line>
+		<line linenr="104" indent="">
+			<var>$speech</var>
+			<text>[</text>
+			<var>0</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1951</var>
+		</line>
+		<line linenr="105" indent="">
+			<var>$speech</var>
+			<text>[</text>
+			<var>1</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>611402</var>
+		</line>
+		<line linenr="106" indent="" interruptable="@">
+			<text>=</text>
+			<text> </text>
+			<text>speak</text>
+			<text> </text>
+			<text>array</text>
+			<text>:</text>
+			<text> </text>
+			<var>$speech</var>
+			<text> </text>
+			<text>prio</text>
+			<text>=</text>
+			<var>100</var>
+		</line>
+		<line linenr="107" indent="" />
+		<line linenr="108" indent="">
+			<comment>* Create it.</comment>
+		</line>
+		<line linenr="109" indent="&#160;" interruptable="@">
+			<var>$gatecreated</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>!galaxyeditor.create.gates</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>secfrom</text>
+			<text>=</text>
+			<var>$sector</var>
+			<text> </text>
+			<text>secto</text>
+			<text>=</text>
+			<var>$entrysector</var>
+		</line>
+		<line linenr="110" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$gatecreated</var>
+		</line>
+		<line linenr="111" indent="&#160;">
+			<text>set</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'RenegadesGateCreated'</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="112" indent="&#160;">
+			<text>display</text>
+			<text> </text>
+			<text>subtitle</text>
+			<text> </text>
+			<text>text</text>
+			<text>:</text>
+			<text> </text>
+			<text>text</text>
+			<text>=</text>
+			<text>'A new jump gate has appeared !'</text>
+			<text> </text>
+			<text>duration</text>
+			<text>=</text>
+			<var>15000</var>
+			<text> </text>
+			<text>ms</text>
+		</line>
+		<line linenr="113" indent="&#160;">
+			<text>play</text>
+			<text> </text>
+			<text>sample</text>
+			<text> </text>
+			<var>1147</var>
+		</line>
+		<line linenr="114" indent="&#160;" />
+		<line linenr="115" indent="&#160;">
+			<comment>* The Renegades hidden jump gate has been revealed...</comment>
+		</line>
+		<line linenr="116" indent="&#160;">
+			<var>$msg</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>sprintf</text>
+			<text>:</text>
+			<text> </text>
+			<text>pageid</text>
+			<text>=</text>
+			<var>9980</var>
+			<text> </text>
+			<text>textid</text>
+			<text>=</text>
+			<var>31</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="117" indent="" interruptable="@">
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.SendMessage</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>message</text>
+			<text>=</text>
+			<var>$msg</var>
+			<text> </text>
+			<text>log</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+			<text> </text>
+			<text>forceDisplay</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+			<text> </text>
+			<text>delayMs</text>
+			<text>=</text>
+			<var>0</var>
+			<text> </text>
+			<text>author</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="118" indent="&#160;" />
+		<line linenr="119" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="120" indent="">
+			<text>write</text>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>log</text>
+			<text> </text>
+			<text>file</text>
+			<text> </text>
+			<var>1</var>
+			<text> </text>
+			<text>append</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+			<text> </text>
+			<text>printf</text>
+			<text>:</text>
+			<text> </text>
+			<text>fmt</text>
+			<text>=</text>
+			<text>'Unable to create Renegades gate between %s and %s'</text>
+			<text>,</text>
+			<text> </text>
+			<var>$sector</var>
+			<text>,</text>
+			<text> </text>
+			<var>$entrysector</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="121" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="122" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="123" indent="" />
+		<line linenr="124" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="125" indent="" />
+		<line linenr="126" indent="&#160;" />
+		<line linenr="127" indent="&#160;&#160;">
+			<var>Fail</var>
+			<text>:</text>
+		</line>
+		<line linenr="128" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$debug</var>
+		</line>
+		<line linenr="129" indent="&#160;">
+			<text>endsub</text>
+		</line>
+		<line linenr="130" indent="&#160;" />
+		<line linenr="131" indent="&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Challenge Failed.  Intruders will not be tollerated.'</text>
+		</line>
+		<line linenr="132" indent="&#160;">
+			<text>display</text>
+			<text> </text>
+			<text>subtitle</text>
+			<text> </text>
+			<text>text</text>
+			<text>:</text>
+			<text> </text>
+			<text>text</text>
+			<text>=</text>
+			<var>$t</var>
+			<text> </text>
+			<text>duration</text>
+			<text>=</text>
+			<var>10000</var>
+			<text> </text>
+			<text>ms</text>
+		</line>
+		<line linenr="133" indent="&#160;" />
+		<line linenr="134" indent="&#160;">
+			<comment>* not successful, so damage the player hull </comment>
+		</line>
+		<line linenr="135" indent="&#160;">
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>set</text>
+			<text> </text>
+			<text>hull</text>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="136" indent="&#160;" />
+		<line linenr="137" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>SpawnPirates</var>
+			<text>:</text>
+		</line>
+		<line linenr="138" indent="&#160;" />
+		<line linenr="139" indent="&#160;">
+			<comment>* Hull Failure Imminant</comment>
+		</line>
+		<line linenr="140" indent="&#160;">
+			<var>$speech</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<text>alloc</text>
+			<text>:</text>
+			<text> </text>
+			<text>size</text>
+			<text>=</text>
+			<var>2</var>
+		</line>
+		<line linenr="141" indent="&#160;">
+			<var>$speech</var>
+			<text>[</text>
+			<var>0</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1951</var>
+		</line>
+		<line linenr="142" indent="">
+			<var>$speech</var>
+			<text>[</text>
+			<var>1</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>430501</var>
+		</line>
+		<line linenr="143" indent="" interruptable="@">
+			<text>START</text>
+			<text> </text>
+			<text>speak</text>
+			<text> </text>
+			<text>array</text>
+			<text>:</text>
+			<text> </text>
+			<var>$speech</var>
+			<text> </text>
+			<text>prio</text>
+			<text>=</text>
+			<var>100</var>
+		</line>
+		<line linenr="144" indent="" />
+		<line linenr="145" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="146" indent="">
+			<text>endsub</text>
+		</line>
+		<line linenr="147" indent="&#160;" />
+		<line linenr="148" indent="&#160;&#160;" />
+		<line linenr="149" indent="&#160;">
+			<comment>* They failed to answer properly, so spawn some trouble.</comment>
+		</line>
+		<line linenr="150" indent="&#160;&#160;">
+			<var>SpawnPirates</var>
+			<text>:</text>
+		</line>
+		<line linenr="151" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$isHardDifficulty</var>
+		</line>
+		<line linenr="152" indent="&#160;">
+			<var>$NumToCreate</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>15</var>
+		</line>
+		<line linenr="153" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="154" indent="&#160;">
+			<var>$NumToCreate</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>5</var>
+		</line>
+		<line linenr="155" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="156" indent="&#160;" />
+		<line linenr="157" indent="&#160;">
+			<comment>* Get number of pirates/enemies already in the system and create up to X total by adding Pirates</comment>
+		</line>
+		<line linenr="158" indent="&#160;">
+			<var>$flags</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[Find.Enemy]</var>
+			<text> </text>
+			<text>|</text>
+			<text> </text>
+			<var>[Find.Nearest]</var>
+			<text> </text>
+			<text>|</text>
+			<text> </text>
+			<var>[Find.Visible]</var>
+			<text> </text>
+			<text>|</text>
+			<text> </text>
+			<var>[Find.Multiple]</var>
+		</line>
+		<line linenr="159" indent="&#160;">
+			<var>$aEnemies</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>find</text>
+			<text> </text>
+			<text>ship</text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>$entrysector</var>
+			<text> </text>
+			<text>class</text>
+			<text> </text>
+			<text>or</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>flags</text>
+			<text>=</text>
+			<var>$flags</var>
+			<text> </text>
+			<text>refobj</text>
+			<text>=</text>
+			<var>[PLAYERSHIP]</var>
+			<text> </text>
+			<text>maxdist</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>maxnum</text>
+			<text>=</text>
+			<var>100</var>
+			<text> </text>
+			<text>refpos</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="160" indent="&#160;">
+			<var>$enemycount</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$aEnemies</var>
+		</line>
+		<line linenr="161" indent="&#160;" />
+		<line linenr="162" indent="&#160;">
+			<comment>* $t = $enemycount + ' pirate ships found in ' + $entrysector</comment>
+		</line>
+		<line linenr="163" indent="&#160;&#160;">
+			<comment>* display subtitle text: text=$t duration=5000 ms    </comment>
+		</line>
+		<line linenr="164" indent="&#160;" />
+		<line linenr="165" indent="&#160;">
+			<var>$count</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$NumToCreate</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>$enemycount</var>
+		</line>
+		<line linenr="166" indent="&#160;&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$count</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="167" indent="&#160;&#160;">
+			<var>$count</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="168" indent="&#160;&#160;" />
+		<line linenr="169" indent="&#160;&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$count</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="170" indent="&#160;&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$count</var>
+		</line>
+		<line linenr="171" indent="&#160;&#160;&#160;" interruptable="@">
+			<var>$validPos</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.GetValidPos</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>$entrysector</var>
+			<text> </text>
+			<text>minDistance</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>posArray</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>verticalOnly</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="172" indent="&#160;&#160;&#160;" interruptable="@">
+			<var>$shipType</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetRandomShipType</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>class</text>
+			<text>=</text>
+			<var>[M3]</var>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>[Yaki]</var>
+		</line>
+		<line linenr="173" indent="&#160;&#160;&#160;" interruptable="@">
+			<var>$ship</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.BuildShip</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>type</text>
+			<text>=</text>
+			<var>$shipType</var>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>[Pirates]</var>
+			<text> </text>
+			<text>posArray</text>
+			<text>=</text>
+			<var>$validPos</var>
+			<text> </text>
+			<text>homebase</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>quality</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="174" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="175" indent="&#160;">
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>set</text>
+			<text> </text>
+			<text>pirate</text>
+			<text> </text>
+			<text>cover</text>
+			<text> </text>
+			<text>state</text>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="176" indent="" interruptable="@">
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.EquipShip</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>ship</text>
+			<text>=</text>
+			<var>$ship</var>
+			<text> </text>
+			<text>equipMissiles</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="177" indent="" interruptable="@">
+			<text>START</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Task.Pirate.Harassment</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="178" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="179" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="180" indent="">
+			<text>endsub</text>
+		</line>
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="Renegades.Plot.Challenge" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="54" />
+			<sval type="int" val="0" />
+			<sval type="array" size="23">
+				<sval type="string" val="debug" />
+				<sval type="string" val="entrysector" />
+				<sval type="string" val="sector" />
+				<sval type="string" val="entrycode" />
+				<sval type="string" val="RenegadesGateCreated" />
+				<sval type="string" val="GlobalDisable" />
+				<sval type="string" val="answers" />
+				<sval type="string" val="difficulty" />
+				<sval type="string" val="isHardDifficulty" />
+				<sval type="string" val="string" />
+				<sval type="string" val="rnd" />
+				<sval type="string" val="speech" />
+				<sval type="string" val="gatecreated" />
+				<sval type="string" val="msg" />
+				<sval type="string" val="t" />
+				<sval type="string" val="NumToCreate" />
+				<sval type="string" val="flags" />
+				<sval type="string" val="aEnemies" />
+				<sval type="string" val="enemycount" />
+				<sval type="string" val="count" />
+				<sval type="string" val="validPos" />
+				<sval type="string" val="shipType" />
+				<sval type="string" val="ship" />
+			</sval>
+			<sval type="array" size="118">
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="RenegadeEntrySector" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="RenegadeSector" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="RenegadeSectorCode" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="RenegadesGateCreated" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610936" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="RenegadesGlobalDisable" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610168" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_startingOptionAnswers" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="5" />
+					<sval type="string" val="ocvDifficulty" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-536853500" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Pilot Compliance Directive:  Enter Challenge Code" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1933" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608125" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="106" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605821" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What is the name of the Paranid deity worshipped by their people?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606845" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Xaar" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What race calls the Terrans “Earthlings”?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606077" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Argon" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="65" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610603771" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What is the traditional Split home sector?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610604797" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Family Pride" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Who built the original jumpgate network?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610604029" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Ancients" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="65" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610601723" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What is the name of the Goner ship that can repair other ships?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610602749" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Truelight Seeker" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What race values Profits above all else?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610601981" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Teladi" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="65" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610599675" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What race created the Xenon?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610600701" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Terran" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What race considers itself chosen by the gods?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610599933" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Paranid" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="65" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597627" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What is the Split family name tied to their leadership?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610598653" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Family Rhonkar" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What is the traditional Boron home sector?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597885" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Kingdom End" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="65" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What faction is dedicated to enlightenment?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610596861" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Goner" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What is the traditional Paranid home sector?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610596093" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Paranid Prime" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1329" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="What is the air speed velocity of an unladen swallow (mph)?" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610595325" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="20.1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="83" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="128" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1951" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="611402" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1510" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="!galaxyeditor.create.gates" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610592253" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="157" />
+					<sval type="int" val="5" />
+					<sval type="string" val="RenegadesGateCreated" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="1418" />
+					<sval type="int" val="5" />
+					<sval type="string" val="A new jump gate has appeared !" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15000" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="200" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1147" />
+				</sval>
+				<sval type="array" size="16">
+					<sval type="int" val="150" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="9980" />
+					<sval type="int" val="4" />
+					<sval type="int" val="31" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="16">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.SendMessage" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="82" />
+				</sval>
+				<sval type="array" size="17">
+					<sval type="int" val="405" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Unable to create Renegades gate between %s and %s" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="string" val="Fail" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610590712" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Challenge Failed.  Intruders will not be tollerated." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="1418" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10000" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="1047" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="96" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="128" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1951" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="430501" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1510" />
+					<sval type="int" val="-2147483646" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="string" val="SpawnPirates" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610587133" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="101" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="16" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="108" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="106" />
+					<sval type="int" val="15" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="126" />
+					<sval type="int" val="15" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="111" />
+					<sval type="int" val="15" />
+					<sval type="int" val="7" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-6" />
+				</sval>
+				<sval type="array" size="18">
+					<sval type="int" val="757" />
+					<sval type="int" val="17" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="17" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="19" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610585336" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="19" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610582775" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="19" />
+				</sval>
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.GetValidPos" />
+					<sval type="int" val="20" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetRandomShipType" />
+					<sval type="int" val="21" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2023" />
+					<sval type="int" val="10" />
+					<sval type="int" val="19" />
+				</sval>
+				<sval type="array" size="16">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.BuildShip" />
+					<sval type="int" val="22" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="21" />
+					<sval type="int" val="10" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="20" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="-1610583037" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="1098" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.EquipShip" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Task.Pirate.Harassment" />
+					<sval type="int" val="-2147483646" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="107" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+			<sval type="array" size="70">
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="SCRIPT NAME: Renegades.Plot.Challenge" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DESCRIPTION: Issues the plot challenge questions to the player and unlocks the missing gate if successful." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="AUTHOR:      Mr Mordan" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DATE:        5 April 2024" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="string" val="No Challenge needed if we already finished." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="7" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="string" val="player turned off the feature" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="18" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="18" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="23" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="26" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="31" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="34" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="39" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="42" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="47" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="50" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="55" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="58" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="59" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="62" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="65" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="65" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="65" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="68" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="68" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="68" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="68" />
+					<sval type="int" val="1" />
+					<sval type="string" val="successful, so recreate the missing gate." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="68" />
+					<sval type="int" val="1" />
+					<sval type="string" val="When creating the hidden gate, use sound: " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="68" />
+					<sval type="int" val="1" />
+					<sval type="string" val="&quot;Energy Spike Detected&quot;" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="72" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="72" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Create it." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="77" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="77" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The Renegades hidden jump gate has been revealed..." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="79" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="80" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="82" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="82" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="83" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="83" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="86" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="88" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="88" />
+					<sval type="int" val="1" />
+					<sval type="string" val="not successful, so damage the player hull " />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="89" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="90" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="90" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Hull Failure Imminant" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="94" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="96" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="96" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="96" />
+					<sval type="int" val="1" />
+					<sval type="string" val="They failed to answer properly, so spawn some trouble." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="100" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="101" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Get number of pirates/enemies already in the system and create up to X total by adding Pirates" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="string" val="$t = $enemycount + ' pirate ships found in ' + $entrysector" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="string" val="display subtitle text: text=$t duration=5000 ms    " />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="107" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="116" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="117" />
+					<sval type="int" val="4" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>
