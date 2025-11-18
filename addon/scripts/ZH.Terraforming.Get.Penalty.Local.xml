@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Terraforming.Get.Penalty.Local</name>
-	<version>26</version>
+	<version>30</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -17,19 +17,19 @@
 			<comment>* SCRIPT NAME: ZH.Terraforming.Get.Penalty.Local</comment>
 		</line>
 		<line linenr="003" indent="">
-			<comment>* DESCRIPTION: Returns the local production penalty multiplier as a percentage with 2 decimal places (e.g. 625 for 6.25%) applied to a local outpost that is doing terraforming.</comment>
+			<comment>* DESCRIPTION: Returns the local production penalty multiplier as a percentage with 2 decimal places (e.g. 625 for 6.25%) applied to a local outpost that is doing terraforming. </comment>
 		</line>
 		<line linenr="004" indent="">
-			<comment>* Local penalty multiplier = 0.5^(number of projects)</comment>
+			<comment>* There are 0-5 planets per sector.</comment>
 		</line>
 		<line linenr="005" indent="">
-			<comment>* AUTHOR:           DATE: 6 November 2025</comment>
+			<comment>* Local penalty multiplier = 0.5^(number of projects)</comment>
 		</line>
 		<line linenr="006" indent="">
-			<comment>* ************************************************</comment>
+			<comment>* AUTHOR:           DATE: 6 November 2025</comment>
 		</line>
 		<line linenr="007" indent="">
-			<comment>* $sectors.terraforming = get global variable: name='ZH_TerraformingProjectSectors'</comment>
+			<comment>* ************************************************</comment>
 		</line>
 		<line linenr="008" indent="">
 			<var>$production.rate</var>
@@ -148,6 +148,14 @@
 		</line>
 		<line linenr="020" indent="&#160;">
 			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$projects.progressing</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>4</var>
 		</line>
 		<line linenr="021" indent="&#160;&#160;">
 			<var>$production.rate</var>
@@ -157,12 +165,70 @@
 			<var>625</var>
 		</line>
 		<line linenr="022" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="023" indent="&#160;&#160;">
+			<var>$production.rate</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>312</var>
+		</line>
+		<line linenr="024" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="023" indent="">
+		<line linenr="025" indent="&#160;" />
+		<line linenr="026" indent="&#160;">
+			<comment>* Upcoming add-ons 1.3: On insane mode, production rate is reduced further by 20% if a local terraforming project is in progress.</comment>
+		</line>
+		<line linenr="027" indent="&#160;" interruptable="@">
+			<var>$difficulty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetDifficulty</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="028" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="029" indent="&#160;&#160;">
+			<var>$production.rate</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$production.rate</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>4</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>5</var>
+		</line>
+		<line linenr="030" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="024" indent="">
+		<line linenr="031" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$production.rate</var>
@@ -173,14 +239,15 @@
 			<sval type="string" val="ZH.Terraforming.Get.Penalty.Local" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="26" />
+			<sval type="int" val="30" />
 			<sval type="int" val="0" />
-			<sval type="array" size="3">
+			<sval type="array" size="4">
 				<sval type="string" val="sector" />
 				<sval type="string" val="production.rate" />
 				<sval type="string" val="projects.progressing" />
+				<sval type="string" val="difficulty" />
 			</sval>
-			<sval type="array" size="17">
+			<sval type="array" size="23">
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
 					<sval type="int" val="1" />
@@ -196,7 +263,7 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="ZH_TerraformingInProgress" />
-					<sval type="int" val="-1610608637" />
+					<sval type="int" val="-1610607101" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
@@ -234,7 +301,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="16" />
+					<sval type="int" val="19" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -262,7 +329,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="16" />
+					<sval type="int" val="19" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -290,7 +357,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="16" />
+					<sval type="int" val="19" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -318,7 +385,22 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="16" />
+					<sval type="int" val="19" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608123" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -328,6 +410,65 @@
 					<sval type="int" val="625" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="19" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="312" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetDifficulty" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607096" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -341,7 +482,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="11">
+			<sval type="array" size="13">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -355,7 +496,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="DESCRIPTION: Returns the local production penalty multiplier as a percentage with 2 decimal places (e.g. 625 for 6.25%) applied to a local outpost that is doing terraforming." />
+					<sval type="string" val="DESCRIPTION: Returns the local production penalty multiplier as a percentage with 2 decimal places (e.g. 625 for 6.25%) applied to a local outpost that is doing terraforming. " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="There are 0-5 planets per sector." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -372,25 +518,29 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="************************************************" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="0" />
-					<sval type="int" val="1" />
-					<sval type="string" val="$sectors.terraforming = get global variable: name='ZH_TerraformingProjectSectors'" />
-				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="3" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="18" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="16" />
+					<sval type="int" val="19" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="16" />
+					<sval type="int" val="19" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="19" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Upcoming add-ons 1.3: On insane mode, production rate is reduced further by 20% if a local terraforming project is in progress." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="22" />
 					<sval type="int" val="4" />
 				</sval>
 			</sval>

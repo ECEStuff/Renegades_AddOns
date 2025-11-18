@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Terraforming.Get.Manpower</name>
-	<version>8</version>
+	<version>10</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -11,9 +11,12 @@
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
-			<comment>* Returns the terraforming manpower of an outpost equal to 2x local current population + 0.5x adjacent population. Doubled if terraforming specialist perk is unlocked. Doubled again if player joined the OCV.</comment>
+			<comment>* Returns the terraforming manpower of an outpost equal to 2x local current population + 0.5x adjacent population. </comment>
 		</line>
-		<line linenr="002" indent="" interruptable="@">
+		<line linenr="002" indent="">
+			<comment>* 2x if terraforming specialist perk is unlocked. 2x or 1.2x if terraforming efficiency 1 is unlocked, stacking multiplicatively with terraforming specialist.</comment>
+		</line>
+		<line linenr="003" indent="" interruptable="@">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -33,13 +36,13 @@
 			<text>=</text>
 			<var>$sanctuary</var>
 		</line>
-		<line linenr="003" indent="&#160;">
+		<line linenr="004" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="004" indent="" />
-		<line linenr="005" indent="">
+		<line linenr="005" indent="" />
+		<line linenr="006" indent="">
 			<var>$thisSector</var>
 			<text> </text>
 			<text>=</text>
@@ -51,7 +54,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="006" indent="">
+		<line linenr="007" indent="">
 			<var>$manpower.local</var>
 			<text> </text>
 			<text>=</text>
@@ -70,14 +73,14 @@
 			<text>=</text>
 			<text>'mayhem_people'</text>
 		</line>
-		<line linenr="007" indent="">
+		<line linenr="008" indent="">
 			<var>$manpower.adjacentSum</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="008" indent="" interruptable="@">
+		<line linenr="009" indent="" interruptable="@">
 			<var>$adjacentSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -101,7 +104,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="009" indent="">
+		<line linenr="010" indent="">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -114,17 +117,17 @@
 			<text> </text>
 			<var>$adjacentSectors</var>
 		</line>
-		<line linenr="010" indent="&#160;">
+		<line linenr="011" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="011" indent="&#160;">
+		<line linenr="012" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="012" indent="&#160;&#160;">
+		<line linenr="013" indent="&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -134,7 +137,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="013" indent="&#160;" interruptable="@">
+		<line linenr="014" indent="&#160;" interruptable="@">
 			<var>$outpost.adjacent</var>
 			<text> </text>
 			<text>=</text>
@@ -158,17 +161,17 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="014" indent="&#160;">
+		<line linenr="015" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$outpost.adjacent</var>
 		</line>
-		<line linenr="015" indent="">
+		<line linenr="016" indent="">
 			<text>continue</text>
 		</line>
-		<line linenr="016" indent="">
+		<line linenr="017" indent="">
 			<var>$manpower.adjacent</var>
 			<text> </text>
 			<text>=</text>
@@ -187,7 +190,7 @@
 			<text>=</text>
 			<text>'mayhem_people'</text>
 		</line>
-		<line linenr="017" indent="">
+		<line linenr="018" indent="">
 			<var>$manpower.adjacentSum</var>
 			<text> </text>
 			<text>=</text>
@@ -198,14 +201,14 @@
 			<text> </text>
 			<var>$manpower.adjacent</var>
 		</line>
-		<line linenr="018" indent="">
+		<line linenr="019" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="019" indent="&#160;" />
-		<line linenr="020" indent="&#160;">
+		<line linenr="020" indent="&#160;" />
+		<line linenr="021" indent="&#160;">
 			<comment>* Due to precision, we double the local and adjacent manpower first. After that, we sum.</comment>
 		</line>
-		<line linenr="021" indent="" interruptable="@">
+		<line linenr="022" indent="" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>$sanctuary</var>
@@ -223,36 +226,54 @@
 			<text>=</text>
 			<text>'Terraforming specialist'</text>
 		</line>
-		<line linenr="022" indent="">
-			<var>$manpower.local</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$manpower.local</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>2</var>
-		</line>
 		<line linenr="023" indent="">
-			<var>$manpower.adjacentSum</var>
+			<var>$manpower.local</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$manpower.adjacentSum</var>
+			<var>$manpower.local</var>
 			<text> </text>
 			<text>*</text>
 			<text> </text>
 			<var>2</var>
 		</line>
 		<line linenr="024" indent="">
+			<var>$manpower.adjacentSum</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$manpower.adjacentSum</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="025" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="025" indent="" />
-		<line linenr="026" indent="&#160;">
-			<comment>* Doubled for joining the OCV. 1.2 will give +20% for having research completed.</comment>
-		</line>
+		<line linenr="026" indent="&#160;" />
 		<line linenr="027" indent="&#160;">
+			<comment>* Add-Ons 1.2: Check if terraforming efficiency 1 is unlocked. If so, 2x if player joined OCV, 1.2x otherwise.</comment>
+		</line>
+		<line linenr="028" indent="&#160;&#160;" interruptable="@">
+			<text>if</text>
+			<text> </text>
+			<var>$sanctuary</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsPerkUnlocked</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>perk</text>
+			<text>=</text>
+			<text>'Terraforming efficiency 1'</text>
+		</line>
+		<line linenr="029" indent="&#160;&#160;">
 			<var>$OCVplotstage</var>
 			<text> </text>
 			<text>=</text>
@@ -268,7 +289,7 @@
 			<text>=</text>
 			<text>'OCVplotstage'</text>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="030" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$OCVplotstage</var>
@@ -277,7 +298,7 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="029" indent="">
+		<line linenr="031" indent="&#160;&#160;">
 			<var>$manpower.local</var>
 			<text> </text>
 			<text>=</text>
@@ -288,7 +309,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="030" indent="">
+		<line linenr="032" indent="&#160;&#160;">
 			<var>$manpower.adjacentSum</var>
 			<text> </text>
 			<text>=</text>
@@ -299,11 +320,51 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="031" indent="">
+		<line linenr="033" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="034" indent="">
+			<var>$manpower.local</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$manpower.local</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>6</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>5</var>
+		</line>
+		<line linenr="035" indent="">
+			<var>$manpower.adjacentSum</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$manpower.adjacentSum</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>6</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>5</var>
+		</line>
+		<line linenr="036" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="032" indent="" />
-		<line linenr="033" indent="">
+		<line linenr="037" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="038" indent="" />
+		<line linenr="039" indent="">
 			<var>$manpower.final</var>
 			<text> </text>
 			<text>=</text>
@@ -326,20 +387,20 @@
 			<var>2</var>
 			<text>)</text>
 		</line>
-		<line linenr="034" indent="" />
-		<line linenr="035" indent="">
+		<line linenr="040" indent="" />
+		<line linenr="041" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$manpower.final</var>
 		</line>
-		<line linenr="036" indent="" />
+		<line linenr="042" indent="" />
 	</sourcetext>
 	<codearray>
 		<sval type="array" size="10">
 			<sval type="string" val="ZH.Terraforming.Get.Manpower" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="8" />
+			<sval type="int" val="10" />
 			<sval type="int" val="0" />
 			<sval type="array" size="11">
 				<sval type="string" val="sanctuary" />
@@ -354,7 +415,7 @@
 				<sval type="string" val="OCVplotstage" />
 				<sval type="string" val="manpower.final" />
 			</sval>
-			<sval type="array" size="25">
+			<sval type="array" size="29">
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsPlayerOutpost" />
@@ -524,6 +585,16 @@
 					<sval type="int" val="13" />
 					<sval type="int" val="-2" />
 				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsPerkUnlocked" />
+					<sval type="int" val="-1610605821" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Terraforming efficiency 1" />
+				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -532,7 +603,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606845" />
+					<sval type="int" val="-1610606333" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
@@ -574,6 +645,56 @@
 					<sval type="int" val="-1" />
 					<sval type="int" val="13" />
 					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="27" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="6" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="6" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
 				</sval>
 				<sval type="array" size="29">
 					<sval type="int" val="104" />
@@ -618,11 +739,16 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="13">
+			<sval type="array" size="16">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Returns the terraforming manpower of an outpost equal to 2x local current population + 0.5x adjacent population. Doubled if terraforming specialist perk is unlocked. Doubled again if player joined the OCV." />
+					<sval type="string" val="Returns the terraforming manpower of an outpost equal to 2x local current population + 0.5x adjacent population. " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="2x if terraforming specialist perk is unlocked. 2x or 1.2x if terraforming efficiency 1 is unlocked, stacking multiplicatively with terraforming specialist." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="2" />
@@ -656,22 +782,30 @@
 				<sval type="array" size="3">
 					<sval type="int" val="19" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Doubled for joining the OCV. 1.2 will give +20% for having research completed." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="23" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="23" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="24" />
-					<sval type="int" val="2" />
+					<sval type="string" val="Add-Ons 1.2: Check if terraforming efficiency 1 is unlocked. If so, 2x if player joined OCV, 1.2x otherwise." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="25" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="29" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
