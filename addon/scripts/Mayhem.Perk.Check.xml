@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Perk.Check</name>
-	<version>19</version>
+	<version>27</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -354,7 +354,7 @@
 			<comment>* Zero Hour adds Perks with dependencies</comment>
 		</line>
 		<line linenr="041" indent="">
-			<comment>* Herobetty 5.4: Cleaned up the code. Removed if-else redundancies for Triple Population Growth, no food, and tax.</comment>
+			<comment>* Herobetty 5.4: Cleaned up the code. Removed if-else redundancies for Population stability (formerly Triple Population Growth), no food, and tax.</comment>
 		</line>
 		<line linenr="042" indent="">
 			<comment>* If player joined OCV, player cannot have pirate contract (Xenon/OCV don't make (new) deals with pirates). </comment>
@@ -432,7 +432,7 @@
 			<text> </text>
 			<text>perk</text>
 			<text>=</text>
-			<text>'Triple Population Growth'</text>
+			<text>'Population stability'</text>
 		</line>
 		<line linenr="048" indent="&#160;&#160;" />
 		<line linenr="049" indent="">
@@ -442,7 +442,7 @@
 			<text> </text>
 			<text>==</text>
 			<text> </text>
-			<text>'Triple Population Growth'</text>
+			<text>'Population stability'</text>
 			<text> </text>
 			<text>AND</text>
 			<text> </text>
@@ -548,11 +548,14 @@
 		<line linenr="060" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="061" indent="&#160;" />
+		<line linenr="061" indent="" />
 		<line linenr="062" indent="&#160;">
 			<comment>* Mordan3.  Exceeded number of jump stations.</comment>
 		</line>
 		<line linenr="063" indent="&#160;">
+			<comment>* Add-Ons 1.2: Fixed - added !unlocked check.</comment>
+		</line>
+		<line linenr="064" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$perk</var>
@@ -560,8 +563,13 @@
 			<text>==</text>
 			<text> </text>
 			<text>'Jump station'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
 		</line>
-		<line linenr="064" indent="&#160;&#160;">
+		<line linenr="065" indent="&#160;&#160;">
 			<var>$curJumpStations</var>
 			<text> </text>
 			<text>=</text>
@@ -577,7 +585,7 @@
 			<text>=</text>
 			<text>'CurrentJumpStations'</text>
 		</line>
-		<line linenr="065" indent="">
+		<line linenr="066" indent="">
 			<var>$maxJumpStations</var>
 			<text> </text>
 			<text>=</text>
@@ -593,7 +601,7 @@
 			<text>=</text>
 			<text>'MaxJumpStations'</text>
 		</line>
-		<line linenr="066" indent="">
+		<line linenr="067" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -604,255 +612,21 @@
 			<text> </text>
 			<var>$maxJumpStations</var>
 		</line>
-		<line linenr="067" indent="">
-			<var>$state</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>'disabled'</text>
-		</line>
 		<line linenr="068" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="069" indent="&#160;" />
-		<line linenr="070" indent="&#160;&#160;">
-			<comment>* Pirate contract</comment>
-		</line>
-		<line linenr="071" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$perk</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'Pirate contract'</text>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<text>!</text>
-			<var>$unlocked</var>
-		</line>
-		<line linenr="072" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$OCVplotstage</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'playerJoinedOCV'</text>
-		</line>
-		<line linenr="073" indent="">
 			<var>$state</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'disabled'</text>
 		</line>
-		<line linenr="074" indent="">
+		<line linenr="069" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="075" indent="&#160;" />
-		<line linenr="076" indent="&#160;&#160;">
-			<comment>* Reduced upkeep for newly built ships.</comment>
-		</line>
-		<line linenr="077" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$perk</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'Advanced engineering'</text>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<text>!</text>
-			<var>$unlocked</var>
-		</line>
-		<line linenr="078" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$OCVplotstage</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'playerJoinedOCV'</text>
-		</line>
-		<line linenr="079" indent="">
-			<var>$state</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>'disabled'</text>
-		</line>
-		<line linenr="080" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="081" indent="&#160;" />
-		<line linenr="082" indent="&#160;&#160;">
-			<comment>* Reduced upkeep for docked ships.</comment>
-		</line>
-		<line linenr="083" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$perk</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'Dry dock'</text>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<text>!</text>
-			<var>$unlocked</var>
-		</line>
-		<line linenr="084" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$OCVplotstage</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'playerJoinedOCV'</text>
-		</line>
-		<line linenr="085" indent="">
-			<var>$state</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>'disabled'</text>
-		</line>
-		<line linenr="086" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="087" indent="&#160;" />
-		<line linenr="088" indent="&#160;&#160;">
-			<comment>* Insurance Policy</comment>
-		</line>
-		<line linenr="089" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$perk</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'Insurance policy'</text>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<text>!</text>
-			<var>$unlocked</var>
-		</line>
-		<line linenr="090" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$OCVplotstage</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'playerJoinedOCV'</text>
-		</line>
-		<line linenr="091" indent="">
-			<var>$state</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>'disabled'</text>
-		</line>
-		<line linenr="092" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="093" indent="&#160;" />
-		<line linenr="094" indent="&#160;&#160;">
-			<comment>* Friendly neighbor</comment>
-		</line>
-		<line linenr="095" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$perk</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'Friendly Neighbor'</text>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<text>!</text>
-			<var>$unlocked</var>
-		</line>
-		<line linenr="096" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$OCVplotstage</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'playerJoinedOCV'</text>
-		</line>
-		<line linenr="097" indent="">
-			<var>$state</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>'disabled'</text>
-		</line>
-		<line linenr="098" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="099" indent="&#160;" />
-		<line linenr="100" indent="&#160;&#160;">
-			<comment>* Interorbital storage</comment>
-		</line>
-		<line linenr="101" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$perk</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'Free interorbital storage'</text>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<text>!</text>
-			<var>$unlocked</var>
-		</line>
-		<line linenr="102" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$OCVplotstage</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'playerJoinedOCV'</text>
-		</line>
-		<line linenr="103" indent="">
-			<var>$state</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>'disabled'</text>
-		</line>
-		<line linenr="104" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="105" indent="&#160;" />
-		<line linenr="106" indent="&#160;">
+		<line linenr="070" indent="&#160;" />
+		<line linenr="071" indent="&#160;">
 			<comment>* Add-Ons 1.1: Terraforming specialist is locked if there are fewer than 3 planets in the sector.</comment>
 		</line>
-		<line linenr="107" indent="&#160;">
+		<line linenr="072" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$perk</var>
@@ -866,7 +640,7 @@
 			<text>!</text>
 			<var>$unlocked</var>
 		</line>
-		<line linenr="108" indent="&#160;">
+		<line linenr="073" indent="&#160;">
 			<var>$thisSector</var>
 			<text> </text>
 			<text>=</text>
@@ -878,7 +652,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="109" indent="&#160;&#160;">
+		<line linenr="074" indent="&#160;&#160;">
 			<var>$planets</var>
 			<text> </text>
 			<text>=</text>
@@ -892,7 +666,7 @@
 			<text> </text>
 			<text>array</text>
 		</line>
-		<line linenr="110" indent="">
+		<line linenr="075" indent="">
 			<var>$planets.size</var>
 			<text> </text>
 			<text>=</text>
@@ -905,7 +679,7 @@
 			<text> </text>
 			<var>$planets</var>
 		</line>
-		<line linenr="111" indent="">
+		<line linenr="076" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -916,18 +690,632 @@
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="112" indent="">
+		<line linenr="077" indent="">
 			<var>$state</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'disabled'</text>
 		</line>
-		<line linenr="113" indent="">
+		<line linenr="078" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="114" indent="" />
-		<line linenr="115" indent="">
+		<line linenr="079" indent="" />
+		<line linenr="080" indent="">
+			<comment>* Add-Ons 1.2: Terraforming efficiency perks have tiered requirements.</comment>
+		</line>
+		<line linenr="081" indent="">
+			<comment>* Each efficiency perk (except tier 1) requires the perk before it. </comment>
+		</line>
+		<line linenr="082" indent="">
+			<comment>* Tiers 1/2/3/4 require 3/7/12/18 planets terraformed.</comment>
+		</line>
+		<line linenr="083" indent="">
+			<comment>* TE4 requires ALL terraforming-related perks unlocked and Capital Shipyard.</comment>
+		</line>
+		<line linenr="084" indent="" interruptable="@">
+			<var>$terraformed</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetNbTerraformedPlanets</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="085" indent="" interruptable="@">
+			<var>$te1.isUnlocked</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsPerkUnlocked</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>perk</text>
+			<text>=</text>
+			<text>'Terraforming efficiency 1'</text>
+		</line>
+		<line linenr="086" indent="" interruptable="@">
+			<var>$te2.isUnlocked</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsPerkUnlocked</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>perk</text>
+			<text>=</text>
+			<text>'Terraforming efficiency 2'</text>
+		</line>
+		<line linenr="087" indent="" interruptable="@">
+			<var>$te3.isUnlocked</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsPerkUnlocked</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>perk</text>
+			<text>=</text>
+			<text>'Terraforming efficiency 3'</text>
+		</line>
+		<line linenr="088" indent="" interruptable="@">
+			<var>$terraformingSpecialist.isUnlocked</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsPerkUnlocked</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>perk</text>
+			<text>=</text>
+			<text>'Terraforming specialist'</text>
+		</line>
+		<line linenr="089" indent="" />
+		<line linenr="090" indent="&#160;">
+			<var>$isMajorShipyard</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="091" indent="">
+			<var>$station.type</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>ware</text>
+			<text> </text>
+			<text>type</text>
+			<text> </text>
+			<text>code</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>object</text>
+		</line>
+		<line linenr="092" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$station.type</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>{SSTYPE_DOCK@75}</var>
+		</line>
+		<line linenr="093" indent="">
+			<var>$isMajorShipyard</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="094" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="095" indent="" />
+		<line linenr="096" indent="">
+			<var>$hasAllTerraformingPerks</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$te1.isUnlocked</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$te2.isUnlocked</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$te3.isUnlocked</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$terraformingSpecialist.isUnlocked</var>
+		</line>
+		<line linenr="097" indent="&#160;" />
+		<line linenr="098" indent="&#160;&#160;">
+			<comment>* TE1: 3+ terraformed planets.</comment>
+		</line>
+		<line linenr="099" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$perk</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'Terraforming efficiency 1'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
+		</line>
+		<line linenr="100" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$terraformed</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>3</var>
+		</line>
+		<line linenr="101" indent="">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="102" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="103" indent="&#160;" />
+		<line linenr="104" indent="&#160;&#160;">
+			<comment>* TE2: 7+ terraformed planets and TE1.</comment>
+		</line>
+		<line linenr="105" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$perk</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'Terraforming efficiency 2'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
+		</line>
+		<line linenr="106" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$terraformed</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>7</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<text>!</text>
+			<var>$te1.isUnlocked</var>
+		</line>
+		<line linenr="107" indent="">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="108" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="109" indent="&#160;" />
+		<line linenr="110" indent="&#160;&#160;">
+			<comment>* TE3: 12+ terraformed planets and TE2.</comment>
+		</line>
+		<line linenr="111" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$perk</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'Terraforming efficiency 3'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
+		</line>
+		<line linenr="112" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$terraformed</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>12</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<text>!</text>
+			<var>$te2.isUnlocked</var>
+		</line>
+		<line linenr="113" indent="">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="114" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="115" indent="" />
+		<line linenr="116" indent="">
+			<comment>* TE4:</comment>
+		</line>
+		<line linenr="117" indent="">
+			<comment>* - 18+ terraformed planets</comment>
+		</line>
+		<line linenr="118" indent="&#160;">
+			<comment>* - All terraforming-related perks (TE1-3 + Terraforming specialist)</comment>
+		</line>
+		<line linenr="119" indent="&#160;&#160;">
+			<comment>* - Outpost must be a Capital Shipyard, not a regular Outpost.</comment>
+		</line>
+		<line linenr="120" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$perk</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'Terraforming efficiency 4'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
+		</line>
+		<line linenr="121" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$terraformed</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>18</var>
+		</line>
+		<line linenr="122" indent="&#160;">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="123" indent="">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<text>!</text>
+			<var>$hasAllTerraformingPerks</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<text>!</text>
+			<var>$isMajorShipyard</var>
+		</line>
+		<line linenr="124" indent="">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="125" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="126" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="127" indent="" />
+		<line linenr="128" indent="">
+			<comment>* ======= ANY PERKS BELOW ARE DISABLED IF THE ONLY CONDITION IS JOINING THE OCV =======</comment>
+		</line>
+		<line linenr="129" indent="&#160;" />
+		<line linenr="130" indent="&#160;&#160;">
+			<comment>* Pirate contract</comment>
+		</line>
+		<line linenr="131" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$perk</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'Pirate contract'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
+		</line>
+		<line linenr="132" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'playerJoinedOCV'</text>
+		</line>
+		<line linenr="133" indent="">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="134" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="135" indent="&#160;" />
+		<line linenr="136" indent="&#160;&#160;">
+			<comment>* Reduced upkeep for newly built ships.</comment>
+		</line>
+		<line linenr="137" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$perk</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'Advanced engineering'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
+		</line>
+		<line linenr="138" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'playerJoinedOCV'</text>
+		</line>
+		<line linenr="139" indent="">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="140" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="141" indent="&#160;" />
+		<line linenr="142" indent="&#160;&#160;">
+			<comment>* Reduced upkeep for docked ships.</comment>
+		</line>
+		<line linenr="143" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$perk</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'Dry dock'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
+		</line>
+		<line linenr="144" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'playerJoinedOCV'</text>
+		</line>
+		<line linenr="145" indent="">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="146" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="147" indent="&#160;" />
+		<line linenr="148" indent="&#160;&#160;">
+			<comment>* Insurance Policy</comment>
+		</line>
+		<line linenr="149" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$perk</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'Insurance policy'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
+		</line>
+		<line linenr="150" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'playerJoinedOCV'</text>
+		</line>
+		<line linenr="151" indent="">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="152" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="153" indent="&#160;" />
+		<line linenr="154" indent="&#160;&#160;">
+			<comment>* Friendly neighbor</comment>
+		</line>
+		<line linenr="155" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$perk</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'Friendly Neighbor'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
+		</line>
+		<line linenr="156" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'playerJoinedOCV'</text>
+		</line>
+		<line linenr="157" indent="">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="158" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="159" indent="&#160;" />
+		<line linenr="160" indent="&#160;&#160;">
+			<comment>* Interorbital storage</comment>
+		</line>
+		<line linenr="161" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$perk</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'Free interorbital storage'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$unlocked</var>
+		</line>
+		<line linenr="162" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'playerJoinedOCV'</text>
+		</line>
+		<line linenr="163" indent="">
+			<var>$state</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'disabled'</text>
+		</line>
+		<line linenr="164" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="165" indent="" />
+		<line linenr="166" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$state</var>
@@ -938,9 +1326,9 @@
 			<sval type="string" val="Mayhem.Perk.Check" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="19" />
+			<sval type="int" val="27" />
 			<sval type="int" val="0" />
-			<sval type="array" size="21">
+			<sval type="array" size="29">
 				<sval type="string" val="perk" />
 				<sval type="string" val="perkTable" />
 				<sval type="string" val="perkArray" />
@@ -962,8 +1350,16 @@
 				<sval type="string" val="thisSector" />
 				<sval type="string" val="planets" />
 				<sval type="string" val="planets.size" />
+				<sval type="string" val="terraformed" />
+				<sval type="string" val="te1.isUnlocked" />
+				<sval type="string" val="te2.isUnlocked" />
+				<sval type="string" val="te3.isUnlocked" />
+				<sval type="string" val="terraformingSpecialist.isUnlocked" />
+				<sval type="string" val="isMajorShipyard" />
+				<sval type="string" val="station.type" />
+				<sval type="string" val="hasAllTerraformingPerks" />
 			</sval>
-			<sval type="array" size="76">
+			<sval type="array" size="101">
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
 					<sval type="int" val="131075" />
@@ -1281,7 +1677,7 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Triple Population Growth" />
+					<sval type="string" val="Population stability" />
 				</sval>
 				<sval type="array" size="22">
 					<sval type="int" val="104" />
@@ -1290,7 +1686,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Triple Population Growth" />
+					<sval type="string" val="Population stability" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
@@ -1439,20 +1835,29 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="22">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610599677" />
-					<sval type="int" val="3" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Jump station" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
-					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
@@ -1492,295 +1897,7 @@
 				</sval>
 				<sval type="array" size="22">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610598909" />
-					<sval type="int" val="6" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Pirate contract" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="6" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="9" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="-4" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610598904" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
-					<sval type="int" val="5" />
-					<sval type="string" val="playerJoinedOCV" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="disabled" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="22">
-					<sval type="int" val="104" />
 					<sval type="int" val="-1610598141" />
-					<sval type="int" val="6" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Advanced engineering" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="6" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="9" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="-4" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610598136" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
-					<sval type="int" val="5" />
-					<sval type="string" val="playerJoinedOCV" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="disabled" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="22">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610597373" />
-					<sval type="int" val="6" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Dry dock" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="6" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="9" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="-4" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610597368" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
-					<sval type="int" val="5" />
-					<sval type="string" val="playerJoinedOCV" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="disabled" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="22">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610596605" />
-					<sval type="int" val="6" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Insurance policy" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="6" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="9" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="-4" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610596600" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
-					<sval type="int" val="5" />
-					<sval type="string" val="playerJoinedOCV" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="disabled" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="22">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610595837" />
-					<sval type="int" val="6" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Friendly Neighbor" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="6" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="9" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="-4" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610595832" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
-					<sval type="int" val="5" />
-					<sval type="string" val="playerJoinedOCV" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="disabled" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="22">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610595069" />
-					<sval type="int" val="6" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Free interorbital storage" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="6" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="9" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="-4" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610595064" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
-					<sval type="int" val="5" />
-					<sval type="string" val="playerJoinedOCV" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="disabled" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="22">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610593533" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -1822,7 +1939,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610593528" />
+					<sval type="int" val="-1610598136" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="20" />
@@ -1833,6 +1950,654 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetNbTerraformedPlanets" />
+					<sval type="int" val="21" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsPerkUnlocked" />
+					<sval type="int" val="22" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Terraforming efficiency 1" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsPerkUnlocked" />
+					<sval type="int" val="23" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Terraforming efficiency 2" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsPerkUnlocked" />
+					<sval type="int" val="24" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Terraforming efficiency 3" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsPerkUnlocked" />
+					<sval type="int" val="25" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Terraforming specialist" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="26" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="707" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="27" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610595837" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="27" />
+					<sval type="int" val="9" />
+					<sval type="int" val="327755" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="26" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="28" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="23" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="24" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="25" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-6" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610594813" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Terraforming efficiency 1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610594808" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="21" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610594045" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Terraforming efficiency 2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610594040" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="21" />
+					<sval type="int" val="4" />
+					<sval type="int" val="7" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610593277" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Terraforming efficiency 3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610593272" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="21" />
+					<sval type="int" val="4" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="23" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610591741" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Terraforming efficiency 4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610592253" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="21" />
+					<sval type="int" val="4" />
+					<sval type="int" val="18" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="82" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610591739" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="28" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="26" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-3" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610590973" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Pirate contract" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610590968" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
+					<sval type="string" val="playerJoinedOCV" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610590205" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Advanced engineering" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610590200" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
+					<sval type="string" val="playerJoinedOCV" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610589437" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Dry dock" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610589432" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
+					<sval type="string" val="playerJoinedOCV" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610588669" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Insurance policy" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610588664" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
+					<sval type="string" val="playerJoinedOCV" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610587901" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Friendly Neighbor" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610587896" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
+					<sval type="string" val="playerJoinedOCV" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="disabled" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610587133" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Free interorbital storage" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610587128" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
+					<sval type="string" val="playerJoinedOCV" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="7">
@@ -1856,7 +2621,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="44">
+			<sval type="array" size="71">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1910,7 +2675,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="33" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Herobetty 5.4: Cleaned up the code. Removed if-else redundancies for Triple Population Growth, no food, and tax." />
+					<sval type="string" val="Herobetty 5.4: Cleaned up the code. Removed if-else redundancies for Population stability (formerly Triple Population Growth), no food, and tax." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="33" />
@@ -1947,6 +2712,11 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan3.  Exceeded number of jump stations." />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="46" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.2: Fixed - added !unlocked check." />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="51" />
 					<sval type="int" val="4" />
@@ -1957,93 +2727,209 @@
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="51" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Pirate contract" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="54" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="54" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="54" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Reduced upkeep for newly built ships." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="57" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="57" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="57" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Reduced upkeep for docked ships." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="60" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="60" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="60" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Insurance Policy" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="63" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="63" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="63" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Friendly neighbor" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="66" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="66" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="66" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Interorbital storage" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="69" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="69" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="69" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.1: Terraforming specialist is locked if there are fewer than 3 planets in the sector." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="75" />
+					<sval type="int" val="57" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="75" />
+					<sval type="int" val="57" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="57" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.2: Terraforming efficiency perks have tiered requirements." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="57" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Each efficiency perk (except tier 1) requires the perk before it. " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="57" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Tiers 1/2/3/4 require 3/7/12/18 planets terraformed." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="57" />
+					<sval type="int" val="1" />
+					<sval type="string" val="TE4 requires ALL terraforming-related perks unlocked and Capital Shipyard." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="62" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="66" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="66" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="67" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="67" />
+					<sval type="int" val="1" />
+					<sval type="string" val="TE1: 3+ terraformed planets." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="70" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="70" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="70" />
+					<sval type="int" val="1" />
+					<sval type="string" val="TE2: 7+ terraformed planets and TE1." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="73" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="73" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="73" />
+					<sval type="int" val="1" />
+					<sval type="string" val="TE3: 12+ terraformed planets and TE2." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="76" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="76" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="76" />
+					<sval type="int" val="1" />
+					<sval type="string" val="TE4:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="76" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- 18+ terraformed planets" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="76" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- All terraforming-related perks (TE1-3 + Terraforming specialist)" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="76" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- Outpost must be a Capital Shipyard, not a regular Outpost." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="82" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="82" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="82" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="82" />
+					<sval type="int" val="1" />
+					<sval type="string" val="======= ANY PERKS BELOW ARE DISABLED IF THE ONLY CONDITION IS JOINING THE OCV =======" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="82" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="82" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Pirate contract" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="85" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="85" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="85" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Reduced upkeep for newly built ships." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="88" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="88" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="88" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Reduced upkeep for docked ships." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="91" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="91" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="91" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Insurance Policy" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="94" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="94" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="94" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Friendly neighbor" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="97" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="97" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="97" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Interorbital storage" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="100" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="100" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
