@@ -1,0 +1,1245 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>Mayhem.Mission.Generate</name>
+	<version>28</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments>
+		<argument index="1" name="sector" type="Var/Sector" desc="" />
+	</arguments>
+	<sourcetext>
+		<line linenr="001" indent="">
+			<comment>* Called from the Mayhem.Monitor.Missions.xml on a periodic basis to create up to 2 missions in a sector.</comment>
+		</line>
+		<line linenr="002" indent="" />
+		<line linenr="003" indent="">
+			<comment>* ZH 2.1</comment>
+		</line>
+		<line linenr="004" indent="">
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'OCVplotstage'</text>
+		</line>
+		<line linenr="005" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'playerJoinedOCV'</text>
+		</line>
+		<line linenr="006" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="007" indent="" />
+		<line linenr="008" indent="">
+			<var>$missionsPerSector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="009" indent="">
+			<var>$missionsTotal</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="010" indent="" />
+		<line linenr="011" indent="">
+			<comment>* Difficulties are set at the start of the game. See Mayhem.StartingOptions.Callbacks.</comment>
+		</line>
+		<line linenr="012" indent="" interruptable="@">
+			<var>$missionDifficulty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetDifficulty</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="013" indent="" />
+		<line linenr="014" indent="">
+			<comment>* Get available stations and total missions</comment>
+		</line>
+		<line linenr="015" indent="" interruptable="@">
+			<var>$stations</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Mission.GetCompatibleStations</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>$sector</var>
+		</line>
+		<line linenr="016" indent="">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$stations</var>
+		</line>
+		<line linenr="017" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="018" indent="">
+			<var>$randomAvailableStations</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<text>alloc</text>
+			<text>:</text>
+			<text> </text>
+			<text>size</text>
+			<text>=</text>
+			<var>0</var>
+		</line>
+		<line linenr="019" indent="">
+			<var>$XS.Iterator1</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$stations</var>
+		</line>
+		<line linenr="020" indent="&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="021" indent="&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="022" indent="&#160;&#160;">
+			<var>$station</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$stations</var>
+			<text>[</text>
+			<var>$XS.Iterator1</var>
+			<text>]</text>
+		</line>
+		<line linenr="023" indent="&#160;&#160;" interruptable="@">
+			<var>$currentMission</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Mission.Get</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>missionIdOrStation</text>
+			<text>=</text>
+			<var>$station</var>
+		</line>
+		<line linenr="024" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$currentMission</var>
+		</line>
+		<line linenr="025" indent="&#160;&#160;">
+			<text>inc</text>
+			<text> </text>
+			<var>$missionsTotal</var>
+		</line>
+		<line linenr="026" indent="&#160;">
+			<comment>* Add-Ons 1.3: Finally fixed the duplicate mission bug. This should now prevent the mission generator from creating and overwriting duplicate missions.</comment>
+		</line>
+		<line linenr="027" indent="&#160;&#160;">
+			<var>$missionName</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$currentMission</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'name'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="028" indent="&#160;">
+			<var>$otherMissionName</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$missionName</var>
+		</line>
+		<line linenr="029" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="030" indent="">
+			<text>append</text>
+			<text> </text>
+			<var>$station</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$randomAvailableStations</var>
+		</line>
+		<line linenr="031" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="032" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="033" indent="&#160;" />
+		<line linenr="034" indent="">
+			<comment>* Available stations for a new mission?</comment>
+		</line>
+		<line linenr="035" indent="">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$randomAvailableStations</var>
+		</line>
+		<line linenr="036" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="037" indent="" />
+		<line linenr="038" indent="">
+			<var>$sector.race</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$sector</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owner</text>
+			<text> </text>
+			<text>race</text>
+		</line>
+		<line linenr="039" indent="" interruptable="@">
+			<var>$sectors</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetOwnedSectors</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>$sector.race</var>
+			<text> </text>
+			<text>randomize</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="040" indent="">
+			<var>$sectors.s</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$sectors</var>
+		</line>
+		<line linenr="041" indent="&#160;" />
+		<line linenr="042" indent="&#160;&#160;">
+			<comment>* Creates up to the maximum missions possible (2) in a system.</comment>
+		</line>
+		<line linenr="043" indent="&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$missionsTotal</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>$missionsPerSector</var>
+		</line>
+		<line linenr="044" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$sectors.s</var>
+			<text> </text>
+			<text>&lt;=</text>
+			<text> </text>
+			<var>4</var>
+		</line>
+		<line linenr="045" indent="&#160;&#160;" interruptable="@">
+			<var>$missionNames</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Mission.GetNames.LimitedEmpire</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="046" indent="&#160;&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="047" indent="&#160;&#160;">
+			<comment>* 3.15: more chances to get the original Mayhem mission.</comment>
+		</line>
+		<line linenr="048" indent="&#160;&#160;" interruptable="@">
+			<var>$missionNames</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Mission.GetNames</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="049" indent="&#160;&#160;" interruptable="@">
+			<var>$missionNames.limited</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Mission.GetNames.LimitedEmpire</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="050" indent="&#160;&#160;">
+			<var>$missionNames</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>join</text>
+			<text> </text>
+			<text>arrays</text>
+			<text>:</text>
+			<text> </text>
+			<text>first</text>
+			<text>=</text>
+			<var>$missionNames</var>
+			<text>,</text>
+			<text> </text>
+			<text>second</text>
+			<text>=</text>
+			<var>$missionNames.limited</var>
+		</line>
+		<line linenr="051" indent="&#160;&#160;" />
+		<line linenr="052" indent="&#160;&#160;">
+			<comment>* Add-Ons 1.3: Insane mode lowers chances of getting Mayhem missions that give easy-to-obtain ships (bait, delliveries, police, rescue, acquisition). </comment>
+		</line>
+		<line linenr="053" indent="&#160;&#160;&#160;">
+			<comment>* Normally, there's 20 missions and thus the chance of getting these missions is 5 out of 20. But on insane, we want the chances reduced even more (goes in line with how scarce ships are). </comment>
+		</line>
+		<line linenr="054" indent="&#160;&#160;&#160;">
+			<comment>* By adding the 5 original missions twice, the chances of getting an easy ship are now reduced to 5 out of 30.</comment>
+		</line>
+		<line linenr="055" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$missionDifficulty</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="056" indent="&#160;">
+			<var>$missionNames</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>join</text>
+			<text> </text>
+			<text>arrays</text>
+			<text>:</text>
+			<text> </text>
+			<text>first</text>
+			<text>=</text>
+			<var>$missionNames</var>
+			<text>,</text>
+			<text> </text>
+			<text>second</text>
+			<text>=</text>
+			<var>$missionNames.limited</var>
+		</line>
+		<line linenr="057" indent="&#160;">
+			<var>$missionNames</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>join</text>
+			<text> </text>
+			<text>arrays</text>
+			<text>:</text>
+			<text> </text>
+			<text>first</text>
+			<text>=</text>
+			<var>$missionNames</var>
+			<text>,</text>
+			<text> </text>
+			<text>second</text>
+			<text>=</text>
+			<var>$missionNames.limited</var>
+		</line>
+		<line linenr="058" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="059" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="060" indent="&#160;" interruptable="@">
+			<var>$missionName</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.GetRandomElement</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>array</text>
+			<text>=</text>
+			<var>$missionNames</var>
+		</line>
+		<line linenr="061" indent="&#160;&#160;" />
+		<line linenr="062" indent="&#160;">
+			<comment>* We don't want the same type to appear twice in the same sector.</comment>
+		</line>
+		<line linenr="063" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$missionName</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>$otherMissionName</var>
+		</line>
+		<line linenr="064" indent="&#160;&#160;">
+			<text>continue</text>
+		</line>
+		<line linenr="065" indent="&#160;">
+			<var>$otherMissionName</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$missionName</var>
+		</line>
+		<line linenr="066" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<text>random</text>
+			<text> </text>
+			<text>value</text>
+			<text> </text>
+			<text>from</text>
+			<text> </text>
+			<text>zero</text>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="067" indent="&#160;&#160;">
+			<var>$difficulty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$missionDifficulty</var>
+		</line>
+		<line linenr="068" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="069" indent="&#160;">
+			<comment>* Add-Ons 1.3: updated random difficulty 33% of the time to include insane mode missions.</comment>
+		</line>
+		<line linenr="070" indent="&#160;">
+			<var>$difficulty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>random</text>
+			<text> </text>
+			<text>value</text>
+			<text> </text>
+			<text>from</text>
+			<text> </text>
+			<text>zero</text>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<var>3</var>
+		</line>
+		<line linenr="071" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="072" indent="&#160;" interruptable="@">
+			<var>$randomAvailableStation</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.GetRandomElement</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>array</text>
+			<text>=</text>
+			<var>$randomAvailableStations</var>
+		</line>
+		<line linenr="073" indent="" interruptable="@">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Mission.Get</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>missionIdOrStation</text>
+			<text>=</text>
+			<var>$randomAvailableStation</var>
+		</line>
+		<line linenr="074" indent="" interruptable="@">
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Mission.Create</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>missionName</text>
+			<text>=</text>
+			<var>$missionName</var>
+			<text> </text>
+			<text>difficulty</text>
+			<text>=</text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>station</text>
+			<text>=</text>
+			<var>$randomAvailableStation</var>
+		</line>
+		<line linenr="075" indent="">
+			<text>inc</text>
+			<text> </text>
+			<var>$missionsTotal</var>
+		</line>
+		<line linenr="076" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="077" indent="" />
+		<line linenr="078" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="Mayhem.Mission.Generate" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="28" />
+			<sval type="int" val="0" />
+			<sval type="array" size="19">
+				<sval type="string" val="sector" />
+				<sval type="string" val="OCVplotstage" />
+				<sval type="string" val="missionsPerSector" />
+				<sval type="string" val="missionsTotal" />
+				<sval type="string" val="missionDifficulty" />
+				<sval type="string" val="stations" />
+				<sval type="string" val="randomAvailableStations" />
+				<sval type="string" val="station" />
+				<sval type="string" val="XS.Iterator1" />
+				<sval type="string" val="currentMission" />
+				<sval type="string" val="missionName" />
+				<sval type="string" val="otherMissionName" />
+				<sval type="string" val="sector.race" />
+				<sval type="string" val="sectors" />
+				<sval type="string" val="sectors.s" />
+				<sval type="string" val="missionNames" />
+				<sval type="string" val="missionNames.limited" />
+				<sval type="string" val="difficulty" />
+				<sval type="string" val="randomAvailableStation" />
+			</sval>
+			<sval type="array" size="51">
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="OCVplotstage" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611960" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="playerJoinedOCV" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetDifficulty" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Mission.GetCompatibleStations" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-536868601" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="128" />
+					<sval type="int" val="6" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607095" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="8" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Mission.Get" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607613" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="142" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="string" val="name" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="21" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="135" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="11" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="-536864761" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="701" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="12" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetOwnedSectors" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610599927" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610604797" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Mission.GetNames.LimitedEmpire" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="37" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Mission.GetNames" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Mission.GetNames.LimitedEmpire" />
+					<sval type="int" val="16" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1850" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610603261" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1850" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1850" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.GetRandomElement" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610602488" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="27" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="106" />
+					<sval type="int" val="-1610601469" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="45" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="106" />
+					<sval type="int" val="17" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.GetRandomElement" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Mission.Get" />
+					<sval type="int" val="-536858617" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+				</sval>
+				<sval type="array" size="12">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Mission.Create" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="17" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="142" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="27" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+			</sval>
+			<sval type="array" size="1">
+				<sval type="array" size="2">
+					<sval type="int" val="14" />
+					<sval type="string" val="" />
+				</sval>
+			</sval>
+			<sval type="array" size="33">
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Called from the Mayhem.Monitor.Missions.xml on a periodic basis to create up to 2 missions in a sector." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="ZH 2.1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="3" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Difficulties are set at the start of the game. See Mayhem.StartingOptions.Callbacks." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="6" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="6" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Get available stations and total missions" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.3: Finally fixed the duplicate mission bug. This should now prevent the mission generator from creating and overwriting duplicate missions." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="20" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="22" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="22" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="22" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Available stations for a new mission?" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="27" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Creates up to the maximum missions possible (2) in a system." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="31" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="31" />
+					<sval type="int" val="1" />
+					<sval type="string" val="3.15: more chances to get the original Mayhem mission." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="34" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="34" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.3: Insane mode lowers chances of getting Mayhem missions that give easy-to-obtain ships (bait, delliveries, police, rescue, acquisition). " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="34" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Normally, there's 20 missions and thus the chance of getting these missions is 5 out of 20. But on insane, we want the chances reduced even more (goes in line with how scarce ships are). " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="34" />
+					<sval type="int" val="1" />
+					<sval type="string" val="By adding the 5 original missions twice, the chances of getting an easy ship are now reduced to 5 out of 30." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="37" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="37" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="38" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="38" />
+					<sval type="int" val="1" />
+					<sval type="string" val="We don't want the same type to appear twice in the same sector." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="40" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="44" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="44" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.3: updated random difficulty 33% of the time to include insane mode missions." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="50" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="50" />
+					<sval type="int" val="2" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>
