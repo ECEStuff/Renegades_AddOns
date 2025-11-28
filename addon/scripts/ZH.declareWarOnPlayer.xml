@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.declareWarOnPlayer</name>
-	<version>6</version>
+	<version>16</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -19,36 +19,37 @@
 			<comment>* ultimatum is possible if called by ZH.Core (only on hard game difficulty)</comment>
 		</line>
 		<line linenr="003" indent="">
-			<comment>* instant war declaration when called by ZH.Monitor (ultimatum time up)</comment>
+			<comment>* instant war declaration when called by ZH.Monitor (ultimatum time up) or when called by Mayhem.Capture.pl (player tried to get around ultimatum by abandoning or giving sector to someone else)</comment>
 		</line>
-		<line linenr="004" indent="" />
-		<line linenr="005" indent="">
+		<line linenr="004" indent="">
+			<comment>* Add-Ons 1.4: Fixed ultimatum being skipped. Changed labels to subroutines.</comment>
+		</line>
+		<line linenr="005" indent="" />
+		<line linenr="006" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$ultimatumPossible</var>
 		</line>
-		<line linenr="006" indent="&#160;">
-			<text>goto</text>
-			<text> </text>
-			<text>label</text>
+		<line linenr="007" indent="&#160;">
+			<text>gosub</text>
 			<text> </text>
 			<var>declareWar</var>
 			<text>:</text>
 		</line>
-		<line linenr="007" indent="" />
-		<line linenr="008" indent="">
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="">
 			<comment>* ZH 2.0 - if the aggressor likes the player there is a chance that he offers an ultimatum</comment>
 		</line>
-		<line linenr="009" indent="">
+		<line linenr="010" indent="">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="010" indent="">
+		<line linenr="011" indent="">
 			<var>$rep</var>
 			<text> </text>
 			<text>=</text>
@@ -73,7 +74,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="011" indent="">
+		<line linenr="012" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$rep</var>
@@ -82,10 +83,10 @@
 			<text> </text>
 			<var>6</var>
 		</line>
-		<line linenr="012" indent="&#160;">
+		<line linenr="013" indent="&#160;">
 			<comment>* reputation rank 7 or higher almost guarantees it</comment>
 		</line>
-		<line linenr="013" indent="&#160;">
+		<line linenr="014" indent="&#160;">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
@@ -102,7 +103,7 @@
 			<var>10</var>
 			<text>)</text>
 		</line>
-		<line linenr="014" indent="">
+		<line linenr="015" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -113,10 +114,10 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="015" indent="&#160;">
+		<line linenr="016" indent="&#160;">
 			<comment>* ranks 1-6 only provide a small chance</comment>
 		</line>
-		<line linenr="016" indent="&#160;">
+		<line linenr="017" indent="&#160;">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
@@ -133,13 +134,13 @@
 			<var>5</var>
 			<text>)</text>
 		</line>
-		<line linenr="017" indent="">
+		<line linenr="018" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="018" indent="">
+		<line linenr="019" indent="">
 			<comment>* loyalty points adds 2%</comment>
 		</line>
-		<line linenr="019" indent="" interruptable="@">
+		<line linenr="020" indent="" interruptable="@">
 			<var>$loyaltyPoints</var>
 			<text> </text>
 			<text>=</text>
@@ -159,7 +160,7 @@
 			<text>=</text>
 			<var>$race</var>
 		</line>
-		<line linenr="020" indent="">
+		<line linenr="021" indent="">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
@@ -176,7 +177,50 @@
 			<var>2</var>
 			<text>)</text>
 		</line>
-		<line linenr="021" indent="">
+		<line linenr="022" indent="" />
+		<line linenr="023" indent="">
+			<comment>* Add-Ons 1.4: Chance is halved on insane.</comment>
+		</line>
+		<line linenr="024" indent="" interruptable="@">
+			<var>$difficulty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetDifficulty</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="025" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="026" indent="&#160;">
+			<var>$chance</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$chance</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="027" indent="" />
+		<line linenr="028" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -187,17 +231,17 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="022" indent="&#160;">
+		<line linenr="029" indent="&#160;">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="023" indent="">
+		<line linenr="030" indent="">
 			<comment>* evil factions always have a small chance to betray the player, even if they like him very much</comment>
 		</line>
-		<line linenr="024" indent="">
+		<line linenr="031" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$ethos</var>
@@ -206,7 +250,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="025" indent="&#160;">
+		<line linenr="032" indent="&#160;">
 			<var>$ethos</var>
 			<text> </text>
 			<text>=</text>
@@ -217,21 +261,21 @@
 			<text> </text>
 			<var>-10</var>
 		</line>
-		<line linenr="026" indent="&#160;">
+		<line linenr="033" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$ethos</var>
 		</line>
-		<line linenr="027" indent="&#160;&#160;">
+		<line linenr="034" indent="&#160;&#160;">
 			<var>$ethos</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="028" indent="&#160;">
+		<line linenr="035" indent="&#160;">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
@@ -242,10 +286,10 @@
 			<text> </text>
 			<var>$ethos</var>
 		</line>
-		<line linenr="029" indent="">
+		<line linenr="036" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="030" indent="">
+		<line linenr="037" indent="">
 			<var>$rng</var>
 			<text> </text>
 			<text>=</text>
@@ -254,27 +298,30 @@
 			<text> </text>
 			<text>value</text>
 			<text> </text>
-			<text>between</text>
+			<text>from</text>
 			<text> </text>
-			<var>1</var>
+			<text>zero</text>
 			<text> </text>
-			<text>and</text>
+			<text>to</text>
 			<text> </text>
-			<var>100</var>
+			<var>99</var>
 		</line>
-		<line linenr="031" indent="">
+		<line linenr="038" indent="">
 			<text>if</text>
 			<text> </text>
-			<var>$chance</var>
-			<text> </text>
-			<text>&gt;=</text>
-			<text> </text>
 			<var>$rng</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>$chance</var>
 		</line>
-		<line linenr="032" indent="&#160;">
-			<comment>* faction sends an ultimatum to the player. The time limits get handled by ZH.Monitor</comment>
+		<line linenr="039" indent="&#160;">
+			<comment>* faction sends an ultimatum to the player. The time limits get handled by ZH.Monitor. Mayhem.Capture.pl handles player actions - complying or refusal (abandoning sector or giving it to someone else). </comment>
 		</line>
-		<line linenr="033" indent="&#160;" interruptable="@">
+		<line linenr="040" indent="&#160;">
+			<comment>* Ignoring the ultimatum after 1 hour, abandoning the sector, or giving the sector to someone else will result in a war declaration.</comment>
+		</line>
+		<line linenr="041" indent="&#160;" interruptable="@">
 			<var>$sector.ultimatum</var>
 			<text> </text>
 			<text>=</text>
@@ -294,7 +341,7 @@
 			<text>=</text>
 			<var>$race</var>
 		</line>
-		<line linenr="034" indent="&#160;">
+		<line linenr="042" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$sector.ultimatum</var>
@@ -302,7 +349,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="035" indent="&#160;&#160;">
+		<line linenr="043" indent="&#160;&#160;">
 			<var>$sector.ultimatum</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -321,7 +368,7 @@
 			<text>=</text>
 			<var>$race</var>
 		</line>
-		<line linenr="036" indent="&#160;&#160;">
+		<line linenr="044" indent="&#160;&#160;">
 			<var>$ultimatums</var>
 			<text> </text>
 			<text>=</text>
@@ -337,7 +384,7 @@
 			<text>=</text>
 			<text>'ultimatums'</text>
 		</line>
-		<line linenr="037" indent="&#160;&#160;">
+		<line linenr="045" indent="&#160;&#160;">
 			<var>$ultimatum.race</var>
 			<text> </text>
 			<text>=</text>
@@ -354,7 +401,7 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="038" indent="&#160;&#160;">
+		<line linenr="046" indent="&#160;&#160;">
 			<var>$ultimatum.race</var>
 			<text>[</text>
 			<var>0</var>
@@ -364,7 +411,7 @@
 			<text> </text>
 			<var>$sector.ultimatum</var>
 		</line>
-		<line linenr="039" indent="&#160;&#160;">
+		<line linenr="047" indent="&#160;&#160;">
 			<var>$playtime</var>
 			<text> </text>
 			<text>=</text>
@@ -373,7 +420,7 @@
 			<text> </text>
 			<text>time</text>
 		</line>
-		<line linenr="040" indent="&#160;&#160;">
+		<line linenr="048" indent="&#160;&#160;">
 			<var>$ultimatum.race</var>
 			<text>[</text>
 			<var>1</var>
@@ -383,7 +430,7 @@
 			<text> </text>
 			<var>$playtime</var>
 		</line>
-		<line linenr="041" indent="&#160;&#160;">
+		<line linenr="049" indent="&#160;&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -400,17 +447,17 @@
 			<text> </text>
 			<var>$ultimatum.race</var>
 		</line>
-		<line linenr="042" indent="&#160;&#160;">
+		<line linenr="050" indent="&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>1221</var>
 		</line>
-		<line linenr="043" indent="&#160;&#160;">
+		<line linenr="051" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.3: No tutorial on insane.</comment>
 		</line>
-		<line linenr="044" indent="&#160;&#160;" interruptable="@">
+		<line linenr="052" indent="&#160;&#160;" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -426,7 +473,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="045" indent="&#160;&#160;">
+		<line linenr="053" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -435,7 +482,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="046" indent="&#160;&#160;&#160;">
+		<line linenr="054" indent="&#160;&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -466,10 +513,10 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="047" indent="&#160;&#160;">
+		<line linenr="055" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="048" indent="&#160;&#160;&#160;">
+		<line linenr="056" indent="&#160;&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -500,10 +547,10 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="049" indent="&#160;&#160;">
+		<line linenr="057" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="050" indent="&#160;&#160;" interruptable="@">
+		<line linenr="058" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -537,7 +584,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="051" indent="&#160;&#160;" interruptable="@">
+		<line linenr="059" indent="&#160;&#160;" interruptable="@">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -561,7 +608,7 @@
 			<text>=</text>
 			<text>'r'</text>
 		</line>
-		<line linenr="052" indent="&#160;&#160;">
+		<line linenr="060" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -592,7 +639,7 @@
 			<text> </text>
 			<text>'!'</text>
 		</line>
-		<line linenr="053" indent="&#160;&#160;">
+		<line linenr="061" indent="&#160;&#160;">
 			<text>display</text>
 			<text> </text>
 			<text>subtitle</text>
@@ -610,23 +657,56 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="054" indent="&#160;">
-			<text>end</text>
+		<line linenr="062" indent="&#160;&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
 		</line>
-		<line linenr="055" indent="">
-			<text>end</text>
+		<line linenr="063" indent="&#160;">
+			<text>else</text>
 		</line>
-		<line linenr="056" indent="" />
-		<line linenr="057" indent="" />
-		<line linenr="058" indent="">
+		<line linenr="064" indent="&#160;&#160;">
+			<comment>* No valid sector for ultimatum. Declare war.</comment>
+		</line>
+		<line linenr="065" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
 			<var>declareWar</var>
 			<text>:</text>
 		</line>
-		<line linenr="059" indent="" />
-		<line linenr="060" indent="">
+		<line linenr="066" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="067" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="068" indent="&#160;">
+			<comment>* Nope, we don't want to give an ultimatum. Declare war.</comment>
+		</line>
+		<line linenr="069" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>declareWar</var>
+			<text>:</text>
+		</line>
+		<line linenr="070" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="071" indent="" />
+		<line linenr="072" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="073" indent="" />
+		<line linenr="074" indent="">
+			<var>declareWar</var>
+			<text>:</text>
+		</line>
+		<line linenr="075" indent="&#160;">
 			<comment>* Mordan9</comment>
 		</line>
-		<line linenr="061" indent="">
+		<line linenr="076" indent="&#160;">
 			<var>$rnd</var>
 			<text> </text>
 			<text>=</text>
@@ -643,7 +723,7 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="062" indent="">
+		<line linenr="077" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rnd</var>
@@ -652,14 +732,14 @@
 			<text> </text>
 			<var>30</var>
 		</line>
-		<line linenr="063" indent="&#160;">
+		<line linenr="078" indent="&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>1217</var>
 		</line>
-		<line linenr="064" indent="">
+		<line linenr="079" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -670,28 +750,36 @@
 			<text> </text>
 			<var>70</var>
 		</line>
-		<line linenr="065" indent="&#160;">
+		<line linenr="080" indent="&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>1221</var>
 		</line>
-		<line linenr="066" indent="">
+		<line linenr="081" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="067" indent="&#160;">
+		<line linenr="082" indent="&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>1227</var>
 		</line>
-		<line linenr="068" indent="">
+		<line linenr="083" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="069" indent="" />
-		<line linenr="070" indent="">
+		<line linenr="084" indent="&#160;" />
+		<line linenr="085" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$ultimatumPossible</var>
+		</line>
+		<line linenr="086" indent="&#160;&#160;">
+			<comment>* Standard war declaration message</comment>
+		</line>
+		<line linenr="087" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -722,7 +810,47 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="071" indent="" interruptable="@">
+		<line linenr="088" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="089" indent="&#160;&#160;">
+			<comment>* Player refused to comply with ultimatum.</comment>
+		</line>
+		<line linenr="090" indent="&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>sprintf</text>
+			<text>:</text>
+			<text> </text>
+			<text>pageid</text>
+			<text>=</text>
+			<var>4000</var>
+			<text> </text>
+			<text>textid</text>
+			<text>=</text>
+			<var>79</var>
+			<text>,</text>
+			<text> </text>
+			<var>$race</var>
+			<text>,</text>
+			<text> </text>
+			<var>$race</var>
+			<text>,</text>
+			<text> </text>
+			<var>$race</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="091" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="092" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -756,7 +884,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="072" indent="" interruptable="@">
+		<line linenr="093" indent="&#160;" interruptable="@">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -780,7 +908,7 @@
 			<text>=</text>
 			<text>'r'</text>
 		</line>
-		<line linenr="073" indent="">
+		<line linenr="094" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -803,7 +931,7 @@
 			<text> </text>
 			<text>' on you!'</text>
 		</line>
-		<line linenr="074" indent="">
+		<line linenr="095" indent="&#160;">
 			<text>display</text>
 			<text> </text>
 			<text>subtitle</text>
@@ -821,10 +949,10 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="075" indent="">
+		<line linenr="096" indent="&#160;">
 			<comment>* the next formal peace with them will be a Non-Aggression-Pact instead of a Truce</comment>
 		</line>
-		<line linenr="076" indent="">
+		<line linenr="097" indent="&#160;">
 			<var>$declaredWarOnPlayer.races</var>
 			<text> </text>
 			<text>=</text>
@@ -840,7 +968,7 @@
 			<text>=</text>
 			<text>'ZH_declaredWarOnPlayer.races'</text>
 		</line>
-		<line linenr="077" indent="">
+		<line linenr="098" indent="&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$race</var>
@@ -851,7 +979,7 @@
 			<text> </text>
 			<var>$declaredWarOnPlayer.races</var>
 		</line>
-		<line linenr="078" indent="">
+		<line linenr="099" indent="&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -867,7 +995,7 @@
 			<text>=</text>
 			<var>$declaredWarOnPlayer.races</var>
 		</line>
-		<line linenr="079" indent="" interruptable="@">
+		<line linenr="100" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -876,7 +1004,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="080" indent="" interruptable="@">
+		<line linenr="101" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -902,14 +1030,14 @@
 			<text>=</text>
 			<var>-2000000</var>
 		</line>
-		<line linenr="081" indent="" />
-		<line linenr="082" indent="">
+		<line linenr="102" indent="&#160;" />
+		<line linenr="103" indent="&#160;">
 			<comment>* MordanB - If A.I. declares war on you, you need to tell all your ships and stations that they are at war.</comment>
 		</line>
-		<line linenr="083" indent="">
+		<line linenr="104" indent="&#160;">
 			<comment>* Otherwise, they are dumb and often don't see the enemy as even being red.  Used to have to manually do this through Global Commands.</comment>
 		</line>
-		<line linenr="084" indent="" interruptable="@">
+		<line linenr="105" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -931,11 +1059,14 @@
 			<text>=</text>
 			<var>[Foe]</var>
 		</line>
-		<line linenr="085" indent="" />
-		<line linenr="086" indent="">
+		<line linenr="106" indent="&#160;" />
+		<line linenr="107" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
+		</line>
+		<line linenr="108" indent="">
+			<text>endsub</text>
 		</line>
 	</sourcetext>
 	<codearray>
@@ -943,7 +1074,7 @@
 			<sval type="string" val="ZH.declareWarOnPlayer" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="6" />
+			<sval type="int" val="16" />
 			<sval type="int" val="0" />
 			<sval type="array" size="15">
 				<sval type="string" val="race" />
@@ -952,17 +1083,17 @@
 				<sval type="string" val="chance" />
 				<sval type="string" val="rep" />
 				<sval type="string" val="loyaltyPoints" />
+				<sval type="string" val="difficulty" />
 				<sval type="string" val="rng" />
 				<sval type="string" val="sector.ultimatum" />
 				<sval type="string" val="ultimatums" />
 				<sval type="string" val="ultimatum.race" />
 				<sval type="string" val="playtime" />
-				<sval type="string" val="difficulty" />
 				<sval type="string" val="t" />
 				<sval type="string" val="rnd" />
 				<sval type="string" val="declaredWarOnPlayer.races" />
 			</sval>
-			<sval type="array" size="60">
+			<sval type="array" size="73">
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
 					<sval type="int" val="-536870393" />
@@ -973,8 +1104,8 @@
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="100" />
-					<sval type="int" val="39" />
+					<sval type="int" val="1167" />
+					<sval type="int" val="48" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -1108,9 +1239,47 @@
 					<sval type="int" val="-3" />
 					<sval type="int" val="17" />
 				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetDifficulty" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609400" />
+					<sval type="int" val="-1610609144" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608632" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -1134,7 +1303,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608125" />
+					<sval type="int" val="-1610607357" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -1164,7 +1333,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536866553" />
+					<sval type="int" val="-536865785" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -1195,33 +1364,31 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="110" />
-					<sval type="int" val="6" />
+				<sval type="array" size="4">
+					<sval type="int" val="106" />
+					<sval type="int" val="7" />
 					<sval type="int" val="4" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="101" />
+					<sval type="int" val="100" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602749" />
+					<sval type="int" val="-1610600957" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="3" />
 					<sval type="int" val="15" />
-					<sval type="int" val="4" />
+					<sval type="int" val="3" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="4" />
+					<sval type="int" val="3" />
 					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="ZH.Ultimatum" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -1231,13 +1398,13 @@
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="-1610602749" />
+					<sval type="int" val="8" />
+					<sval type="int" val="-1610601469" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 					<sval type="int" val="5" />
 					<sval type="string" val="ultimatum" />
 					<sval type="int" val="131074" />
@@ -1247,46 +1414,46 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="ultimatums" />
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1709" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="130" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="141" />
-					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="130" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1708" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="200" />
@@ -1296,17 +1463,17 @@
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetDifficulty" />
-					<sval type="int" val="11" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604029" />
+					<sval type="int" val="-1610603261" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="6" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -1326,7 +1493,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -1336,7 +1503,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="35" />
+					<sval type="int" val="38" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
@@ -1348,7 +1515,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -1401,7 +1568,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -1438,6 +1605,32 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="16000" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="45" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="48" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="47" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="48" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="101" />
 					<sval type="string" val="declareWar" />
@@ -1450,7 +1643,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610601469" />
+					<sval type="int" val="-1610599165" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="13" />
@@ -1470,11 +1663,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="48" />
+					<sval type="int" val="57" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600699" />
+					<sval type="int" val="-1610598395" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="13" />
@@ -1494,12 +1687,21 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="48" />
+					<sval type="int" val="57" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="200" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1227" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597373" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
@@ -1508,6 +1710,28 @@
 					<sval type="int" val="4000" />
 					<sval type="int" val="4" />
 					<sval type="int" val="19" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="61" />
+				</sval>
+				<sval type="array" size="16">
+					<sval type="int" val="150" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4000" />
+					<sval type="int" val="4" />
+					<sval type="int" val="79" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
@@ -1646,6 +1870,9 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
+				</sval>
 			</sval>
 			<sval type="array" size="3">
 				<sval type="array" size="2">
@@ -1661,7 +1888,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="30">
+			<sval type="array" size="42">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1675,7 +1902,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="instant war declaration when called by ZH.Monitor (ultimatum time up)" />
+					<sval type="string" val="instant war declaration when called by ZH.Monitor (ultimatum time up) or when called by Mayhem.Capture.pl (player tried to get around ultimatum by abandoning or giving sector to someone else)" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.4: Fixed ultimatum being skipped. Changed labels to subroutines." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
@@ -1709,91 +1941,141 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="loyalty points adds 2%" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="11" />
+					<sval type="int" val="2" />
+				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="13" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.4: Chance is halved on insane." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="14" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="16" />
 					<sval type="int" val="1" />
 					<sval type="string" val="evil factions always have a small chance to betray the player, even if they like him very much" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="18" />
+					<sval type="int" val="21" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="20" />
+					<sval type="int" val="23" />
 					<sval type="int" val="1" />
-					<sval type="string" val="faction sends an ultimatum to the player. The time limits get handled by ZH.Monitor" />
+					<sval type="string" val="faction sends an ultimatum to the player. The time limits get handled by ZH.Monitor. Mayhem.Capture.pl handles player actions - complying or refusal (abandoning sector or giving it to someone else). " />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="30" />
+					<sval type="int" val="23" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Ignoring the ultimatum after 1 hour, abandoning the sector, or giving the sector to someone else will result in a war declaration." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="33" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.3: No tutorial on insane." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="34" />
+					<sval type="int" val="37" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="38" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="39" />
+					<sval type="int" val="44" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="44" />
+					<sval type="int" val="1" />
+					<sval type="string" val="No valid sector for ultimatum. Declare war." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="39" />
+					<sval type="int" val="46" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="46" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Nope, we don't want to give an ultimatum. Declare war." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="47" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="39" />
+					<sval type="int" val="47" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="39" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="40" />
+					<sval type="int" val="48" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="40" />
+					<sval type="int" val="49" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan9" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="47" />
+					<sval type="int" val="56" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
+					<sval type="int" val="57" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
+					<sval type="int" val="57" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="53" />
+					<sval type="int" val="58" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Standard war declaration message" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="60" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="60" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Player refused to comply with ultimatum." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="61" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="65" />
 					<sval type="int" val="1" />
 					<sval type="string" val="the next formal peace with them will be a Non-Aggression-Pact instead of a Truce" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="58" />
+					<sval type="int" val="70" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="58" />
+					<sval type="int" val="70" />
 					<sval type="int" val="1" />
 					<sval type="string" val="MordanB - If A.I. declares war on you, you need to tell all your ships and stations that they are at war." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="58" />
+					<sval type="int" val="70" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Otherwise, they are dumb and often don't see the enemy as even being red.  Used to have to manually do this through Global Commands." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="59" />
+					<sval type="int" val="71" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
