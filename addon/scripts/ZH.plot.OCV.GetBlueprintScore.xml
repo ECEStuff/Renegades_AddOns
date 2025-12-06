@@ -1,0 +1,835 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>ZH.plot.OCV.GetBlueprintScore</name>
+	<version>16</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments />
+	<sourcetext>
+		<line linenr="001" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="002" indent="">
+			<comment>* SCRIPT NAME: ZH.plot.OCV.GetBlueprintScore.xml</comment>
+		</line>
+		<line linenr="003" indent="">
+			<comment>* DESCRIPTION: Returns the blueprint score. The blueprints are determined by Mayhem.Init.XenonOCVBlueprints, rolled at the start of the game on insane difficulty.</comment>
+		</line>
+		<line linenr="004" indent="">
+			<comment>* Blueprints: M7, M6, M5, M4, M3, M2, M1, TL (TL is worth 0 points; skip the TL from grading)</comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* AUTHOR:           DATE: 6 December 2025</comment>
+		</line>
+		<line linenr="006" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="007" indent="">
+			<var>$types</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'xenonOCV_blueprints'</text>
+		</line>
+		<line linenr="008" indent="">
+			<text>if</text>
+			<text> </text>
+			<text>!</text>
+			<var>$types</var>
+		</line>
+		<line linenr="009" indent="&#160;">
+			<comment>* If we didn't get the blueprints yet, do so here (only for existing games).</comment>
+		</line>
+		<line linenr="010" indent="&#160;" interruptable="@">
+			<var>$types</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Init.XenonOCVBlueprints</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="011" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="012" indent="" />
+		<line linenr="013" indent="">
+			<comment>* Scoring rules:</comment>
+		</line>
+		<line linenr="014" indent="">
+			<comment>* OCV ships:</comment>
+		</line>
+		<line linenr="015" indent="">
+			<comment>*   - All OCV ships except #deca_fade and #deca_deaf: 3 points</comment>
+		</line>
+		<line linenr="016" indent="">
+			<comment>*   - OCV #deca_fade, OCV #deca_deaf: 2 points</comment>
+		</line>
+		<line linenr="017" indent="">
+			<comment>* Xenon ships:</comment>
+		</line>
+		<line linenr="018" indent="">
+			<comment>*   - Xenon J, I, Z, H, P Raider, P Sentinel, LX: 2 points</comment>
+		</line>
+		<line linenr="019" indent="">
+			<comment>*   - Xenon K, Q, C, P, L, M, N: 1 point</comment>
+		</line>
+		<line linenr="020" indent="">
+			<comment>* TLs (OCV Ozias, Xenon U) are worth 0 points and are skipped.</comment>
+		</line>
+		<line linenr="021" indent="">
+			<var>$score</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="022" indent="">
+			<var>$XS.Iterator1</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$types</var>
+		</line>
+		<line linenr="023" indent="&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="024" indent="&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="025" indent="&#160;">
+			<var>$type</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$types</var>
+			<text>[</text>
+			<var>$XS.Iterator1</var>
+			<text>]</text>
+		</line>
+		<line linenr="026" indent="&#160;&#160;">
+			<comment>* TLs are worth 0 points and are skipped. Currently, these are the Xenon U and OCV Ozias (never appears in the array).</comment>
+		</line>
+		<line linenr="027" indent="&#160;">
+			<var>$class</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>class</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>type</text>
+			<text>:</text>
+			<text> </text>
+			<text>subtype</text>
+			<text>=</text>
+			<text> </text>
+			<var>$type</var>
+		</line>
+		<line linenr="028" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$class</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[TL]</var>
+		</line>
+		<line linenr="029" indent="&#160;">
+			<text>continue</text>
+		</line>
+		<line linenr="030" indent="&#160;&#160;" />
+		<line linenr="031" indent="&#160;&#160;">
+			<var>$makerRace</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>maker</text>
+			<text> </text>
+			<text>race</text>
+			<text>:</text>
+			<text> </text>
+			<text>shiptype</text>
+			<text>=</text>
+			<var>$type</var>
+		</line>
+		<line linenr="032" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$makerRace</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[OCV]</var>
+		</line>
+		<line linenr="033" indent="&#160;&#160;">
+			<comment>* Exceptions.</comment>
+		</line>
+		<line linenr="034" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$type</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>{OCV #deca.deaf}</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$type</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>{OCV #deca.fade}</var>
+		</line>
+		<line linenr="035" indent="&#160;&#160;&#160;">
+			<var>$score</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$score</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="036" indent="&#160;&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="037" indent="&#160;">
+			<comment>* All other OCV ships are worth 3 points.</comment>
+		</line>
+		<line linenr="038" indent="&#160;&#160;">
+			<var>$score</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$score</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>3</var>
+		</line>
+		<line linenr="039" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="040" indent="&#160;&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$makerRace</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Xenon]</var>
+		</line>
+		<line linenr="041" indent="&#160;&#160;">
+			<comment>* Basic Xenon ships are worth 1 point.</comment>
+		</line>
+		<line linenr="042" indent="&#160;&#160;&#160;">
+			<comment>* J, I, Z, H, P Raider, P Sentinel, and LX are worth 2 points instead of 1.</comment>
+		</line>
+		<line linenr="043" indent="&#160;&#160;">
+			<var>$points</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="044" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$type</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>{Xenon J}</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$type</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>{Xenon I}</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$type</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>{Xenon Z}</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$type</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>{Xenon H}</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$type</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>{Xenon P Raider}</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$type</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>{Xenon P Sentinel}</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$type</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>{Xenon LX}</var>
+		</line>
+		<line linenr="045" indent="">
+			<text>inc</text>
+			<text> </text>
+			<var>$points</var>
+		</line>
+		<line linenr="046" indent="">
+			<var>$score</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$score</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$points</var>
+		</line>
+		<line linenr="047" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="048" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="049" indent="" />
+		<line linenr="050" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>$score</var>
+		</line>
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="ZH.plot.OCV.GetBlueprintScore" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="16" />
+			<sval type="int" val="0" />
+			<sval type="array" size="7">
+				<sval type="string" val="types" />
+				<sval type="string" val="score" />
+				<sval type="string" val="type" />
+				<sval type="string" val="XS.Iterator1" />
+				<sval type="string" val="class" />
+				<sval type="string" val="makerRace" />
+				<sval type="string" val="points" />
+			</sval>
+			<sval type="array" size="25">
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="xenonOCV_blueprints" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611965" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="2" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Init.XenonOCVBlueprints" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606583" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="2032" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609912" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2032" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="1349" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608125" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="10" />
+					<sval type="int" val="16" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608637" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="459110" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="459112" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="17" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="23" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606843" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="10" />
+					<sval type="int" val="6" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="6" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="85">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607096" />
+					<sval type="int" val="27" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="458920" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="459166" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="459011" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="459267" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="459204" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="459205" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="458923" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="27" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-5" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-8" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-9" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-12" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-13" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-16" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-17" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-20" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-21" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-24" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-25" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="142" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+			<sval type="array" size="29">
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="SCRIPT NAME: ZH.plot.OCV.GetBlueprintScore.xml" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DESCRIPTION: Returns the blueprint score. The blueprints are determined by Mayhem.Init.XenonOCVBlueprints, rolled at the start of the game on insane difficulty." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Blueprints: M7, M6, M5, M4, M3, M2, M1, TL (TL is worth 0 points; skip the TL from grading)" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="AUTHOR:           DATE: 6 December 2025" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="string" val="If we didn't get the blueprints yet, do so here (only for existing games)." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="3" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Scoring rules:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="OCV ships:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="  - All OCV ships except #deca_fade and #deca_deaf: 3 points" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="  - OCV #deca_fade, OCV #deca_deaf: 2 points" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Xenon ships:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="  - Xenon J, I, Z, H, P Raider, P Sentinel, LX: 2 points" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="  - Xenon K, Q, C, P, L, M, N: 1 point" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="TLs (OCV Ozias, Xenon U) are worth 0 points and are skipped." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="string" val="TLs are worth 0 points and are skipped. Currently, these are the Xenon U and OCV Ozias (never appears in the array)." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="11" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="11" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Exceptions." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="16" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="16" />
+					<sval type="int" val="1" />
+					<sval type="string" val="All other OCV ships are worth 3 points." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="17" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="19" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Basic Xenon ships are worth 1 point." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="19" />
+					<sval type="int" val="1" />
+					<sval type="string" val="J, I, Z, H, P Raider, P Sentinel, and LX are worth 2 points instead of 1." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="23" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>
