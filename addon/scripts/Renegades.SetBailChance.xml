@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Renegades.SetBailChance</name>
-	<version>7</version>
+	<version>9</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -21,7 +21,7 @@
 		</line>
 		<line linenr="004" indent="" />
 		<line linenr="005" indent="">
-			<comment>* If it's already set, don't set it again.</comment>
+			<comment>* If it's already set, don't set it again. Add-Ons 1.4.17: Fix so that it's actually set. See Mayhem.GetBailChance.</comment>
 		</line>
 		<line linenr="006" indent="">
 			<var>$WillBail</var>
@@ -46,9 +46,11 @@
 		<line linenr="008" indent="">
 			<text>if</text>
 			<text> </text>
-			<text>not</text>
-			<text> </text>
 			<var>$WillBail</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
 		</line>
 		<line linenr="009" indent="&#160;" />
 		<line linenr="010" indent="&#160;">
@@ -86,6 +88,7 @@
 			<text> </text>
 			<var>$ship</var>
 			<text>-&gt;</text>
+			<text> </text>
 			<text>is</text>
 			<text> </text>
 			<text>of</text>
@@ -101,6 +104,7 @@
 			<text> </text>
 			<var>$ship</var>
 			<text>-&gt;</text>
+			<text> </text>
 			<text>is</text>
 			<text> </text>
 			<text>of</text>
@@ -116,6 +120,7 @@
 			<text> </text>
 			<var>$ship</var>
 			<text>-&gt;</text>
+			<text> </text>
 			<text>is</text>
 			<text> </text>
 			<text>of</text>
@@ -331,19 +336,38 @@
 		</line>
 		<line linenr="041" indent="&#160;" />
 		<line linenr="042" indent="&#160;">
-			<var>$will</var>
+			<comment>* Add-Ons 1.4.17: Flag was not being set if the check failed. Have to explicitly set the flag it to 1 or 0. Setting to TRUE or FALSE will actually set it to 1 or null!</comment>
+		</line>
+		<line linenr="043" indent="&#160;">
+			<text>if</text>
 			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>(</text>
 			<var>$rng</var>
 			<text> </text>
 			<text>&lt;</text>
 			<text> </text>
 			<var>$trig</var>
-			<text>)</text>
 		</line>
-		<line linenr="043" indent="&#160;">
+		<line linenr="044" indent="&#160;&#160;">
+			<var>$WillBail</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="045" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="046" indent="&#160;&#160;">
+			<var>$WillBail</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="047" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="048" indent="&#160;">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -360,20 +384,13 @@
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
-			<var>$will</var>
-		</line>
-		<line linenr="044" indent="&#160;">
 			<var>$WillBail</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$will</var>
 		</line>
-		<line linenr="045" indent="">
+		<line linenr="049" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="046" indent="" />
-		<line linenr="047" indent="">
+		<line linenr="050" indent="" />
+		<line linenr="051" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$WillBail</var>
@@ -384,9 +401,9 @@
 			<sval type="string" val="Renegades.SetBailChance" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="7" />
+			<sval type="int" val="9" />
 			<sval type="int" val="0" />
-			<sval type="array" size="10">
+			<sval type="array" size="9">
 				<sval type="string" val="ship" />
 				<sval type="string" val="WillBail" />
 				<sval type="string" val="rng" />
@@ -396,9 +413,8 @@
 				<sval type="string" val="isTM" />
 				<sval type="string" val="owner" />
 				<sval type="string" val="difficulty" />
-				<sval type="string" val="will" />
 			</sval>
-			<sval type="array" size="28">
+			<sval type="array" size="30">
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
 					<sval type="int" val="131075" />
@@ -407,14 +423,20 @@
 					<sval type="string" val="WillBail" />
 					<sval type="int" val="1" />
 				</sval>
-				<sval type="array" size="7">
+				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536863996" />
-					<sval type="int" val="1" />
+					<sval type="int" val="-1610605309" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
-					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
@@ -648,9 +670,9 @@
 					<sval type="int" val="14" />
 					<sval type="int" val="-4" />
 				</sval>
-				<sval type="array" size="15">
+				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="9" />
+					<sval type="int" val="-1610605821" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -658,12 +680,32 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="15" />
 					<sval type="int" val="3" />
-					<sval type="int" val="5" />
-					<sval type="int" val="16" />
+					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="28" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
@@ -672,16 +714,7 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="WillBail" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
 					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -695,7 +728,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="22">
+			<sval type="array" size="25">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -718,7 +751,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="If it's already set, don't set it again." />
+					<sval type="string" val="If it's already set, don't set it again. Add-Ons 1.4.17: Fix so that it's actually set. See Mayhem.GetBailChance." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1" />
@@ -787,12 +820,25 @@
 					<sval type="int" val="24" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="27" />
-					<sval type="int" val="4" />
+				<sval type="array" size="3">
+					<sval type="int" val="24" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.4.17: Flag was not being set if the check failed. Have to explicitly set the flag it to 1 or 0. Setting to TRUE or FALSE will actually set it to 1 or null!" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="27" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="29" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="29" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
