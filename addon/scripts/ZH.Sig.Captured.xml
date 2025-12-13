@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Sig.Captured</name>
-	<version>125</version>
+	<version>127</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -4353,7 +4353,7 @@
 			<text> </text>
 			<var>$killedPirates</var>
 		</line>
-		<line linenr="477" indent="&#160;&#160;">
+		<line linenr="477" indent="&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -4369,14 +4369,14 @@
 			<text>=</text>
 			<var>$killedPirates</var>
 		</line>
-		<line linenr="478" indent="&#160;&#160;&#160;">
+		<line linenr="478" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="479" indent="&#160;&#160;">
+		<line linenr="479" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="480" indent="&#160;" />
-		<line linenr="481" indent="&#160;&#160;">
+		<line linenr="480" indent="&#160;&#160;" />
+		<line linenr="481" indent="&#160;">
 			<comment>* Xenon count (ascension purpose).</comment>
 		</line>
 		<line linenr="482" indent="&#160;&#160;">
@@ -4472,10 +4472,10 @@
 			<comment>* ===== CLEAN UP =====</comment>
 		</line>
 		<line linenr="494" indent="&#160;&#160;" />
-		<line linenr="495" indent="&#160;&#160;&#160;">
+		<line linenr="495" indent="&#160;&#160;">
 			<comment>* ZH 1.10. </comment>
 		</line>
-		<line linenr="496" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="496" indent="&#160;&#160;&#160;">
 			<var>$ship.makerRace</var>
 			<text> </text>
 			<text>=</text>
@@ -4489,7 +4489,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="497" indent="&#160;&#160;&#160;">
+		<line linenr="497" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4500,7 +4500,7 @@
 			<text> </text>
 			<var>[OCV]</var>
 		</line>
-		<line linenr="498" indent="&#160;&#160;">
+		<line linenr="498" indent="&#160;&#160;&#160;">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4592,18 +4592,29 @@
 			<text>end</text>
 		</line>
 		<line linenr="506" indent="&#160;&#160;" />
-		<line linenr="507" indent="&#160;">
-			<comment>* Add-Ons 1.4.7: Bailed ships do not need to be copied over - just remove the variable and call ZH.EquipShip.Safety. </comment>
+		<line linenr="507" indent="&#160;&#160;">
+			<comment>* Add-Ons 1.4.7: Bailed ships (including black market and the free M6 generated at the start of the game) do not need to be copied over - just remove the variable and call ZH.EquipShip.Safety. </comment>
 		</line>
 		<line linenr="508" indent="&#160;">
 			<comment>* Safety is needed due to an edge case where the boarding op may finish but a tug claimed the ship. If it wasn't claimed during the operation, then Mayhem.Task.Claimeable handles safety.</comment>
 		</line>
 		<line linenr="509" indent="&#160;">
+			<comment>* Add-Ons 1.4.19: Check if bailed boardable or owner is still neutral race, since all neutral race ships are bailed boardables (retroactive fix, though the bailed boardable flag is good enough for new games).</comment>
+		</line>
+		<line linenr="510" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$bailedBoardable</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$owner</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Neutral Race]</var>
 		</line>
-		<line linenr="510" indent="&#160;">
+		<line linenr="511" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4614,7 +4625,7 @@
 			<text> </text>
 			<var>[Neutral Race]</var>
 		</line>
-		<line linenr="511" indent="&#160;" interruptable="@">
+		<line linenr="512" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -4632,7 +4643,7 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="512" indent="&#160;&#160;">
+		<line linenr="513" indent="&#160;&#160;">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4651,16 +4662,16 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="513" indent="&#160;&#160;">
+		<line linenr="514" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="514" indent="&#160;&#160;&#160;">
+		<line linenr="515" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.2: Copy the ship, as that removes any association with squadrons. This prevents the ship from returning to squadron commands as it's effectively a new ship. </comment>
 		</line>
-		<line linenr="515" indent="&#160;&#160;&#160;">
+		<line linenr="516" indent="&#160;&#160;&#160;">
 			<comment>* However, to copy over the followers to the new homebase, we have to temporarily copy the ship with affiliation to the old owner, then copy the followers' homebase over to the new ship, then change ownership back to the new owner.</comment>
 		</line>
-		<line linenr="516" indent="&#160;&#160;&#160;">
+		<line linenr="517" indent="&#160;&#160;&#160;">
 			<var>$hue</var>
 			<text> </text>
 			<text>=</text>
@@ -4672,7 +4683,7 @@
 			<text> </text>
 			<text>hue</text>
 		</line>
-		<line linenr="517" indent="&#160;&#160;">
+		<line linenr="518" indent="&#160;&#160;">
 			<var>$saturation</var>
 			<text> </text>
 			<text>=</text>
@@ -4684,7 +4695,7 @@
 			<text> </text>
 			<text>saturation</text>
 		</line>
-		<line linenr="518" indent="&#160;">
+		<line linenr="519" indent="&#160;">
 			<var>$newOwner</var>
 			<text> </text>
 			<text>=</text>
@@ -4698,7 +4709,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="519" indent="" interruptable="@">
+		<line linenr="520" indent="" interruptable="@">
 			<var>$newShip</var>
 			<text> </text>
 			<text>=</text>
@@ -4734,8 +4745,8 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="520" indent="" />
-		<line linenr="521" indent="">
+		<line linenr="521" indent="" />
+		<line linenr="522" indent="">
 			<var>$homebased</var>
 			<text> </text>
 			<text>=</text>
@@ -4756,18 +4767,18 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="522" indent="" />
-		<line linenr="523" indent="">
+		<line linenr="523" indent="" />
+		<line linenr="524" indent="">
 			<comment>* * DEBUG **</comment>
 		</line>
-		<line linenr="524" indent="">
+		<line linenr="525" indent="">
 			<comment>* $t = 'Homebased: ' + $homebased</comment>
 		</line>
-		<line linenr="525" indent="">
+		<line linenr="526" indent="">
 			<comment>* write to player logbook $t</comment>
 		</line>
-		<line linenr="526" indent="" />
-		<line linenr="527" indent="">
+		<line linenr="527" indent="" />
+		<line linenr="528" indent="">
 			<var>$XS.Iterator10</var>
 			<text> </text>
 			<text>=</text>
@@ -4780,17 +4791,17 @@
 			<text> </text>
 			<var>$homebased</var>
 		</line>
-		<line linenr="528" indent="">
+		<line linenr="529" indent="">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator10</var>
 		</line>
-		<line linenr="529" indent="">
+		<line linenr="530" indent="">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator10</var>
 		</line>
-		<line linenr="530" indent="">
+		<line linenr="531" indent="">
 			<var>$ship.follower</var>
 			<text> </text>
 			<text>=</text>
@@ -4800,7 +4811,7 @@
 			<var>$XS.Iterator10</var>
 			<text>]</text>
 		</line>
-		<line linenr="531" indent="">
+		<line linenr="532" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$newShip</var>
@@ -4808,7 +4819,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="532" indent="">
+		<line linenr="533" indent="">
 			<var>$ship.follower</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4820,14 +4831,14 @@
 			<text> </text>
 			<var>$newShip</var>
 		</line>
-		<line linenr="533" indent="">
-			<text>end</text>
-		</line>
 		<line linenr="534" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="535" indent="" />
-		<line linenr="536" indent="">
+		<line linenr="535" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="536" indent="" />
+		<line linenr="537" indent="">
 			<var>$newShip</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4841,7 +4852,7 @@
 			<text> </text>
 			<var>$newOwner</var>
 		</line>
-		<line linenr="537" indent="" interruptable="@">
+		<line linenr="538" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -4863,7 +4874,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="538" indent="" interruptable="@">
+		<line linenr="539" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -4872,7 +4883,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="539" indent="">
+		<line linenr="540" indent="">
 			<var>$newShip</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4892,11 +4903,11 @@
 			<text> </text>
 			<var>$saturation</var>
 		</line>
-		<line linenr="540" indent="" />
-		<line linenr="541" indent="">
+		<line linenr="541" indent="" />
+		<line linenr="542" indent="">
 			<comment>* fix attempt for boarding removing equipment sometimes</comment>
 		</line>
-		<line linenr="542" indent="" interruptable="@">
+		<line linenr="543" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -4914,14 +4925,14 @@
 			<text>=</text>
 			<var>$newShip</var>
 		</line>
-		<line linenr="543" indent="">
+		<line linenr="544" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="544" indent="" />
-		<line linenr="545" indent="">
+		<line linenr="545" indent="" />
+		<line linenr="546" indent="">
 			<comment>* Add-Ons 1.2: Moved; 1.3: no tutorial on insane.</comment>
 		</line>
-		<line linenr="546" indent="">
+		<line linenr="547" indent="">
 			<var>$lossesTutorial</var>
 			<text> </text>
 			<text>=</text>
@@ -4937,7 +4948,7 @@
 			<text>=</text>
 			<text>'ZH_extraMarineLossesTutorial'</text>
 		</line>
-		<line linenr="547" indent="">
+		<line linenr="548" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
@@ -4951,7 +4962,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="548" indent="" interruptable="@">
+		<line linenr="549" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -4960,12 +4971,12 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="549" indent="">
+		<line linenr="550" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="550" indent="">
+		<line linenr="551" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -4996,7 +5007,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="551" indent="" interruptable="@">
+		<line linenr="552" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -5030,7 +5041,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="552" indent="">
+		<line linenr="553" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -5046,17 +5057,17 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="553" indent="">
-			<text>end</text>
-		</line>
 		<line linenr="554" indent="">
 			<text>end</text>
 		</line>
 		<line linenr="555" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="556" indent="" />
-		<line linenr="557" indent="">
+		<line linenr="556" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="557" indent="" />
+		<line linenr="558" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -5067,7 +5078,7 @@
 			<sval type="string" val="ZH.Sig.Captured" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="125" />
+			<sval type="int" val="127" />
 			<sval type="int" val="0" />
 			<sval type="array" size="88">
 				<sval type="string" val="ship" />
@@ -8958,14 +8969,26 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="7">
+				<sval type="array" size="19">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610520317" />
-					<sval type="int" val="1" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="64" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
 					<sval type="int" val="-1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-3" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -9241,7 +9264,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="213">
+			<sval type="array" size="214">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -10090,12 +10113,17 @@
 				<sval type="array" size="3">
 					<sval type="int" val="356" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.4.7: Bailed ships do not need to be copied over - just remove the variable and call ZH.EquipShip.Safety. " />
+					<sval type="string" val="Add-Ons 1.4.7: Bailed ships (including black market and the free M6 generated at the start of the game) do not need to be copied over - just remove the variable and call ZH.EquipShip.Safety. " />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="356" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Safety is needed due to an edge case where the boarding op may finish but a tug claimed the ship. If it wasn't claimed during the operation, then Mayhem.Task.Claimeable handles safety." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="356" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.4.19: Check if bailed boardable or owner is still neutral race, since all neutral race ships are bailed boardables (retroactive fix, though the bailed boardable flag is good enough for new games)." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="361" />
