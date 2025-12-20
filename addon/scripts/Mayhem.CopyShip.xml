@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.CopyShip</name>
-	<version>69</version>
+	<version>74</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -2419,7 +2419,7 @@
 		<line linenr="261" indent="">
 			<comment>* Add-Ons 1.4: Fixed bailed ships being scannable. Technically, bailed ships are new ships, but all the metadata from the old ship is supposed to be copied over.</comment>
 		</line>
-		<line linenr="262" indent="">
+		<line linenr="262" indent="&#160;">
 			<var>$newShip</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2438,11 +2438,11 @@
 			<text>=</text>
 			<var>$scanLocked</var>
 		</line>
-		<line linenr="263" indent="&#160;" />
-		<line linenr="264" indent="&#160;">
+		<line linenr="263" indent="" />
+		<line linenr="264" indent="">
 			<comment>* Herobetty 5.4: Copy the free maintenance variable but only for player ships.</comment>
 		</line>
-		<line linenr="265" indent="&#160;">
+		<line linenr="265" indent="">
 			<comment>* Only the story-related TLs use this variable. These TLs are the starting TL that the player gets and the Phanon Colony Ship for the Phanon plot.</comment>
 		</line>
 		<line linenr="266" indent="&#160;">
@@ -2456,7 +2456,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="267" indent="&#160;">
+		<line linenr="267" indent="">
 			<var>$newShip</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2475,11 +2475,11 @@
 			<text>=</text>
 			<var>$freeMaintenance</var>
 		</line>
-		<line linenr="268" indent="&#160;&#160;" />
-		<line linenr="269" indent="&#160;">
+		<line linenr="268" indent="" />
+		<line linenr="269" indent="">
 			<comment>* Add-Ons 1.1: If the ship is an OCV ship, start its timer.</comment>
 		</line>
-		<line linenr="270" indent="&#160;&#160;">
+		<line linenr="270" indent="">
 			<var>$newShip.makerRace</var>
 			<text> </text>
 			<text>=</text>
@@ -2493,7 +2493,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="271" indent="&#160;">
+		<line linenr="271" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2551,7 +2551,7 @@
 		<line linenr="274" indent="">
 			<comment>* Add-Ons 1.3.10: Fixed bailed ships with hangars not repairing ships.</comment>
 		</line>
-		<line linenr="275" indent="&#160;">
+		<line linenr="275" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2642,175 +2642,52 @@
 		</line>
 		<line linenr="281" indent="" />
 		<line linenr="282" indent="">
-			<comment>* Add-Ons 1.4.10: Copy the number of pandora tunings over for boarded ships. For bailed (Mayhem.Task.BailCopy.xml), we do it there instead.</comment>
+			<comment>* Add-Ons 1.4.10: Copy the number of pandora tunings over after boarding manned ships. For bailed (Mayhem.Task.BailCopy), we do it there instead.</comment>
 		</line>
 		<line linenr="283" indent="">
-			<comment>* But first, get the number of tunings currently on this ship, if there are any left over at this point. If copied over because of bailing or boarding, some may be destroyed. </comment>
+			<comment>* Add-Ons 1.4.22: Moved to new script.</comment>
 		</line>
 		<line linenr="284" indent="">
-			<comment>* Otherwise, if copied over because of friendly fire or collision, there's always tuning.</comment>
-		</line>
-		<line linenr="285" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
 			<var>$destroySource</var>
 		</line>
-		<line linenr="286" indent="">
-			<var>$pandora.engine</var>
-			<text> </text>
+		<line linenr="285" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
-			<var>$newShip</var>
+			<var>[NULL]</var>
+			<text> </text>
 			<text>-&gt;</text>
 			<text> </text>
-			<text>get</text>
+			<text>call</text>
 			<text> </text>
-			<text>amount</text>
+			<text>script</text>
 			<text> </text>
-			<text>of</text>
+			<call>Mayhem.RetainTunings</call>
 			<text> </text>
-			<text>ware</text>
-			<text> </text>
-			<var>{Engine Tuning}</var>
-			<text> </text>
-			<text>in</text>
-			<text> </text>
-			<text>cargo</text>
-			<text> </text>
-			<text>bay</text>
-		</line>
-		<line linenr="287" indent="">
-			<var>$pandora.rudder</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$newShip</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>amount</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>ware</text>
-			<text> </text>
-			<var>{Rudder Optimisation}</var>
-			<text> </text>
-			<text>in</text>
-			<text> </text>
-			<text>cargo</text>
-			<text> </text>
-			<text>bay</text>
-		</line>
-		<line linenr="288" indent="">
-			<var>$pandora.engineToInstall</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$originalPandoraTunings</var>
-			<text> </text>
-			<text>-</text>
-			<text> </text>
-			<var>$pandora.engine</var>
-		</line>
-		<line linenr="289" indent="">
-			<var>$pandora.rudderToInstall</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$originalPandoraTunings</var>
-			<text> </text>
-			<text>-</text>
-			<text> </text>
-			<var>$pandora.rudder</var>
-		</line>
-		<line linenr="290" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$pandora.engineToInstall</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>0</var>
-		</line>
-		<line linenr="291" indent="">
-			<text>=</text>
-			<text> </text>
-			<var>$newShip</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>install</text>
-			<text> </text>
-			<var>$pandora.engineToInstall</var>
-			<text> </text>
-			<text>units</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<var>{Engine Tuning}</var>
-		</line>
-		<line linenr="292" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$pandora.rudderToInstall</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>0</var>
-		</line>
-		<line linenr="293" indent="">
-			<text>=</text>
-			<text> </text>
-			<var>$newShip</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>install</text>
-			<text> </text>
-			<var>$pandora.rudderToInstall</var>
-			<text> </text>
-			<text>units</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<var>{Rudder Optimisation}</var>
-		</line>
-		<line linenr="294" indent="">
-			<var>$newShip</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
 			<text>:</text>
 			<text> </text>
-			<text>name</text>
+			<text>ship</text>
 			<text>=</text>
-			<text>'pandoraTunings'</text>
+			<var>$newShip</var>
 			<text> </text>
-			<text>value</text>
+			<text>originalPandoraTunings</text>
 			<text>=</text>
 			<var>$originalPandoraTunings</var>
 		</line>
-		<line linenr="295" indent="">
+		<line linenr="286" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="296" indent="" />
-		<line linenr="297" indent="">
+		<line linenr="287" indent="" />
+		<line linenr="288" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$isAimed</var>
 		</line>
-		<line linenr="298" indent="">
+		<line linenr="289" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>player</text>
@@ -2824,8 +2701,8 @@
 			<var>$newShip</var>
 			<text>-&gt;</text>
 		</line>
-		<line linenr="299" indent="" />
-		<line linenr="300" indent="">
+		<line linenr="290" indent="" />
+		<line linenr="291" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$newShip</var>
@@ -2836,9 +2713,9 @@
 			<sval type="string" val="Mayhem.CopyShip" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="69" />
+			<sval type="int" val="74" />
 			<sval type="int" val="0" />
-			<sval type="array" size="71">
+			<sval type="array" size="67">
 				<sval type="string" val="sourceShip" />
 				<sval type="string" val="newPos" />
 				<sval type="string" val="race" />
@@ -2906,12 +2783,8 @@
 				<sval type="string" val="XS.Iterator5" />
 				<sval type="string" val="report" />
 				<sval type="string" val="newShip.makerRace" />
-				<sval type="string" val="pandora.engine" />
-				<sval type="string" val="pandora.rudder" />
-				<sval type="string" val="pandora.engineToInstall" />
-				<sval type="string" val="pandora.rudderToInstall" />
 			</sval>
-			<sval type="array" size="205">
+			<sval type="array" size="197">
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610611197" />
@@ -4618,7 +4491,7 @@
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610561021" />
+					<sval type="int" val="-1610563069" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -4628,114 +4501,21 @@
 					<sval type="int" val="65556" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="618" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="50" />
-					<sval type="int" val="67" />
-					<sval type="int" val="9" />
-					<sval type="int" val="1048593" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="618" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="50" />
-					<sval type="int" val="68" />
-					<sval type="int" val="9" />
-					<sval type="int" val="1048594" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="69" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="49" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="67" />
-					<sval type="int" val="15" />
-					<sval type="int" val="12" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="12" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="70" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="49" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="68" />
-					<sval type="int" val="15" />
-					<sval type="int" val="12" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="12" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610561784" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="69" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="647" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="50" />
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.RetainTunings" />
 					<sval type="int" val="-2147483647" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="69" />
-					<sval type="int" val="9" />
-					<sval type="int" val="1048593" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610561272" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="70" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
 					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="647" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="50" />
-					<sval type="int" val="-2147483647" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="70" />
-					<sval type="int" val="9" />
-					<sval type="int" val="1048594" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="155" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="50" />
-					<sval type="int" val="5" />
-					<sval type="string" val="pandoraTunings" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="49" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610560504" />
+					<sval type="int" val="-1610562552" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="40" />
@@ -4779,7 +4559,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="117">
+			<sval type="array" size="116">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -5278,28 +5058,23 @@
 				<sval type="array" size="3">
 					<sval type="int" val="192" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.4.10: Copy the number of pandora tunings over for boarded ships. For bailed (Mayhem.Task.BailCopy.xml), we do it there instead." />
+					<sval type="string" val="Add-Ons 1.4.10: Copy the number of pandora tunings over after boarding manned ships. For bailed (Mayhem.Task.BailCopy), we do it there instead." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="192" />
 					<sval type="int" val="1" />
-					<sval type="string" val="But first, get the number of tunings currently on this ship, if there are any left over at this point. If copied over because of bailing or boarding, some may be destroyed. " />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="192" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Otherwise, if copied over because of friendly fire or collision, there's always tuning." />
+					<sval type="string" val="Add-Ons 1.4.22: Moved to new script." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="202" />
+					<sval type="int" val="194" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="202" />
+					<sval type="int" val="194" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="204" />
+					<sval type="int" val="196" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
