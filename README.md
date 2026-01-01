@@ -7,3 +7,9 @@ Installation Steps:
 - Renegades must be installed before installing Add-Ons. Follow installation steps for Renegades here: https://forum.egosoft.com/viewtopic.php?t=460221
 - Once you've installed Renegades, simply copy the addon and mayhem_data directories to your game's root directory.
 - Copy over TShips.txt and TBullets.txt in the ZMap directory of this project to your ZMap directory.
+
+Versioning Policy:
+- Minor versions (e.g. 1.X) may change persistent world behavior and can require a new game in specific cases.
+- Patch Versions (e.g. 1.5.X) are safe to update mid-save.
+
+Please read the release notes before updating your game!
