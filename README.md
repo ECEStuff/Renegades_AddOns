@@ -1,5 +1,5 @@
 # Renegades Add-Ons
-Add-Ons for Mayhem 3 Renegades, featuring bug fixes and previously proposed features. See the releases folder for changelogs.
+Add-Ons for Mayhem 3 Renegades, featuring bug fixes and previously proposed features. Please read the changelogs in the releases folder before updating your game!
 
 Forum: https://forum.egosoft.com/viewtopic.php?t=473331&sid=6ec3f787a72497712255e45341e4512f
 
@@ -11,5 +11,3 @@ Installation Steps:
 Versioning Policy:
 - Minor versions (e.g. 1.X) may change persistent world behavior and can require a new game in specific cases.
 - Patch Versions (e.g. 1.5.X) are safe to update mid-save.
-
-Please read the release notes before updating your game!
