@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.RepairTarget</name>
-	<version>68</version>
+	<version>84</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -1021,6 +1021,9 @@
 			<comment>* Herobetty 5.4: fix for abandoned ships and if ships switch allegiances.</comment>
 		</line>
 		<line linenr="132" indent="&#160;">
+			<comment>* Add-Ons 1.5.3: Stationary targets don't need to be on standby since they're not moveable objects. Note that small and large are unused - they are there just for futureproofing.</comment>
+		</line>
+		<line linenr="133" indent="&#160;">
 			<var>$onStandby</var>
 			<text> </text>
 			<text>=</text>
@@ -1044,7 +1047,96 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="133" indent="&#160;">
+		<line linenr="134" indent="&#160;" />
+		<line linenr="135" indent="&#160;">
+			<var>$isMoveable</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>class</text>
+			<text> </text>
+			<var>[Moveable Ship]</var>
+		</line>
+		<line linenr="136" indent="&#160;">
+			<var>$isOWP.small</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>type</text>
+			<text> </text>
+			<var>{Neutral Race Small Orbital Weapons Platform}</var>
+		</line>
+		<line linenr="137" indent="&#160;">
+			<var>$isOWP.medium</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>type</text>
+			<text> </text>
+			<var>{Neutral Race Medium Orbital Weapons Platform}</var>
+		</line>
+		<line linenr="138" indent="&#160;">
+			<var>$isOWP.large</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>type</text>
+			<text> </text>
+			<var>{Neutral Race Large Orbital Weapons Platform}</var>
+		</line>
+		<line linenr="139" indent="&#160;" />
+		<line linenr="140" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$isOWP.small</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$isOWP.medium</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$isOWP.large</var>
+		</line>
+		<line linenr="141" indent="&#160;&#160;">
+			<var>$isMoveable</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="142" indent="&#160;" />
+		<line linenr="143" indent="&#160;">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
@@ -1058,9 +1150,10 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="134" indent="&#160;">
+		<line linenr="144" indent="&#160;">
 			<text>if</text>
 			<text> </text>
+			<text>(</text>
 			<var>$onStandby</var>
 			<text> </text>
 			<text>==</text>
@@ -1069,20 +1162,26 @@
 			<text> </text>
 			<text>AND</text>
 			<text> </text>
+			<var>$isMoveable</var>
+			<text>)</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
 			<var>$owner</var>
 			<text> </text>
 			<text>==</text>
 			<text> </text>
 			<var>[Player]</var>
+			<text> </text>
 		</line>
-		<line linenr="135" indent="&#160;&#160;">
+		<line linenr="145" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'----  Repairs Terminated.  The target ship is no longer in Standby. ----'</text>
 		</line>
-		<line linenr="136" indent="&#160;&#160;" interruptable="@">
+		<line linenr="146" indent="&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1112,23 +1211,23 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="137" indent="&#160;&#160;">
+		<line linenr="147" indent="&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>1134</var>
 		</line>
-		<line linenr="138" indent="&#160;&#160;">
+		<line linenr="148" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="139" indent="&#160;">
+		<line linenr="149" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="140" indent="&#160;" />
-		<line linenr="141" indent="&#160;">
+		<line linenr="150" indent="&#160;" />
+		<line linenr="151" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$owner</var>
@@ -1145,14 +1244,14 @@
 			<text> </text>
 			<var>[Neutral Race]</var>
 		</line>
-		<line linenr="142" indent="&#160;&#160;">
+		<line linenr="152" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'----  Repairs Terminated.  The target ship is no longer abandoned or under your control. ----'</text>
 		</line>
-		<line linenr="143" indent="&#160;&#160;" interruptable="@">
+		<line linenr="153" indent="&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1182,48 +1281,43 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="144" indent="&#160;&#160;">
+		<line linenr="154" indent="&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>1134</var>
 		</line>
-		<line linenr="145" indent="&#160;&#160;">
+		<line linenr="155" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="146" indent="&#160;">
+		<line linenr="156" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="147" indent="">
+		<line linenr="157" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="148" indent="" />
-		<line linenr="149" indent="">
+		<line linenr="158" indent="" />
+		<line linenr="159" indent="">
 			<var>CheckTargetEnvironment</var>
 			<text>:</text>
 		</line>
-		<line linenr="150" indent="&#160;">
+		<line linenr="160" indent="&#160;">
+			<comment>* Add-Ons 1.5.3: Don't check if in the same environment (command will abort if the repair ship is docked but target is in space). Instead, check if target is docked.</comment>
+		</line>
+		<line linenr="161" indent="&#160;">
 			<text>if</text>
 			<text> </text>
-			<text>not</text>
-			<text> </text>
-			<var>[THIS]</var>
+			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
-			<text>has</text>
+			<text>is</text>
 			<text> </text>
-			<text>same</text>
-			<text> </text>
-			<text>environment</text>
-			<text> </text>
-			<text>as</text>
-			<text> </text>
-			<var>$ship</var>
+			<text>docked</text>
 		</line>
-		<line linenr="151" indent="&#160;&#160;" interruptable="@">
+		<line linenr="162" indent="&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1239,7 +1333,7 @@
 			<text> </text>
 			<text>text</text>
 			<text>=</text>
-			<text>'Repair Target not found at destination.  Repairs Cancelled.'</text>
+			<text>'Repair Target is docked.  Repairs Cancelled.'</text>
 			<text> </text>
 			<text>icon</text>
 			<text>=</text>
@@ -1253,47 +1347,47 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="152" indent="&#160;&#160;">
+		<line linenr="163" indent="&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>1221</var>
 		</line>
-		<line linenr="153" indent="&#160;&#160;">
+		<line linenr="164" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="154" indent="&#160;">
+		<line linenr="165" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="155" indent="">
+		<line linenr="166" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="156" indent="" />
-		<line linenr="157" indent="" />
-		<line linenr="158" indent="">
+		<line linenr="167" indent="" />
+		<line linenr="168" indent="" />
+		<line linenr="169" indent="">
 			<comment>* Repair lasers OOS tend to destroy target ships.  Fun fun.  So if OOS, we just keep it simple and add hull to the target every x seconds.</comment>
 		</line>
-		<line linenr="159" indent="">
+		<line linenr="170" indent="">
 			<comment>* not one can see it, so no one will care.</comment>
 		</line>
-		<line linenr="160" indent="">
+		<line linenr="171" indent="">
 			<var>RepairOOS</var>
 			<text>:</text>
 		</line>
-		<line linenr="161" indent="&#160;">
+		<line linenr="172" indent="&#160;">
 			<var>$obj</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$ship</var>
 		</line>
-		<line linenr="162" indent="&#160;">
+		<line linenr="173" indent="&#160;">
 			<comment>* This rate mirrors the general observed in-system repair rate.  That's about 1500 hull / second repair.  We'll do a bit better OOS because I like it that way.</comment>
 		</line>
-		<line linenr="163" indent="&#160;">
+		<line linenr="174" indent="&#160;">
 			<var>$hull.max</var>
 			<text> </text>
 			<text>=</text>
@@ -1307,7 +1401,7 @@
 			<text> </text>
 			<text>hull</text>
 		</line>
-		<line linenr="164" indent="&#160;">
+		<line linenr="175" indent="&#160;">
 			<var>$hull.cur</var>
 			<text> </text>
 			<text>=</text>
@@ -1319,7 +1413,7 @@
 			<text> </text>
 			<text>hull</text>
 		</line>
-		<line linenr="165" indent="&#160;">
+		<line linenr="176" indent="&#160;">
 			<var>$hull.rep</var>
 			<text> </text>
 			<text>=</text>
@@ -1330,7 +1424,7 @@
 			<text> </text>
 			<var>5</var>
 		</line>
-		<line linenr="166" indent="&#160;">
+		<line linenr="177" indent="&#160;">
 			<var>$newHull</var>
 			<text> </text>
 			<text>=</text>
@@ -1341,7 +1435,7 @@
 			<text> </text>
 			<var>$hull.rep</var>
 		</line>
-		<line linenr="167" indent="&#160;">
+		<line linenr="178" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1352,14 +1446,14 @@
 			<text> </text>
 			<var>$hull.max</var>
 		</line>
-		<line linenr="168" indent="&#160;&#160;">
+		<line linenr="179" indent="&#160;&#160;">
 			<var>$newHull</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$hull.max</var>
 		</line>
-		<line linenr="169" indent="&#160;">
+		<line linenr="180" indent="&#160;">
 			<var>$obj</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -1371,7 +1465,7 @@
 			<text> </text>
 			<var>$newHull</var>
 		</line>
-		<line linenr="170" indent="&#160;" interruptable="@">
+		<line linenr="181" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1388,7 +1482,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="171" indent="">
+		<line linenr="182" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -1397,9 +1491,9 @@
 			<sval type="string" val="Mayhem.RepairTarget" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="68" />
+			<sval type="int" val="84" />
 			<sval type="int" val="0" />
-			<sval type="array" size="16">
+			<sval type="array" size="20">
 				<sval type="string" val="ship" />
 				<sval type="string" val="laserRange" />
 				<sval type="string" val="Followdistance" />
@@ -1410,6 +1504,10 @@
 				<sval type="string" val="hull" />
 				<sval type="string" val="t" />
 				<sval type="string" val="onStandby" />
+				<sval type="string" val="isMoveable" />
+				<sval type="string" val="isOWP.small" />
+				<sval type="string" val="isOWP.medium" />
+				<sval type="string" val="isOWP.large" />
 				<sval type="string" val="owner" />
 				<sval type="string" val="obj" />
 				<sval type="string" val="hull.max" />
@@ -1417,7 +1515,7 @@
 				<sval type="string" val="hull.rep" />
 				<sval type="string" val="newHull" />
 			</sval>
-			<sval type="array" size="97">
+			<sval type="array" size="103">
 				<sval type="array" size="6">
 					<sval type="int" val="1508" />
 					<sval type="int" val="131075" />
@@ -1572,7 +1670,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="80" />
+					<sval type="int" val="86" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="101" />
@@ -1647,7 +1745,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="80" />
+					<sval type="int" val="86" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="738" />
@@ -1780,7 +1878,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="80" />
+					<sval type="int" val="86" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="738" />
@@ -1897,7 +1995,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="86" />
+					<sval type="int" val="92" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
@@ -2037,16 +2135,78 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="705" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="10" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2134" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="710" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="11" />
+					<sval type="int" val="9" />
+					<sval type="int" val="458790" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="710" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="12" />
+					<sval type="int" val="9" />
+					<sval type="int" val="458791" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="710" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="13" />
+					<sval type="int" val="9" />
+					<sval type="int" val="458792" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610593784" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="10" />
+					<sval type="int" val="14" />
 				</sval>
-				<sval type="array" size="25">
+				<sval type="array" size="33">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610593789" />
-					<sval type="int" val="7" />
+					<sval type="int" val="-1610592253" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
@@ -2055,20 +2215,28 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 					<sval type="int" val="9" />
 					<sval type="int" val="-4" />
+					<sval type="int" val="17" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-6" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-5" />
+					<sval type="int" val="-7" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -2107,16 +2275,16 @@
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610592509" />
+					<sval type="int" val="-1610590973" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="14" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="14" />
 					<sval type="int" val="10" />
 					<sval type="int" val="12" />
 					<sval type="int" val="15" />
@@ -2174,13 +2342,11 @@
 					<sval type="int" val="101" />
 					<sval type="string" val="CheckTargetEnvironment" />
 				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="732" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-536849148" />
+				<sval type="array" size="4">
+					<sval type="int" val="745" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
+					<sval type="int" val="-1610589437" />
 				</sval>
 				<sval type="array" size="14">
 					<sval type="int" val="102" />
@@ -2190,7 +2356,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Repair Target not found at destination.  Repairs Cancelled." />
+					<sval type="string" val="Repair Target is docked.  Repairs Cancelled." />
 					<sval type="int" val="4" />
 					<sval type="int" val="21" />
 					<sval type="int" val="4" />
@@ -2217,7 +2383,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="11" />
+					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -2227,18 +2393,18 @@
 				<sval type="array" size="4">
 					<sval type="int" val="786" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="16" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="787" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="14" />
+					<sval type="int" val="18" />
 					<sval type="int" val="3" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1500" />
@@ -2253,12 +2419,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="15" />
+					<sval type="int" val="19" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="17" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="18" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -2268,12 +2434,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610588664" />
+					<sval type="int" val="-1610587128" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="19" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="16" />
 					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 					<sval type="int" val="3" />
@@ -2283,19 +2449,19 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="15" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="16" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="1047" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="107" />
@@ -2315,7 +2481,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="83">
+			<sval type="array" size="88">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -2635,16 +2801,25 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Herobetty 5.4: fix for abandoned ships and if ships switch allegiances." />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="67" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.5.3: Stationary targets don't need to be on standby since they're not moveable objects. Note that small and large are unused - they are there just for futureproofing." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="74" />
-					<sval type="int" val="4" />
+					<sval type="int" val="68" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="72" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="74" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="79" />
+					<sval type="int" val="80" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
@@ -2659,22 +2834,35 @@
 					<sval type="int" val="86" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="87" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.5.3: Don't check if in the same environment (command will abort if the repair ship is docked but target is in space). Instead, check if target is docked." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="86" />
+					<sval type="int" val="91" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="92" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="92" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="86" />
+					<sval type="int" val="92" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Repair lasers OOS tend to destroy target ships.  Fun fun.  So if OOS, we just keep it simple and add hull to the target every x seconds." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="86" />
+					<sval type="int" val="92" />
 					<sval type="int" val="1" />
 					<sval type="string" val="not one can see it, so no one will care." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="88" />
+					<sval type="int" val="94" />
 					<sval type="int" val="1" />
 					<sval type="string" val="This rate mirrors the general observed in-system repair rate.  That's about 1500 hull / second repair.  We'll do a bit better OOS because I like it that way." />
 				</sval>

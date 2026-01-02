@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Cmd.RepairTarget</name>
-	<version>28</version>
+	<version>39</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -27,9 +27,15 @@
 			<comment>* !move.stay on stack.</comment>
 		</line>
 		<line linenr="007" indent="">
-			<comment>* Herobetty 5.4: Only the player's ships can be on standby. </comment>
+			<comment>* Herobetty 5.4: Only the player's moveable ships can be on standby. </comment>
 		</line>
 		<line linenr="008" indent="">
+			<comment>* Add-Ons 1.5.3: Because OWPs count as moveable, we check them as well. Note that small and large are unused - they are there just for futureproofing.</comment>
+		</line>
+		<line linenr="009" indent="">
+			<comment>* We don't count Phanon ones because they can move.</comment>
+		</line>
+		<line linenr="010" indent="">
 			<var>$onStandby</var>
 			<text> </text>
 			<text>=</text>
@@ -53,7 +59,95 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="009" indent="">
+		<line linenr="011" indent="">
+			<var>$isMoveable</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$target</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>class</text>
+			<text> </text>
+			<var>[Moveable Ship]</var>
+		</line>
+		<line linenr="012" indent="">
+			<var>$isOWP.small</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$target</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>type</text>
+			<text> </text>
+			<var>{Neutral Race Small Orbital Weapons Platform}</var>
+		</line>
+		<line linenr="013" indent="">
+			<var>$isOWP.medium</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$target</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>type</text>
+			<text> </text>
+			<var>{Neutral Race Medium Orbital Weapons Platform}</var>
+		</line>
+		<line linenr="014" indent="">
+			<var>$isOWP.large</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$target</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>type</text>
+			<text> </text>
+			<var>{Neutral Race Large Orbital Weapons Platform}</var>
+		</line>
+		<line linenr="015" indent="" />
+		<line linenr="016" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$isOWP.small</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$isOWP.medium</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$isOWP.large</var>
+		</line>
+		<line linenr="017" indent="&#160;">
+			<var>$isMoveable</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="018" indent="" />
+		<line linenr="019" indent="">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
@@ -67,14 +161,20 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="010" indent="">
+		<line linenr="020" indent="">
 			<text>if</text>
 			<text> </text>
+			<text>(</text>
 			<var>$onStandby</var>
 			<text> </text>
 			<text>==</text>
 			<text> </text>
 			<var>[FALSE]</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$isMoveable</var>
+			<text>)</text>
 			<text> </text>
 			<text>AND</text>
 			<text> </text>
@@ -84,14 +184,14 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="011" indent="&#160;">
+		<line linenr="021" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'The target ship must be in Standby'</text>
 		</line>
-		<line linenr="012" indent="&#160;" interruptable="@">
+		<line linenr="022" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -121,19 +221,19 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="013" indent="&#160;">
+		<line linenr="023" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="014" indent="">
+		<line linenr="024" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="015" indent="" />
-		<line linenr="016" indent="">
+		<line linenr="025" indent="" />
+		<line linenr="026" indent="">
 			<comment>* Allow repair of only Player and Abandoned ships.</comment>
 		</line>
-		<line linenr="017" indent="">
+		<line linenr="027" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$owner</var>
@@ -150,14 +250,14 @@
 			<text> </text>
 			<var>[Neutral Race]</var>
 		</line>
-		<line linenr="018" indent="&#160;">
+		<line linenr="028" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'The target ship is not abandoned and does not belong to you.'</text>
 		</line>
-		<line linenr="019" indent="&#160;" interruptable="@">
+		<line linenr="029" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -187,16 +287,16 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="020" indent="&#160;">
+		<line linenr="030" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="021" indent="">
+		<line linenr="031" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="022" indent="" />
-		<line linenr="023" indent="">
+		<line linenr="032" indent="" />
+		<line linenr="033" indent="">
 			<var>$hull</var>
 			<text> </text>
 			<text>=</text>
@@ -210,7 +310,7 @@
 			<text> </text>
 			<text>percent</text>
 		</line>
-		<line linenr="024" indent="">
+		<line linenr="034" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$hull</var>
@@ -219,14 +319,14 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="025" indent="&#160;">
+		<line linenr="035" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'The target ship is not damaged.'</text>
 		</line>
-		<line linenr="026" indent="&#160;" interruptable="@">
+		<line linenr="036" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -256,16 +356,16 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="027" indent="&#160;">
+		<line linenr="037" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="038" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="029" indent="" />
-		<line linenr="030" indent="">
+		<line linenr="039" indent="" />
+		<line linenr="040" indent="">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -276,7 +376,7 @@
 			<text> </text>
 			<var>[COMMAND_REPAIR_SHIP]</var>
 		</line>
-		<line linenr="031" indent="" interruptable="@">
+		<line linenr="041" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -294,8 +394,8 @@
 			<text>=</text>
 			<var>$target</var>
 		</line>
-		<line linenr="032" indent="" />
-		<line linenr="033" indent="">
+		<line linenr="042" indent="" />
+		<line linenr="043" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -306,16 +406,20 @@
 			<sval type="string" val="Mayhem.Cmd.RepairTarget" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="28" />
+			<sval type="int" val="39" />
 			<sval type="int" val="0" />
-			<sval type="array" size="5">
+			<sval type="array" size="9">
 				<sval type="string" val="target" />
 				<sval type="string" val="onStandby" />
+				<sval type="string" val="isMoveable" />
+				<sval type="string" val="isOWP.small" />
+				<sval type="string" val="isOWP.medium" />
+				<sval type="string" val="isOWP.large" />
 				<sval type="string" val="owner" />
 				<sval type="string" val="t" />
 				<sval type="string" val="hull" />
 			</sval>
-			<sval type="array" size="18">
+			<sval type="array" size="24">
 				<sval type="array" size="7">
 					<sval type="int" val="1072" />
 					<sval type="int" val="131074" />
@@ -325,16 +429,78 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="705" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2134" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="710" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="458790" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="710" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="9" />
+					<sval type="int" val="458791" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="710" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="int" val="9" />
+					<sval type="int" val="458792" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610936" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="2" />
+					<sval type="int" val="6" />
 				</sval>
-				<sval type="array" size="25">
+				<sval type="array" size="33">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610611197" />
-					<sval type="int" val="7" />
+					<sval type="int" val="-1610609661" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
@@ -343,24 +509,32 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 					<sval type="int" val="9" />
 					<sval type="int" val="-4" />
+					<sval type="int" val="17" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-6" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-5" />
+					<sval type="int" val="-7" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="The target ship must be in Standby" />
@@ -375,7 +549,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="7" />
 					<sval type="int" val="4" />
 					<sval type="int" val="21" />
 					<sval type="int" val="4" />
@@ -390,16 +564,16 @@
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610173" />
+					<sval type="int" val="-1610608637" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="6" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="6" />
 					<sval type="int" val="10" />
 					<sval type="int" val="12" />
 					<sval type="int" val="15" />
@@ -417,7 +591,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="The target ship is not abandoned and does not belong to you." />
@@ -432,7 +606,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="7" />
 					<sval type="int" val="4" />
 					<sval type="int" val="21" />
 					<sval type="int" val="4" />
@@ -449,14 +623,14 @@
 					<sval type="int" val="900" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608893" />
+					<sval type="int" val="-1610607357" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
 					<sval type="int" val="15" />
@@ -468,7 +642,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="The target ship is not damaged." />
@@ -483,7 +657,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="7" />
 					<sval type="int" val="4" />
 					<sval type="int" val="21" />
 					<sval type="int" val="4" />
@@ -525,7 +699,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="15">
+			<sval type="array" size="19">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -558,39 +732,57 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Herobetty 5.4: Only the player's ships can be on standby. " />
+					<sval type="string" val="Herobetty 5.4: Only the player's moveable ships can be on standby. " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.5.3: Because OWPs count as moveable, we check them as well. Note that small and large are unused - they are there just for futureproofing." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="We don't count Phanon ones because they can move." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="6" />
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="7" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="6" />
+					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="6" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Allow repair of only Player and Abandoned ships." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
+					<sval type="int" val="16" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="21" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="21" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="17" />
+					<sval type="int" val="23" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
