@@ -1,7 +1,7 @@
 # Renegades Add-Ons
 Add-Ons for Mayhem 3 Renegades, featuring bug fixes and previously proposed features. Please read the changelogs in the releases folder before updating your game!
 
-Forum: https://forum.egosoft.com/viewtopic.php?t=473331&sid=6ec3f787a72497712255e45341e4512f
+Forum: https://forum.egosoft.com/viewtopic.php?t=473331
 
 Installation Steps:
 - Renegades must be installed before installing Add-Ons. Follow installation steps for Renegades here: https://forum.egosoft.com/viewtopic.php?t=460221
