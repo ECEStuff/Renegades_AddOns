@@ -6,7 +6,7 @@ Forum thread: https://forum.egosoft.com/viewtopic.php?t=473331
 
 Russian localization: https://github.com/alexalsp2/Renegades_AddOns_russian
 
-# Installation
+# Fresh installation 
 If you're installing Renegades from scratch:
 - Obtain a fresh, no-Steam copy of X3AP. Copy this somewhere and rename this to something like "Mayhem_3_Renegades". We'll call this copy the Renegades directory at this point.
   - If your installation is from Steam, verify that the game is in English (check X3AP Steam properties) and turn the bonus package OFF. The bonus package is NOT compatible with Mayhem 3.
@@ -27,6 +27,7 @@ If you're installing Renegades from scratch:
   - Optional: You can customize configuration settings by editing /t/9972-L044.xml and /t/9973-L044.xml.
 - Run X3AP from the Renegades directory. Verify that the game loaded the correct galaxy. You should see the active galaxy's name in the bottom-right corner of the main menu screen that starts up.
 
+# Installation from existing Renegades 5.4 or patching Add-Ons
 If you already have Renegades 5.4 or you are patching Add-Ons:
 - Simply download the latest release and copy-paste the contents to your game's root directory.
 - Copy over TShips.txt and TBullets.txt in the release to your existing ZMap directory.
