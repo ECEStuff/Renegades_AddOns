@@ -1,9 +1,10 @@
 # Renegades Add-Ons
+
 Add-Ons for Mayhem 3 Renegades, featuring bug fixes and previously proposed features. Please read the changelogs in the releases folder before updating your game!
 
 Forum: https://forum.egosoft.com/viewtopic.php?t=473331
 
-Russian version: https://github.com/alexalsp2/Renegades_AddOns_russian
+Russian localization: https://github.com/alexalsp2/Renegades_AddOns_russian
 
 Installation Steps:
 - Renegades must be installed before installing Add-Ons. Follow installation steps for Renegades here: https://forum.egosoft.com/viewtopic.php?t=460221
