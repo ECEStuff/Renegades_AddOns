@@ -36,6 +36,6 @@ If you already have Renegades 5.4 or you are patching Add-Ons:
 - Simply download the latest release and copy-paste the contents to your game's root directory.
 - Copy over TShips.txt and TBullets.txt in the release to your existing ZMap directory.
 
-# Versioning Policy:
+# Versioning Policy
 - Minor versions (e.g. 1.X) may change persistent world behavior and can require a new game in specific cases.
 - Patch Versions (e.g. 1.5.X) are safe to update mid-save.
