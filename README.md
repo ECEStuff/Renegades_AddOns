@@ -9,10 +9,12 @@ Russian localization: https://github.com/alexalsp2/Renegades_AddOns_russian
 # Fresh installation 
 If you're installing Renegades Add-Ons from scratch:
 - Obtain a fresh, no-Steam copy of X3AP. Copy this somewhere and rename this to something like "Mayhem_3_Renegades". We'll call this copy the Renegades directory at this point.
-  - If your installation is from Steam, verify that the game is in English (check X3AP Steam properties) and turn the bonus package OFF. The bonus package is NOT compatible with Mayhem 3.
-  - (If you purchased X3AP from Steam) Your game must be registered on the forums in order to download the no-Steam version. A no-Steam version of the X3AP.exe can be found at https://www.egosoft.com/download/x3ap/bonus_en.php. Copy this to your Renegades directory.
+  - (If you purchased X3AP from Steam) 
+    - Your game must be registered on the forums in order to download the no-Steam version. A no-Steam version of the X3AP.exe can be found at https://www.egosoft.com/download/x3ap/bonus_en.php. Copy this to your Renegades directory.
+    - Verify that the game is in English (check X3AP Steam properties) and turn the bonus package OFF. The bonus package is NOT compatible with Mayhem 3.
     - For information regarding registering your game from Steam, see https://www.egosoft.com/support/faq/faq_answer_en.php?answer=2110&version=0 
-  - (If you purchased X3AP from GOG) Your X3AP.exe is fine as is.
+  - (If you purchased X3AP from GOG) 
+    - Your X3AP.exe is fine as is.
   - DO NOT put your copy in your /Program Files or /Program Files (x86) folder.
 - Go to the main Renegades thread (https://forum.egosoft.com/viewtopic.php?t=460221) and download the Renegades zip. As of July 2025, it is currently a full install of Renegades 5.4.
 - Open the Renegades zip you downloaded in step 2. Extract its contents to the Renegades directory.
