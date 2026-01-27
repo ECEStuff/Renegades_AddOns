@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Menu.DWM.Get.Recycling</name>
-	<version>42</version>
+	<version>48</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -1925,13 +1925,13 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="181" indent="&#160;">
+		<line linenr="181" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>AppendLine</var>
 			<text>:</text>
 		</line>
-		<line linenr="182" indent="&#160;">
+		<line linenr="182" indent="&#160;&#160;">
 			<text>add</text>
 			<text> </text>
 			<text>dynamic</text>
@@ -1999,11 +1999,11 @@
 			<text>end</text>
 		</line>
 		<line linenr="184" indent="&#160;&#160;" />
-		<line linenr="185" indent="&#160;&#160;" />
+		<line linenr="185" indent="&#160;&#160;&#160;" />
 		<line linenr="186" indent="&#160;&#160;">
 			<comment>* ----------------------------- Ship Recycle Menu ----------------------------------</comment>
 		</line>
-		<line linenr="187" indent="&#160;&#160;" interruptable="@">
+		<line linenr="187" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$heading</var>
 			<text> </text>
 			<text>=</text>
@@ -2019,7 +2019,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="188" indent="&#160;&#160;">
+		<line linenr="188" indent="&#160;&#160;&#160;">
 			<text>add</text>
 			<text> </text>
 			<text>custom</text>
@@ -2052,17 +2052,17 @@
 			<text> </text>
 			<var>$ships</var>
 		</line>
-		<line linenr="190" indent="&#160;">
+		<line linenr="190" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator5</var>
 		</line>
-		<line linenr="191" indent="&#160;">
+		<line linenr="191" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator5</var>
 		</line>
-		<line linenr="192" indent="&#160;&#160;">
+		<line linenr="192" indent="&#160;&#160;&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -2072,16 +2072,13 @@
 			<var>$XS.Iterator5</var>
 			<text>]</text>
 		</line>
-		<line linenr="193" indent="&#160;">
-			<comment>* Zero Hour 1.10 - cannot recycle OCV ships except to reverse engineer for up to 85% blueprint progress</comment>
+		<line linenr="193" indent="&#160;&#160;&#160;&#160;">
+			<comment>* Zero Hour 1.10 - cannot recycle OCV ships except to reverse engineer for up to 75% blueprint progress</comment>
 		</line>
-		<line linenr="194" indent="&#160;">
-			<comment>* Add-Ons 1.1: Changed cap to 85%, in line with Mayhem.Recycle.</comment>
+		<line linenr="194" indent="&#160;&#160;">
+			<comment>* Add-Ons 1.1: Changed cap to 85%, in line with Mayhem.Recycle. (1.2: Phanon ships can now be recycled.)</comment>
 		</line>
 		<line linenr="195" indent="&#160;">
-			<comment>* Add-Ons 1.2: Phanon ships can now be recycled.</comment>
-		</line>
-		<line linenr="196" indent="">
 			<var>$maker</var>
 			<text> </text>
 			<text>=</text>
@@ -2095,16 +2092,13 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="197" indent="">
-			<comment>* ZH 2.0 - cannot recycle OCV ships</comment>
-		</line>
-		<line linenr="198" indent="">
+		<line linenr="196" indent="&#160;">
 			<comment>* do if $maker == [Phanon]</comment>
 		</line>
-		<line linenr="199" indent="">
+		<line linenr="197" indent="&#160;&#160;">
 			<comment>* continue</comment>
 		</line>
-		<line linenr="200" indent="">
+		<line linenr="198" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$maker</var>
@@ -2113,7 +2107,44 @@
 			<text> </text>
 			<var>[OCV]</var>
 		</line>
+		<line linenr="199" indent="&#160;">
+			<comment>* Add-Ons 1.5.6: Patch special case for insane mode where player could recycle OCV ships on insane mode and after joining the OCV. </comment>
+		</line>
+		<line linenr="200" indent="&#160;">
+			<comment>* On easy, normal, and hard, all OCV ship blueprints are known; this means that they cannot be recycled. Thus, checking if the player joined the OCV implies such.</comment>
+		</line>
 		<line linenr="201" indent="">
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'OCVplotstage'</text>
+		</line>
+		<line linenr="202" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'playerJoinedOCV'</text>
+		</line>
+		<line linenr="203" indent="">
+			<text>continue</text>
+		</line>
+		<line linenr="204" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="205" indent="">
 			<var>$shipType</var>
 			<text> </text>
 			<text>=</text>
@@ -2133,7 +2164,7 @@
 			<text> </text>
 			<text>object</text>
 		</line>
-		<line linenr="202" indent="">
+		<line linenr="206" indent="">
 			<var>$projects</var>
 			<text> </text>
 			<text>=</text>
@@ -2149,7 +2180,7 @@
 			<text>=</text>
 			<text>'mayhem_projects'</text>
 		</line>
-		<line linenr="203" indent="">
+		<line linenr="207" indent="">
 			<var>$progress</var>
 			<text> </text>
 			<text>=</text>
@@ -2166,7 +2197,7 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="204" indent="&#160;" interruptable="@">
+		<line linenr="208" indent="" interruptable="@">
 			<var>$project.cost</var>
 			<text> </text>
 			<text>=</text>
@@ -2186,7 +2217,7 @@
 			<text>=</text>
 			<var>$shipType</var>
 		</line>
-		<line linenr="205" indent="&#160;">
+		<line linenr="209" indent="&#160;">
 			<var>$progress.p</var>
 			<text> </text>
 			<text>=</text>
@@ -2201,7 +2232,7 @@
 			<text> </text>
 			<var>$project.cost</var>
 		</line>
-		<line linenr="206" indent="&#160;">
+		<line linenr="210" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2220,13 +2251,16 @@
 			<text> </text>
 			<var>-1</var>
 		</line>
-		<line linenr="207" indent="&#160;">
+		<line linenr="211" indent="&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="208" indent="&#160;">
+		<line linenr="212" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="209" indent="&#160;">
+		<line linenr="213" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="214" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2250,10 +2284,10 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="210" indent="">
+		<line linenr="215" indent="">
 			<text>continue</text>
 		</line>
-		<line linenr="211" indent="" interruptable="@">
+		<line linenr="216" indent="" interruptable="@">
 			<var>$shipName</var>
 			<text> </text>
 			<text>=</text>
@@ -2273,7 +2307,7 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="212" indent="" interruptable="@">
+		<line linenr="217" indent="" interruptable="@">
 			<var>$line</var>
 			<text> </text>
 			<text>=</text>
@@ -2313,7 +2347,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="213" indent="">
+		<line linenr="218" indent="">
 			<text>add</text>
 			<text> </text>
 			<text>custom</text>
@@ -2341,15 +2375,15 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="214" indent="">
+		<line linenr="219" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="215" indent="&#160;" />
-		<line linenr="216" indent="&#160;" />
-		<line linenr="217" indent="&#160;">
+		<line linenr="220" indent="&#160;" />
+		<line linenr="221" indent="&#160;" />
+		<line linenr="222" indent="&#160;">
 			<comment>* ----------------------------- Station Recycle Menu ----------------------------------</comment>
 		</line>
-		<line linenr="218" indent="" interruptable="@">
+		<line linenr="223" indent="" interruptable="@">
 			<var>$heading</var>
 			<text> </text>
 			<text>=</text>
@@ -2365,13 +2399,13 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="219" indent="">
+		<line linenr="224" indent="">
 			<text>gosub</text>
 			<text> </text>
 			<var>AppendHeading</var>
 			<text>:</text>
 		</line>
-		<line linenr="220" indent="">
+		<line linenr="225" indent="">
 			<text>add</text>
 			<text> </text>
 			<text>custom</text>
@@ -2391,7 +2425,7 @@
 			<text>=</text>
 			<var>$heading</var>
 		</line>
-		<line linenr="221" indent="&#160;">
+		<line linenr="226" indent="&#160;">
 			<var>$XS.Iterator6</var>
 			<text> </text>
 			<text>=</text>
@@ -2404,17 +2438,17 @@
 			<text> </text>
 			<var>$stations</var>
 		</line>
-		<line linenr="222" indent="&#160;">
+		<line linenr="227" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator6</var>
 		</line>
-		<line linenr="223" indent="&#160;">
+		<line linenr="228" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator6</var>
 		</line>
-		<line linenr="224" indent="&#160;">
+		<line linenr="229" indent="&#160;">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
@@ -2424,7 +2458,7 @@
 			<var>$XS.Iterator6</var>
 			<text>]</text>
 		</line>
-		<line linenr="225" indent="">
+		<line linenr="230" indent="">
 			<var>$qty</var>
 			<text> </text>
 			<text>=</text>
@@ -2448,7 +2482,7 @@
 			<text> </text>
 			<text>bay</text>
 		</line>
-		<line linenr="226" indent="">
+		<line linenr="231" indent="">
 			<var>$current</var>
 			<text> </text>
 			<text>=</text>
@@ -2465,13 +2499,13 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="227" indent="">
+		<line linenr="232" indent="">
 			<text>gosub</text>
 			<text> </text>
 			<var>ClampCurrent</var>
 			<text>:</text>
 		</line>
-		<line linenr="228" indent="&#160;" interruptable="@">
+		<line linenr="233" indent="&#160;" interruptable="@">
 			<var>$line</var>
 			<text> </text>
 			<text>=</text>
@@ -2511,13 +2545,13 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="229" indent="&#160;&#160;">
+		<line linenr="234" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>AppendLine</var>
 			<text>:</text>
 		</line>
-		<line linenr="230" indent="&#160;">
+		<line linenr="235" indent="&#160;">
 			<text>add</text>
 			<text> </text>
 			<text>dynamic</text>
@@ -2581,27 +2615,27 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="231" indent="&#160;&#160;">
+		<line linenr="236" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="232" indent="" />
-		<line linenr="233" indent="">
+		<line linenr="237" indent="" />
+		<line linenr="238" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="234" indent="" />
-		<line linenr="235" indent="">
+		<line linenr="239" indent="" />
+		<line linenr="240" indent="">
 			<var>AppendHeading</var>
 			<text>:</text>
 		</line>
-		<line linenr="236" indent="">
+		<line linenr="241" indent="">
 			<comment>* $heading = columnize menu text: array= $heading, text= 'Stock', alignment= -1, colour= 0, column width= 150</comment>
 		</line>
-		<line linenr="237" indent="">
+		<line linenr="242" indent="">
 			<comment>* Add-Ons 1.2: Changed alignment from -1 to +1</comment>
 		</line>
-		<line linenr="238" indent="">
+		<line linenr="243" indent="">
 			<var>$heading</var>
 			<text> </text>
 			<text>=</text>
@@ -2644,18 +2678,18 @@
 			<text> </text>
 			<var>80</var>
 		</line>
-		<line linenr="239" indent="">
+		<line linenr="244" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="240" indent="" />
-		<line linenr="241" indent="">
+		<line linenr="245" indent="" />
+		<line linenr="246" indent="">
 			<var>AppendLine</var>
 			<text>:</text>
 		</line>
-		<line linenr="242" indent="">
+		<line linenr="247" indent="">
 			<comment>* $line = columnize menu text: array= $line, text= $qty, alignment= -1, colour= 0, column width= 150</comment>
 		</line>
-		<line linenr="243" indent="">
+		<line linenr="248" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -2670,10 +2704,10 @@
 			<text> </text>
 			<var>$qty</var>
 		</line>
-		<line linenr="244" indent="">
+		<line linenr="249" indent="">
 			<comment>* Add-Ons 1.2: Changed alignment from -1 to +1</comment>
 		</line>
-		<line linenr="245" indent="">
+		<line linenr="250" indent="">
 			<var>$line</var>
 			<text> </text>
 			<text>=</text>
@@ -2716,29 +2750,29 @@
 			<text> </text>
 			<var>80</var>
 		</line>
-		<line linenr="246" indent="">
+		<line linenr="251" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="247" indent="" />
-		<line linenr="248" indent="">
+		<line linenr="252" indent="" />
+		<line linenr="253" indent="">
 			<var>ClampCurrent</var>
 			<text>:</text>
 		</line>
-		<line linenr="249" indent="">
+		<line linenr="254" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$current</var>
 		</line>
-		<line linenr="250" indent="">
+		<line linenr="255" indent="">
 			<var>$current</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="251" indent="">
+		<line linenr="256" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2749,14 +2783,14 @@
 			<text> </text>
 			<var>$qty</var>
 		</line>
-		<line linenr="252" indent="">
+		<line linenr="257" indent="">
 			<var>$current</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$qty</var>
 		</line>
-		<line linenr="253" indent="">
+		<line linenr="258" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -2765,9 +2799,9 @@
 			<sval type="string" val="Menu.DWM.Get.Recycling" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="42" />
+			<sval type="int" val="48" />
 			<sval type="int" val="0" />
-			<sval type="array" size="48">
+			<sval type="array" size="49">
 				<sval type="string" val="menu" />
 				<sval type="string" val="t" />
 				<sval type="string" val="recycleFactor" />
@@ -2808,6 +2842,7 @@
 				<sval type="string" val="ship" />
 				<sval type="string" val="XS.Iterator5" />
 				<sval type="string" val="maker" />
+				<sval type="string" val="OCVplotstage" />
 				<sval type="string" val="shipType" />
 				<sval type="string" val="projects" />
 				<sval type="string" val="progress" />
@@ -2817,7 +2852,7 @@
 				<sval type="string" val="station" />
 				<sval type="string" val="XS.Iterator6" />
 			</sval>
-			<sval type="array" size="167">
+			<sval type="array" size="171">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -3632,7 +3667,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="154" />
+					<sval type="int" val="158" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="1448" />
@@ -3686,7 +3721,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="161" />
+					<sval type="int" val="165" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="102" />
@@ -3708,7 +3743,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="157" />
+					<sval type="int" val="161" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="1832" />
@@ -3826,7 +3861,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="161" />
+					<sval type="int" val="165" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="102" />
@@ -3916,7 +3951,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="154" />
+					<sval type="int" val="158" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="1448" />
@@ -3970,7 +4005,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="161" />
+					<sval type="int" val="165" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="102" />
@@ -3992,7 +4027,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="157" />
+					<sval type="int" val="161" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="1832" />
@@ -4042,7 +4077,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610577143" />
+					<sval type="int" val="-1610576119" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="38" />
@@ -4069,7 +4104,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610578685" />
+					<sval type="int" val="-1610577661" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="39" />
@@ -4083,47 +4118,76 @@
 					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="OCVplotstage" />
+					<sval type="int" val="40" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610579453" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="40" />
+					<sval type="int" val="5" />
+					<sval type="string" val="playerJoinedOCV" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="121" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="137" />
+				</sval>
+				<sval type="array" size="4">
 					<sval type="int" val="707" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="37" />
-					<sval type="int" val="40" />
+					<sval type="int" val="41" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_projects" />
-					<sval type="int" val="41" />
+					<sval type="int" val="42" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1709" />
+					<sval type="int" val="43" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="42" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="41" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="40" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetProjectCost" />
-					<sval type="int" val="43" />
+					<sval type="int" val="44" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="40" />
+					<sval type="int" val="41" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="44" />
+					<sval type="int" val="45" />
 					<sval type="int" val="5" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="42" />
+					<sval type="int" val="43" />
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="43" />
+					<sval type="int" val="44" />
 					<sval type="int" val="15" />
 					<sval type="int" val="14" />
 					<sval type="int" val="5" />
@@ -4135,16 +4199,16 @@
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610578680" />
+					<sval type="int" val="-1610577656" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="44" />
+					<sval type="int" val="45" />
 					<sval type="int" val="4" />
 					<sval type="int" val="85" />
 					<sval type="int" val="15" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="42" />
+					<sval type="int" val="43" />
 					<sval type="int" val="4" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="15" />
@@ -4168,7 +4232,7 @@
 					<sval type="int" val="1072" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="37" />
-					<sval type="int" val="-1610578168" />
+					<sval type="int" val="-1610577144" />
 					<sval type="string" val="Mayhem.Task.RecycleDelay" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -4180,7 +4244,7 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.GetNameAndId" />
-					<sval type="int" val="45" />
+					<sval type="int" val="46" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -4203,7 +4267,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="45" />
+					<sval type="int" val="46" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 				</sval>
@@ -4230,7 +4294,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="154" />
+					<sval type="int" val="158" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="1448" />
@@ -4241,30 +4305,30 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="47" />
+					<sval type="int" val="48" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="21" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610573559" />
+					<sval type="int" val="-1610572535" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="47" />
+					<sval type="int" val="48" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="47" />
+					<sval type="int" val="48" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="46" />
+					<sval type="int" val="47" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="21" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="47" />
+					<sval type="int" val="48" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="618" />
@@ -4272,7 +4336,7 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="29" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="46" />
+					<sval type="int" val="47" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1709" />
@@ -4280,11 +4344,11 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="46" />
+					<sval type="int" val="47" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="161" />
+					<sval type="int" val="165" />
 				</sval>
 				<sval type="array" size="18">
 					<sval type="int" val="102" />
@@ -4296,7 +4360,7 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="46" />
+					<sval type="int" val="47" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="30" />
 					<sval type="int" val="131074" />
@@ -4308,7 +4372,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="157" />
+					<sval type="int" val="161" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="1832" />
@@ -4323,7 +4387,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="30" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="46" />
+					<sval type="int" val="47" />
 					<sval type="int" val="5" />
 					<sval type="string" val="" />
 					<sval type="int" val="5" />
@@ -4333,7 +4397,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="143" />
+					<sval type="int" val="147" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -4409,7 +4473,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536828921" />
+					<sval type="int" val="-536827897" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="30" />
@@ -4427,7 +4491,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610570232" />
+					<sval type="int" val="-1610569208" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="30" />
@@ -4459,7 +4523,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="98">
+			<sval type="array" size="101">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -4803,22 +4867,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="124" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Zero Hour 1.10 - cannot recycle OCV ships except to reverse engineer for up to 85% blueprint progress" />
+					<sval type="string" val="Zero Hour 1.10 - cannot recycle OCV ships except to reverse engineer for up to 75% blueprint progress" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="124" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.1: Changed cap to 85%, in line with Mayhem.Recycle." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="124" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.2: Phanon ships can now be recycled." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="125" />
-					<sval type="int" val="1" />
-					<sval type="string" val="ZH 2.0 - cannot recycle OCV ships" />
+					<sval type="string" val="Add-Ons 1.1: Changed cap to 85%, in line with Mayhem.Recycle. (1.2: Phanon ships can now be recycled.)" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="125" />
@@ -4830,65 +4884,73 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="continue" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="126" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.5.6: Patch special case for insane mode where player could recycle OCV ships on insane mode and after joining the OCV. " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="126" />
+					<sval type="int" val="1" />
+					<sval type="string" val="On easy, normal, and hard, all OCV ship blueprints are known; this means that they cannot be recycled. Thus, checking if the player joined the OCV implies such." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="133" />
+					<sval type="int" val="129" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="133" />
-					<sval type="int" val="4" />
+					<sval type="int" val="130" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="135" />
+					<sval type="int" val="137" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="139" />
+					<sval type="int" val="137" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="137" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="139" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="139" />
+					<sval type="int" val="143" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="139" />
+					<sval type="int" val="143" />
 					<sval type="int" val="1" />
 					<sval type="string" val="----------------------------- Station Recycle Menu ----------------------------------" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="153" />
+					<sval type="int" val="157" />
 					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="153" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="154" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="155" />
-					<sval type="int" val="1" />
-					<sval type="string" val="$heading = columnize menu text: array= $heading, text= 'Stock', alignment= -1, colour= 0, column width= 150" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="155" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.2: Changed alignment from -1 to +1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="157" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
+				<sval type="array" size="2">
 					<sval type="int" val="158" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="159" />
 					<sval type="int" val="1" />
-					<sval type="string" val="$line = columnize menu text: array= $line, text= $qty, alignment= -1, colour= 0, column width= 150" />
+					<sval type="string" val="$heading = columnize menu text: array= $heading, text= 'Stock', alignment= -1, colour= 0, column width= 150" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="159" />
@@ -4897,6 +4959,20 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="161" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="162" />
+					<sval type="int" val="1" />
+					<sval type="string" val="$line = columnize menu text: array= $line, text= $qty, alignment= -1, colour= 0, column width= 150" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="163" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.2: Changed alignment from -1 to +1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="165" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
