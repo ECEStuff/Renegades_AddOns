@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Mission.Generate</name>
-	<version>29</version>
+	<version>31</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -531,11 +531,158 @@
 			<text>=</text>
 			<var>$missionNames</var>
 		</line>
-		<line linenr="065" indent="&#160;&#160;" />
+		<line linenr="065" indent="&#160;" />
 		<line linenr="066" indent="&#160;">
 			<comment>* We don't want the same type to appear twice in the same sector.</comment>
 		</line>
 		<line linenr="067" indent="&#160;">
+			<comment>* Add-Ons 1.6: Ship missions (trade2, trade3, fight3, other4, and other5) and any missions that require docking now require non-negative relations.</comment>
+		</line>
+		<line linenr="068" indent="&#160;">
+			<comment>* These are acquisition, delivery, bait, rescue, and police missions respectively for ship missions. Other missions: provision, collection, VIP, supplies.</comment>
+		</line>
+		<line linenr="069" indent="&#160;">
+			<var>$rep</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>notoriety</text>
+			<text> </text>
+			<text>from</text>
+			<text> </text>
+			<text>race</text>
+			<text> </text>
+			<var>$sector.race</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>race</text>
+			<text> </text>
+			<var>[Player]</var>
+		</line>
+		<line linenr="070" indent="&#160;&#160;">
+			<var>$missions.restricted</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<text>alloc</text>
+			<text>:</text>
+			<text> </text>
+			<text>size</text>
+			<text>=</text>
+			<var>9</var>
+		</line>
+		<line linenr="071" indent="&#160;">
+			<var>$missions.restricted</var>
+			<text>[</text>
+			<var>0</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'trade1'</text>
+		</line>
+		<line linenr="072" indent="&#160;">
+			<var>$missions.restricted</var>
+			<text>[</text>
+			<var>1</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'trade2'</text>
+		</line>
+		<line linenr="073" indent="&#160;&#160;">
+			<var>$missions.restricted</var>
+			<text>[</text>
+			<var>2</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'other2'</text>
+		</line>
+		<line linenr="074" indent="&#160;">
+			<var>$missions.restricted</var>
+			<text>[</text>
+			<var>3</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'other4'</text>
+		</line>
+		<line linenr="075" indent="&#160;&#160;">
+			<var>$missions.restricted</var>
+			<text>[</text>
+			<var>4</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'other5'</text>
+		</line>
+		<line linenr="076" indent="&#160;&#160;">
+			<var>$missions.restricted</var>
+			<text>[</text>
+			<var>5</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'trade3'</text>
+		</line>
+		<line linenr="077" indent="&#160;">
+			<var>$missions.restricted</var>
+			<text>[</text>
+			<var>6</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'fight3'</text>
+		</line>
+		<line linenr="078" indent="&#160;">
+			<var>$missions.restricted</var>
+			<text>[</text>
+			<var>7</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'other6'</text>
+		</line>
+		<line linenr="079" indent="&#160;">
+			<var>$missions.restricted</var>
+			<text>[</text>
+			<var>8</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'trade4'</text>
+		</line>
+		<line linenr="080" indent="&#160;&#160;">
+			<var>$restrictedMission</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>find</text>
+			<text> </text>
+			<var>$missionName</var>
+			<text> </text>
+			<text>in</text>
+			<text> </text>
+			<text>array</text>
+			<text>:</text>
+			<text> </text>
+			<var>$missions.restricted</var>
+		</line>
+		<line linenr="081" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -545,18 +692,32 @@
 			<text>==</text>
 			<text> </text>
 			<var>$otherMissionName</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<text>(</text>
+			<var>$restrictedMission</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$rep</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>0</var>
+			<text>)</text>
 		</line>
-		<line linenr="068" indent="&#160;&#160;">
+		<line linenr="082" indent="">
 			<text>continue</text>
 		</line>
-		<line linenr="069" indent="&#160;">
+		<line linenr="083" indent="">
 			<var>$otherMissionName</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$missionName</var>
 		</line>
-		<line linenr="070" indent="&#160;&#160;">
+		<line linenr="084" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>random</text>
@@ -571,20 +732,20 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="071" indent="&#160;&#160;">
+		<line linenr="085" indent="">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$missionDifficulty</var>
 		</line>
-		<line linenr="072" indent="&#160;">
+		<line linenr="086" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="073" indent="&#160;">
+		<line linenr="087" indent="">
 			<comment>* Add-Ons 1.3: updated random difficulty 33% of the time to include insane mode missions.</comment>
 		</line>
-		<line linenr="074" indent="&#160;">
+		<line linenr="088" indent="">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -601,10 +762,10 @@
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="075" indent="&#160;&#160;">
+		<line linenr="089" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="076" indent="&#160;" interruptable="@">
+		<line linenr="090" indent="" interruptable="@">
 			<var>$randomAvailableStation</var>
 			<text> </text>
 			<text>=</text>
@@ -624,7 +785,7 @@
 			<text>=</text>
 			<var>$randomAvailableStations</var>
 		</line>
-		<line linenr="077" indent="" interruptable="@">
+		<line linenr="091" indent="" interruptable="@">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -644,7 +805,7 @@
 			<text>=</text>
 			<var>$randomAvailableStation</var>
 		</line>
-		<line linenr="078" indent="" interruptable="@">
+		<line linenr="092" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -670,16 +831,16 @@
 			<text>=</text>
 			<var>$randomAvailableStation</var>
 		</line>
-		<line linenr="079" indent="">
+		<line linenr="093" indent="">
 			<text>inc</text>
 			<text> </text>
 			<var>$missionsTotal</var>
 		</line>
-		<line linenr="080" indent="">
+		<line linenr="094" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="081" indent="" />
-		<line linenr="082" indent="">
+		<line linenr="095" indent="" />
+		<line linenr="096" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -690,9 +851,9 @@
 			<sval type="string" val="Mayhem.Mission.Generate" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="29" />
+			<sval type="int" val="31" />
 			<sval type="int" val="0" />
-			<sval type="array" size="20">
+			<sval type="array" size="23">
 				<sval type="string" val="sector" />
 				<sval type="string" val="OCVplotstage" />
 				<sval type="string" val="missionsPerSector" />
@@ -711,10 +872,13 @@
 				<sval type="string" val="sectors.s" />
 				<sval type="string" val="missionNames" />
 				<sval type="string" val="missionNames.limited" />
+				<sval type="string" val="rep" />
+				<sval type="string" val="missions.restricted" />
+				<sval type="string" val="restrictedMission" />
 				<sval type="string" val="difficulty" />
 				<sval type="string" val="randomAvailableStation" />
 			</sval>
-			<sval type="array" size="54">
+			<sval type="array" size="66">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -940,7 +1104,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610599159" />
+					<sval type="int" val="-1610596087" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -1045,20 +1209,143 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="16" />
 				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610601720" />
+				<sval type="array" size="6">
+					<sval type="int" val="726" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="128" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="trade1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="trade2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="other2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
 					<sval type="int" val="3" />
+					<sval type="int" val="5" />
+					<sval type="string" val="other4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="string" val="other5" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="5" />
+					<sval type="string" val="trade3" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="6" />
+					<sval type="int" val="5" />
+					<sval type="string" val="fight3" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="7" />
+					<sval type="int" val="5" />
+					<sval type="string" val="other6" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="8" />
+					<sval type="int" val="5" />
+					<sval type="string" val="trade4" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1406" />
+					<sval type="int" val="20" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+				</sval>
+				<sval type="array" size="33">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610598648" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="11" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="20" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
 					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-6" />
+					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
@@ -1075,13 +1362,13 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
-					<sval type="int" val="-1610600701" />
+					<sval type="int" val="-1610597629" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="18" />
+					<sval type="int" val="21" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -1090,18 +1377,18 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="48" />
+					<sval type="int" val="60" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
-					<sval type="int" val="18" />
+					<sval type="int" val="21" />
 					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.GetRandomElement" />
-					<sval type="int" val="19" />
+					<sval type="int" val="22" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -1111,12 +1398,12 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Mission.Get" />
-					<sval type="int" val="-536857849" />
+					<sval type="int" val="-536854777" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="19" />
+					<sval type="int" val="22" />
 				</sval>
 				<sval type="array" size="12">
 					<sval type="int" val="102" />
@@ -1128,9 +1415,9 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="18" />
+					<sval type="int" val="21" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="19" />
+					<sval type="int" val="22" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="142" />
@@ -1152,7 +1439,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="34">
+			<sval type="array" size="36">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1278,29 +1565,39 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="We don't want the same type to appear twice in the same sector." />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="41" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.6: Ship missions (trade2, trade3, fight3, other4, and other5) and any missions that require docking now require non-negative relations." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="41" />
+					<sval type="int" val="1" />
+					<sval type="string" val="These are acquisition, delivery, bait, rescue, and police missions respectively for ship missions. Other missions: provision, collection, VIP, supplies." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="43" />
+					<sval type="int" val="55" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="47" />
+					<sval type="int" val="59" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="47" />
+					<sval type="int" val="59" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.3: updated random difficulty 33% of the time to include insane mode missions." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
+					<sval type="int" val="60" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="53" />
+					<sval type="int" val="65" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="53" />
+					<sval type="int" val="65" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
