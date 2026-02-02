@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Monitor.News</name>
-	<version>34</version>
+	<version>49</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -300,6 +300,7 @@
 			<text>script</text>
 			<text> </text>
 			<call>Joubarbe.Lib.RandomizeArray</call>
+			<text> </text>
 			<text>:</text>
 			<text> </text>
 			<text>array</text>
@@ -479,11 +480,11 @@
 			<text>=</text>
 			<var>$len</var>
 		</line>
-		<line linenr="052" indent="&#160;&#160;">
+		<line linenr="052" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="053" indent="&#160;&#160;" />
-		<line linenr="054" indent="&#160;&#160;" interruptable="@">
+		<line linenr="053" indent="&#160;" />
+		<line linenr="054" indent="&#160;" interruptable="@">
 			<var>$news</var>
 			<text> </text>
 			<text>=</text>
@@ -515,12 +516,12 @@
 			<text>=</text>
 			<var>1000</var>
 		</line>
-		<line linenr="055" indent="&#160;&#160;">
+		<line linenr="055" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$writeToLog</var>
 		</line>
-		<line linenr="056" indent="&#160;&#160;">
+		<line linenr="056" indent="&#160;">
 			<var>$news</var>
 			<text> </text>
 			<text>=</text>
@@ -536,7 +537,7 @@
 			<text> </text>
 			<var>$news</var>
 		</line>
-		<line linenr="057" indent="&#160;">
+		<line linenr="057" indent="&#160;&#160;">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -551,7 +552,7 @@
 			<text>end</text>
 		</line>
 		<line linenr="059" indent="&#160;" />
-		<line linenr="060" indent="&#160;">
+		<line linenr="060" indent="&#160;&#160;">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -568,7 +569,7 @@
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="061" indent="&#160;" interruptable="@">
+		<line linenr="061" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -581,7 +582,10 @@
 			<text>end</text>
 		</line>
 		<line linenr="063" indent="&#160;" />
-		<line linenr="064" indent="&#160;&#160;">
+		<line linenr="064" indent="&#160;">
+			<comment>* Add-Ons 1.6.1: If sending a report at the 24-hour interval, do not send the report until ZH.Core is finished.</comment>
+		</line>
+		<line linenr="065" indent="&#160;">
 			<var>$newsHistory.timer</var>
 			<text> </text>
 			<text>=</text>
@@ -597,7 +601,7 @@
 			<text>=</text>
 			<text>'mayhem_newsHistoryTimer'</text>
 		</line>
-		<line linenr="065" indent="&#160;&#160;&#160;">
+		<line linenr="066" indent="&#160;&#160;">
 			<var>$playtime</var>
 			<text> </text>
 			<text>=</text>
@@ -606,9 +610,104 @@
 			<text> </text>
 			<text>time</text>
 		</line>
-		<line linenr="066" indent="&#160;&#160;&#160;">
+		<line linenr="067" indent="&#160;&#160;">
+			<var>$ZHCoreRunning</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'ZH.Core_isRunning'</text>
+		</line>
+		<line linenr="068" indent="&#160;&#160;">
+			<var>$ZHCoreRuns</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'ZH.Core_Runs'</text>
+		</line>
+		<line linenr="069" indent="&#160;&#160;" />
+		<line linenr="070" indent="&#160;&#160;">
+			<comment>* Safeties. For existing games, we set ZHCoreRuns to -1. It may miss a report, but it'll keep synchronization with ZH.Core.</comment>
+		</line>
+		<line linenr="071" indent="&#160;">
+			<text>do</text>
+			<text> </text>
 			<text>if</text>
 			<text> </text>
+			<var>$ZHCoreRuns</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="072" indent="&#160;">
+			<var>$ZHCoreRuns</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="073" indent="&#160;" />
+		<line linenr="074" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$newsHistory.timer</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="075" indent="&#160;">
+			<var>$newsHistory.timer</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$playtime</var>
+		</line>
+		<line linenr="076" indent="&#160;">
+			<text>set</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_newsHistoryTimer'</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>$newsHistory.timer</var>
+		</line>
+		<line linenr="077" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="078" indent="&#160;&#160;" />
+		<line linenr="079" indent="&#160;&#160;&#160;">
+			<comment>* Send only after the 1st (runs = 1) or 3rd (runs = 0) completion, and only when ZH.Core isn't running.</comment>
+		</line>
+		<line linenr="080" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<text>(</text>
 			<var>$playtime</var>
 			<text> </text>
 			<text>-</text>
@@ -618,8 +717,32 @@
 			<text>&gt;=</text>
 			<text> </text>
 			<var>43200</var>
+			<text>)</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$ZHCoreRunning</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>(</text>
+			<var>$ZHCoreRuns</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>1</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$ZHCoreRuns</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>0</var>
+			<text>)</text>
 		</line>
-		<line linenr="067" indent="&#160;&#160;&#160;">
+		<line linenr="081" indent="&#160;&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -635,7 +758,7 @@
 			<text>=</text>
 			<var>$playtime</var>
 		</line>
-		<line linenr="068" indent="&#160;&#160;&#160;">
+		<line linenr="082" indent="&#160;&#160;&#160;">
 			<var>$newsHistory</var>
 			<text> </text>
 			<text>=</text>
@@ -651,7 +774,7 @@
 			<text>=</text>
 			<text>'mayhem_newsHistory'</text>
 		</line>
-		<line linenr="069" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="083" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -665,7 +788,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="070" indent="&#160;&#160;">
+		<line linenr="084" indent="&#160;&#160;">
 			<var>$newsHistory</var>
 			<text> </text>
 			<text>=</text>
@@ -679,7 +802,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="071" indent="&#160;">
+		<line linenr="085" indent="&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -695,18 +818,18 @@
 			<text>=</text>
 			<var>$newsHistory</var>
 		</line>
-		<line linenr="072" indent="&#160;">
+		<line linenr="086" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="073" indent="&#160;" />
-		<line linenr="074" indent="" />
-		<line linenr="075" indent="">
+		<line linenr="087" indent="&#160;" />
+		<line linenr="088" indent="" />
+		<line linenr="089" indent="">
 			<comment>* Mordan9 - Every so often show an info screen with useful tips.</comment>
 		</line>
-		<line linenr="076" indent="">
+		<line linenr="090" indent="">
 			<comment>* Add-Ons 1.4: Display a random set of tips each time.</comment>
 		</line>
-		<line linenr="077" indent="">
+		<line linenr="091" indent="">
 			<var>$tipNumbers.size</var>
 			<text> </text>
 			<text>=</text>
@@ -719,7 +842,7 @@
 			<text> </text>
 			<var>$tipNumbers</var>
 		</line>
-		<line linenr="078" indent="">
+		<line linenr="092" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$tipNumbers.size</var>
@@ -728,7 +851,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="079" indent="">
+		<line linenr="093" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$playtime</var>
@@ -741,7 +864,7 @@
 			<text> </text>
 			<var>$div</var>
 		</line>
-		<line linenr="080" indent="">
+		<line linenr="094" indent="">
 			<var>$tipNumber</var>
 			<text> </text>
 			<text>=</text>
@@ -751,7 +874,7 @@
 			<var>0</var>
 			<text>]</text>
 		</line>
-		<line linenr="081" indent="">
+		<line linenr="095" indent="">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -768,7 +891,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="082" indent="" interruptable="@">
+		<line linenr="096" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -786,14 +909,14 @@
 			<text>=</text>
 			<var>$tipNumber</var>
 		</line>
-		<line linenr="083" indent="">
+		<line linenr="097" indent="">
 			<var>$UsefulInfoTimer</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$playtime</var>
 		</line>
-		<line linenr="084" indent="">
+		<line linenr="098" indent="">
 			<var>$div</var>
 			<text> </text>
 			<text>=</text>
@@ -810,14 +933,14 @@
 			<text> </text>
 			<var>28800</var>
 		</line>
-		<line linenr="085" indent="">
+		<line linenr="099" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="086" indent="">
+		<line linenr="100" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="087" indent="" />
-		<line linenr="088" indent="" interruptable="@">
+		<line linenr="101" indent="" />
+		<line linenr="102" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -826,11 +949,11 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="089" indent="">
+		<line linenr="103" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="090" indent="" />
-		<line linenr="091" indent="">
+		<line linenr="104" indent="" />
+		<line linenr="105" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -841,9 +964,9 @@
 			<sval type="string" val="Mayhem.Monitor.News" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="34" />
+			<sval type="int" val="49" />
 			<sval type="int" val="0" />
-			<sval type="array" size="14">
+			<sval type="array" size="16">
 				<sval type="string" val="allNews" />
 				<sval type="string" val="newsHistory" />
 				<sval type="string" val="playtime" />
@@ -856,10 +979,12 @@
 				<sval type="string" val="pos" />
 				<sval type="string" val="len" />
 				<sval type="string" val="newsHistory.timer" />
+				<sval type="string" val="ZHCoreRunning" />
+				<sval type="string" val="ZHCoreRuns" />
 				<sval type="string" val="tipNumbers.size" />
 				<sval type="string" val="tipNumber" />
 			</sval>
-			<sval type="array" size="65">
+			<sval type="array" size="72">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -1057,7 +1182,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610596343" />
+					<sval type="int" val="-1610594551" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
@@ -1243,10 +1368,77 @@
 					<sval type="int" val="141" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="19">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610598909" />
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
 					<sval type="int" val="5" />
+					<sval type="string" val="ZH.Core_isRunning" />
+					<sval type="int" val="12" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="ZH.Core_Runs" />
+					<sval type="int" val="13" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610599416" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610598653" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="157" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_newsHistoryTimer" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+				</sval>
+				<sval type="array" size="56">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597117" />
+					<sval type="int" val="16" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
@@ -1257,12 +1449,49 @@
 					<sval type="int" val="43200" />
 					<sval type="int" val="15" />
 					<sval type="int" val="4" />
-					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="20" />
+					<sval type="int" val="16" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="12" />
 					<sval type="int" val="-2" />
 					<sval type="int" val="4" />
 					<sval type="int" val="-4" />
+					<sval type="int" val="17" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-6" />
+					<sval type="int" val="9" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-9" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-12" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-13" />
+					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="157" />
@@ -1300,16 +1529,16 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610596861" />
+					<sval type="int" val="-1610595069" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -1321,7 +1550,7 @@
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610596861" />
+					<sval type="int" val="-1610595069" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -1342,7 +1571,7 @@
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
 					<sval type="int" val="4" />
@@ -1363,7 +1592,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -1399,7 +1628,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="28">
+			<sval type="array" size="35">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1476,46 +1705,77 @@
 					<sval type="int" val="46" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="54" />
-					<sval type="int" val="4" />
+				<sval type="array" size="3">
+					<sval type="int" val="46" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.6.1: If sending a report at the 24-hour interval, do not send the report until ZH.Core is finished." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="54" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="54" />
+					<sval type="int" val="50" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="54" />
+					<sval type="int" val="50" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Safeties. For existing games, we set ZHCoreRuns to -1. It may miss a report, but it'll keep synchronization with ZH.Core." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="52" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="55" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="55" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="55" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Send only after the 1st (runs = 1) or 3rd (runs = 0) completion, and only when ZH.Core isn't running." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="61" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="61" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="61" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="61" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan9 - Every so often show an info screen with useful tips." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="54" />
+					<sval type="int" val="61" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.4: Display a random set of tips each time." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="62" />
+					<sval type="int" val="69" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="62" />
+					<sval type="int" val="69" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="62" />
+					<sval type="int" val="69" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="64" />
+					<sval type="int" val="71" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="64" />
+					<sval type="int" val="71" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
