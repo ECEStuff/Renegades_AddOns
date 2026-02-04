@@ -3,11 +3,12 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Renegades.Plot.DropClue</name>
-	<version>93</version>
+	<version>117</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
 		<argument index="1" name="isRenegade" type="Var/Boolean" desc="" />
+		<argument index="2" name="captured" type="Var/Boolean" desc="" />
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
@@ -142,7 +143,7 @@
 		</line>
 		<line linenr="026" indent="" />
 		<line linenr="027" indent="">
-			<comment>* Initialization</comment>
+			<comment>* Initialization. (Add-Ons 1.7 - now fetches 2 sets of prefixes)</comment>
 		</line>
 		<line linenr="028" indent="">
 			<var>$randomizedClues</var>
@@ -161,7 +162,7 @@
 			<text>'Renegade_Clues'</text>
 		</line>
 		<line linenr="029" indent="">
-			<var>$cluePrefixes</var>
+			<var>$cluePrefixes.Destroy</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -174,12 +175,12 @@
 			<text> </text>
 			<text>name</text>
 			<text>=</text>
-			<text>'Renegade_CluePrefixes'</text>
+			<text>'Renegade_CluePrefixes_Destroy'</text>
 		</line>
 		<line linenr="030" indent="">
-			<text>if</text>
+			<var>$cluePrefixes.Destroy.size</var>
 			<text> </text>
-			<text>not</text>
+			<text>=</text>
 			<text> </text>
 			<text>size</text>
 			<text> </text>
@@ -187,9 +188,49 @@
 			<text> </text>
 			<text>array</text>
 			<text> </text>
-			<var>$cluePrefixes</var>
+			<var>$cluePrefixes.Destroy</var>
 		</line>
-		<line linenr="031" indent="&#160;">
+		<line linenr="031" indent="">
+			<var>$cluePrefixes.Capture</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'Renegade_CluePrefixes_Capture'</text>
+		</line>
+		<line linenr="032" indent="">
+			<var>$cluePrefixes.Capture.size</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$cluePrefixes.Capture</var>
+		</line>
+		<line linenr="033" indent="">
+			<text>if</text>
+			<text> </text>
+			<text>!</text>
+			<var>$cluePrefixes.Destroy.size</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<text>!</text>
+			<var>$cluePrefixes.Capture.size</var>
+		</line>
+		<line linenr="034" indent="&#160;">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -209,7 +250,7 @@
 			<text> </text>
 			<text>fmt</text>
 			<text>=</text>
-			<text>'Renegades clue Prefixes not found.'</text>
+			<text>'Renegades clue prefixes not found. Reinitializing clue prefixes.'</text>
 			<text>,</text>
 			<text> </text>
 			<var>null</var>
@@ -226,18 +267,69 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="032" indent="&#160;">
-			<text>return</text>
+		<line linenr="035" indent="&#160;" interruptable="@">
+			<text>=</text>
 			<text> </text>
-			<var>null</var>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Renegades.Plot.LoadPrefixes</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
 		</line>
-		<line linenr="033" indent="">
+		<line linenr="036" indent="&#160;">
+			<var>$cluePrefixes.Destroy</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'Renegade_CluePrefixes_Destroy'</text>
+		</line>
+		<line linenr="037" indent="&#160;">
+			<var>$cluePrefixes.Capture</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'Renegade_CluePrefixes_Capture'</text>
+		</line>
+		<line linenr="038" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="034" indent="">
-			<comment>* the prefix is one of several messages that look like:  &quot;Upon inspection of the ship wreckage you find a communications pod with a partial message still in the buffer:&quot;</comment>
+		<line linenr="039" indent="" />
+		<line linenr="040" indent="">
+			<comment>* the prefix is one of several messages that look like:  &quot;Upon inspection of the ship wreckage, you locate a communications pod retaining a partial message in its buffer:&quot;</comment>
 		</line>
-		<line linenr="035" indent="" interruptable="@">
+		<line linenr="041" indent="">
+			<comment>* Add-Ons 1.7 - if ship was captured, use capture prefixes. Otherwise, use destruction prefixes.</comment>
+		</line>
+		<line linenr="042" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$captured</var>
+		</line>
+		<line linenr="043" indent="&#160;" interruptable="@">
 			<var>$prefix</var>
 			<text> </text>
 			<text>=</text>
@@ -255,28 +347,72 @@
 			<text> </text>
 			<text>array</text>
 			<text>=</text>
-			<var>$cluePrefixes</var>
+			<var>$cluePrefixes.Capture</var>
 		</line>
-		<line linenr="036" indent="" />
-		<line linenr="037" indent="" />
-		<line linenr="038" indent="" />
-		<line linenr="039" indent="">
+		<line linenr="044" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="045" indent="&#160;" interruptable="@">
+			<var>$prefix</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.GetRandomElement</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>array</text>
+			<text>=</text>
+			<var>$cluePrefixes.Destroy</var>
+		</line>
+		<line linenr="046" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="047" indent="" />
+		<line linenr="048" indent="">
+			<comment>* Add-Ons 1.7: Moved difficulty getter here.</comment>
+		</line>
+		<line linenr="049" indent="" interruptable="@">
+			<var>$difficulty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetDifficulty</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="050" indent="" />
+		<line linenr="051" indent="">
 			<comment>* If the player killed a pirate, there is a small chance they get here and we drop some useful information about the renegades.</comment>
 		</line>
-		<line linenr="040" indent="">
+		<line linenr="052" indent="">
 			<comment>* Only a dead renegade can drop a clue about entry into the renegade station system, but pirates can drop useful info.</comment>
 		</line>
-		<line linenr="041" indent="">
+		<line linenr="053" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
 			<text> </text>
 			<var>$isRenegade</var>
 		</line>
-		<line linenr="042" indent="&#160;">
+		<line linenr="054" indent="&#160;">
 			<comment>* Add-Ons 1.1: Fixed random chance (was 2/11 chance; now 3/20 as intended to drop info) and added random races for more flavor. </comment>
 		</line>
-		<line linenr="043" indent="&#160;" interruptable="@">
+		<line linenr="055" indent="&#160;" interruptable="@">
 			<var>$commonwealth</var>
 			<text> </text>
 			<text>=</text>
@@ -292,7 +428,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="044" indent="&#160;" interruptable="@">
+		<line linenr="056" indent="&#160;" interruptable="@">
 			<var>$race</var>
 			<text> </text>
 			<text>=</text>
@@ -312,7 +448,7 @@
 			<text>=</text>
 			<var>$commonwealth</var>
 		</line>
-		<line linenr="045" indent="&#160;">
+		<line linenr="057" indent="&#160;">
 			<var>$pilotname</var>
 			<text> </text>
 			<text>=</text>
@@ -328,11 +464,14 @@
 			<text>=</text>
 			<var>$race</var>
 		</line>
-		<line linenr="046" indent="&#160;" />
-		<line linenr="047" indent="&#160;">
-			<comment>* 15% chance we drop a clue from a pirate: 10% useful intel, 5% lore. Note this occurs only if the player directly does the killing.  See !ship.signal.killed.</comment>
+		<line linenr="058" indent="&#160;" />
+		<line linenr="059" indent="&#160;">
+			<comment>* 15% chance we drop a clue from a pirate: 10% useful intel, 5% lore. Note this occurs only if the player or player's hired mercs does the killing, boarding, or bailing.</comment>
 		</line>
-		<line linenr="048" indent="&#160;">
+		<line linenr="060" indent="&#160;">
+			<comment>* See !ship.signal.killed, Mayhem.Task.BailMaybe, and ZH.Sig.Captured</comment>
+		</line>
+		<line linenr="061" indent="&#160;">
 			<var>$rand</var>
 			<text> </text>
 			<text>=</text>
@@ -349,7 +488,7 @@
 			<text> </text>
 			<var>19</var>
 		</line>
-		<line linenr="049" indent="&#160;">
+		<line linenr="062" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -360,28 +499,28 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="050" indent="&#160;&#160;">
+		<line linenr="063" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="051" indent="&#160;" />
-		<line linenr="052" indent="&#160;">
+		<line linenr="064" indent="&#160;" />
+		<line linenr="065" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$debug</var>
 		</line>
-		<line linenr="053" indent="&#160;&#160;">
+		<line linenr="066" indent="&#160;&#160;">
 			<var>$rand</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="054" indent="&#160;" />
-		<line linenr="055" indent="&#160;">
+		<line linenr="067" indent="&#160;" />
+		<line linenr="068" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rand</var>
@@ -390,19 +529,19 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="056" indent="&#160;&#160;">
+		<line linenr="069" indent="&#160;&#160;">
 			<comment>* 0 = assessment of the renegade station ship strength.</comment>
 		</line>
-		<line linenr="057" indent="&#160;&#160;">
+		<line linenr="070" indent="&#160;&#160;">
 			<comment>* What's up %s?  Yea, I was just back at that renegade base for repairs and a bath.  The docking bay seemed pretty busy.  I saw at least %s class %s ships sitting there, so they seem ready for anything.</comment>
 		</line>
-		<line linenr="058" indent="&#160;&#160;">
+		<line linenr="071" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>GetShipsAtRenegadeStation</var>
 			<text>:</text>
 		</line>
-		<line linenr="059" indent="&#160;&#160;">
+		<line linenr="072" indent="&#160;&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -433,7 +572,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="060" indent="&#160;&#160;">
+		<line linenr="073" indent="&#160;&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -444,14 +583,14 @@
 			<text> </text>
 			<var>$msg</var>
 		</line>
-		<line linenr="061" indent="&#160;&#160;">
+		<line linenr="074" indent="&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>972</var>
 		</line>
-		<line linenr="062" indent="&#160;&#160;" interruptable="@">
+		<line linenr="075" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -485,8 +624,8 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="063" indent="&#160;&#160;" />
-		<line linenr="064" indent="&#160;">
+		<line linenr="076" indent="&#160;&#160;" />
+		<line linenr="077" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -497,13 +636,13 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="065" indent="&#160;&#160;">
+		<line linenr="078" indent="&#160;&#160;">
 			<comment>* 1 = a random renegade location</comment>
 		</line>
-		<line linenr="066" indent="&#160;&#160;">
+		<line linenr="079" indent="&#160;&#160;">
 			<comment>* Hey %s hows things? I was hunting over in %s and noticed a strange ship hanging out.  Thought he may be one of those renegades so I gave him a wide berth.  Watch your six buddy.</comment>
 		</line>
-		<line linenr="067" indent="&#160;&#160;">
+		<line linenr="080" indent="&#160;&#160;">
 			<var>$RenegadeShipList</var>
 			<text> </text>
 			<text>=</text>
@@ -519,7 +658,7 @@
 			<text>=</text>
 			<text>'RenegadeShipList'</text>
 		</line>
-		<line linenr="068" indent="&#160;&#160;">
+		<line linenr="081" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -530,12 +669,12 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="069" indent="&#160;&#160;&#160;">
+		<line linenr="082" indent="&#160;&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="070" indent="&#160;&#160;">
+		<line linenr="083" indent="&#160;&#160;">
 			<var>$listSize</var>
 			<text> </text>
 			<text>=</text>
@@ -548,7 +687,7 @@
 			<text> </text>
 			<var>$RenegadeShipList</var>
 		</line>
-		<line linenr="071" indent="&#160;&#160;">
+		<line linenr="084" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -559,12 +698,12 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="072" indent="&#160;&#160;&#160;">
+		<line linenr="085" indent="&#160;&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="073" indent="&#160;&#160;" interruptable="@">
+		<line linenr="086" indent="&#160;&#160;" interruptable="@">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -584,7 +723,7 @@
 			<text>=</text>
 			<var>$RenegadeShipList</var>
 		</line>
-		<line linenr="074" indent="&#160;&#160;">
+		<line linenr="087" indent="&#160;&#160;">
 			<var>$sec</var>
 			<text> </text>
 			<text>=</text>
@@ -596,7 +735,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="075" indent="&#160;&#160;">
+		<line linenr="088" indent="&#160;&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -627,7 +766,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="076" indent="&#160;&#160;">
+		<line linenr="089" indent="&#160;&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -638,14 +777,14 @@
 			<text> </text>
 			<var>$msg</var>
 		</line>
-		<line linenr="077" indent="&#160;&#160;">
+		<line linenr="090" indent="&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>972</var>
 		</line>
-		<line linenr="078" indent="&#160;&#160;" interruptable="@">
+		<line linenr="091" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -679,8 +818,8 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="079" indent="&#160;&#160;" />
-		<line linenr="080" indent="&#160;">
+		<line linenr="092" indent="&#160;&#160;" />
+		<line linenr="093" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -691,22 +830,22 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="081" indent="&#160;&#160;">
+		<line linenr="094" indent="&#160;&#160;">
 			<comment>* 2 = random lore</comment>
 		</line>
-		<line linenr="082" indent="&#160;&#160;">
+		<line linenr="095" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.1: Lore includes:</comment>
 		</line>
-		<line linenr="083" indent="&#160;&#160;">
+		<line linenr="096" indent="&#160;&#160;">
 			<comment>* 1. No one likes the renegades. We offer them bribes to keep them off our backs.</comment>
 		</line>
-		<line linenr="084" indent="&#160;&#160;">
+		<line linenr="097" indent="&#160;&#160;">
 			<comment>* 2. You did not get this from me, but rumor has it that a %s named %s hired the renegades to attack the Independents.  No one knows why they were hired.</comment>
 		</line>
-		<line linenr="085" indent="&#160;&#160;">
+		<line linenr="098" indent="&#160;&#160;">
 			<comment>* 3. I heard rumors that a fellow pirate named %s is secretly funding the renegades. Do not snitch him out or our heads are next.</comment>
 		</line>
-		<line linenr="086" indent="&#160;&#160;">
+		<line linenr="099" indent="&#160;&#160;">
 			<var>$rand</var>
 			<text> </text>
 			<text>=</text>
@@ -723,8 +862,8 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="087" indent="&#160;&#160;" />
-		<line linenr="088" indent="&#160;&#160;">
+		<line linenr="100" indent="&#160;&#160;" />
+		<line linenr="101" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rand</var>
@@ -733,7 +872,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="089" indent="&#160;&#160;&#160;">
+		<line linenr="102" indent="&#160;&#160;&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -764,7 +903,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="090" indent="&#160;&#160;">
+		<line linenr="103" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -775,7 +914,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="091" indent="&#160;&#160;&#160;">
+		<line linenr="104" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$race</var>
@@ -784,7 +923,7 @@
 			<text> </text>
 			<var>[Argon]</var>
 		</line>
-		<line linenr="092" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="105" indent="&#160;&#160;&#160;&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -815,10 +954,10 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="093" indent="&#160;&#160;&#160;">
+		<line linenr="106" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="094" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="107" indent="&#160;&#160;&#160;&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -849,13 +988,13 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="095" indent="&#160;&#160;&#160;">
+		<line linenr="108" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="096" indent="&#160;&#160;">
+		<line linenr="109" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="097" indent="&#160;&#160;&#160;">
+		<line linenr="110" indent="&#160;&#160;&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -886,11 +1025,11 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="098" indent="&#160;&#160;">
+		<line linenr="111" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="099" indent="&#160;&#160;" />
-		<line linenr="100" indent="&#160;&#160;">
+		<line linenr="112" indent="&#160;&#160;" />
+		<line linenr="113" indent="&#160;&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -901,14 +1040,14 @@
 			<text> </text>
 			<var>$msg</var>
 		</line>
-		<line linenr="101" indent="&#160;&#160;">
+		<line linenr="114" indent="&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>972</var>
 		</line>
-		<line linenr="102" indent="&#160;&#160;" interruptable="@">
+		<line linenr="115" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -942,24 +1081,24 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="103" indent="&#160;">
+		<line linenr="116" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="104" indent="&#160;" />
-		<line linenr="105" indent="&#160;">
+		<line linenr="117" indent="&#160;" />
+		<line linenr="118" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="106" indent="">
+		<line linenr="119" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="107" indent="" />
-		<line linenr="108" indent="" />
-		<line linenr="109" indent="">
-			<comment>* If this is our first renegade that died, we start the mission and return.</comment>
+		<line linenr="120" indent="" />
+		<line linenr="121" indent="" />
+		<line linenr="122" indent="">
+			<comment>* If this is our first renegade that was defeated, we start the mission and return.</comment>
 		</line>
-		<line linenr="110" indent="">
+		<line linenr="123" indent="">
 			<var>$numkilled</var>
 			<text> </text>
 			<text>=</text>
@@ -975,7 +1114,7 @@
 			<text>=</text>
 			<text>'NumRenegadesKilled'</text>
 		</line>
-		<line linenr="111" indent="">
+		<line linenr="124" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$numkilled</var>
@@ -988,7 +1127,7 @@
 			<text> </text>
 			<var>$debug</var>
 		</line>
-		<line linenr="112" indent="&#160;">
+		<line linenr="125" indent="&#160;">
 			<var>$RenegadeEntryWreck</var>
 			<text> </text>
 			<text>=</text>
@@ -1004,7 +1143,7 @@
 			<text>=</text>
 			<text>'RenegadeEntryWreck'</text>
 		</line>
-		<line linenr="113" indent="&#160;">
+		<line linenr="126" indent="&#160;">
 			<var>$RenegadeEntrySector</var>
 			<text> </text>
 			<text>=</text>
@@ -1020,18 +1159,63 @@
 			<text>=</text>
 			<text>'RenegadeEntrySector'</text>
 		</line>
-		<line linenr="114" indent="&#160;">
+		<line linenr="127" indent="&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>972</var>
 		</line>
-		<line linenr="115" indent="&#160;" />
-		<line linenr="116" indent="&#160;">
-			<comment>* What is this broken hull that lies before you? ...</comment>
+		<line linenr="128" indent="&#160;" />
+		<line linenr="129" indent="&#160;">
+			<comment>* Add-Ons 1.7: Display captured version if ship was captured.</comment>
 		</line>
-		<line linenr="117" indent="&#160;">
+		<line linenr="130" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$captured</var>
+		</line>
+		<line linenr="131" indent="&#160;&#160;">
+			<comment>* The renegade vessel has been secured and positively identified ...</comment>
+		</line>
+		<line linenr="132" indent="&#160;&#160;">
+			<var>$msg</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>sprintf</text>
+			<text>:</text>
+			<text> </text>
+			<text>pageid</text>
+			<text>=</text>
+			<var>9980</var>
+			<text> </text>
+			<text>textid</text>
+			<text>=</text>
+			<var>7</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+			<text>,</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="133" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="134" indent="&#160;&#160;">
+			<comment>* The shattered hull before you belongs to a renegade vessel ... </comment>
+		</line>
+		<line linenr="135" indent="&#160;&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -1062,7 +1246,10 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="118" indent="&#160;" interruptable="@">
+		<line linenr="136" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="137" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1096,11 +1283,61 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="119" indent="&#160;" />
-		<line linenr="120" indent="&#160;">
+		<line linenr="138" indent="&#160;" />
+		<line linenr="139" indent="&#160;">
 			<comment>* ... you to believe something important has been staged in %s...</comment>
 		</line>
-		<line linenr="121" indent="&#160;">
+		<line linenr="140" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="141" indent="&#160;&#160;">
+			<comment>* Add-Ons 1.7: Special warnings depending on difficulty.</comment>
+		</line>
+		<line linenr="142" indent="&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'You have virtually no margin for error.'</text>
+		</line>
+		<line linenr="143" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="144" indent="&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Margin for error is limited.'</text>
+		</line>
+		<line linenr="145" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="146" indent="&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'You have some room for error.'</text>
+		</line>
+		<line linenr="147" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="148" indent="&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -1120,7 +1357,7 @@
 			<var>$RenegadeEntrySector</var>
 			<text>,</text>
 			<text> </text>
-			<var>null</var>
+			<var>$t</var>
 			<text>,</text>
 			<text> </text>
 			<var>null</var>
@@ -1131,7 +1368,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="122" indent="&#160;" interruptable="@">
+		<line linenr="149" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1165,8 +1402,8 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="123" indent="&#160;" />
-		<line linenr="124" indent="&#160;" interruptable="@">
+		<line linenr="150" indent="&#160;" />
+		<line linenr="151" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1175,19 +1412,19 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="125" indent="&#160;" />
-		<line linenr="126" indent="&#160;">
+		<line linenr="152" indent="&#160;" />
+		<line linenr="153" indent="&#160;">
 			<comment>* Upon death of the first renegade you start the Renegade Mission</comment>
 		</line>
-		<line linenr="127" indent="&#160;">
-			<comment>* 1. Start Mission (add-ons 1.2: formalized renegade storyline)</comment>
+		<line linenr="154" indent="&#160;">
+			<comment>* 1. Start Mission (Add-ons 1.2: formalized renegade storyline)</comment>
 		</line>
-		<line linenr="128" indent="&#160;">
+		<line linenr="155" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'Destroy Renegade ships to get gate code fragments. Get 3 unique code fragments and then scan the '</text>
+			<text>'Recover 3 unique gate code fragments from Renegade vessels, then scan the old Split Dragon '</text>
 			<text> </text>
 			<text>+</text>
 			<text> </text>
@@ -1205,7 +1442,7 @@
 			<text> </text>
 			<text>'.'</text>
 		</line>
-		<line linenr="129" indent="&#160;" interruptable="@">
+		<line linenr="156" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1227,23 +1464,23 @@
 			<text>=</text>
 			<var>$t</var>
 		</line>
-		<line linenr="130" indent="&#160;">
+		<line linenr="157" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="131" indent="">
+		<line linenr="158" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="132" indent="" />
-		<line linenr="133" indent="" />
-		<line linenr="134" indent="">
+		<line linenr="159" indent="" />
+		<line linenr="160" indent="" />
+		<line linenr="161" indent="">
 			<comment>* show one of the static clues.</comment>
 		</line>
-		<line linenr="135" indent="">
+		<line linenr="162" indent="">
 			<comment>* Pop clue off stack, combine it with the prefix and show it.</comment>
 		</line>
-		<line linenr="136" indent="">
+		<line linenr="163" indent="">
 			<var>$cluecount</var>
 			<text> </text>
 			<text>=</text>
@@ -1256,7 +1493,7 @@
 			<text> </text>
 			<var>$randomizedClues</var>
 		</line>
-		<line linenr="137" indent="">
+		<line linenr="164" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$cluecount</var>
@@ -1265,7 +1502,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="138" indent="&#160;">
+		<line linenr="165" indent="&#160;">
 			<var>$clue</var>
 			<text> </text>
 			<text>=</text>
@@ -1275,7 +1512,7 @@
 			<var>0</var>
 			<text>]</text>
 		</line>
-		<line linenr="139" indent="&#160;">
+		<line linenr="166" indent="&#160;">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -1292,7 +1529,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="140" indent="&#160;">
+		<line linenr="167" indent="&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -1308,8 +1545,8 @@
 			<text>=</text>
 			<var>$randomizedClues</var>
 		</line>
-		<line linenr="141" indent="&#160;" />
-		<line linenr="142" indent="&#160;">
+		<line linenr="168" indent="&#160;" />
+		<line linenr="169" indent="&#160;">
 			<var>$msgToShow</var>
 			<text> </text>
 			<text>=</text>
@@ -1320,14 +1557,14 @@
 			<text> </text>
 			<var>$clue</var>
 		</line>
-		<line linenr="143" indent="&#160;">
+		<line linenr="170" indent="&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>972</var>
 		</line>
-		<line linenr="144" indent="&#160;" interruptable="@">
+		<line linenr="171" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1361,8 +1598,8 @@
 			<text>=</text>
 			<text>'Renegade Central'</text>
 		</line>
-		<line linenr="145" indent="&#160;" />
-		<line linenr="146" indent="&#160;" interruptable="@">
+		<line linenr="172" indent="&#160;" />
+		<line linenr="173" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1371,11 +1608,11 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="147" indent="&#160;" />
-		<line linenr="148" indent="&#160;">
+		<line linenr="174" indent="&#160;" />
+		<line linenr="175" indent="&#160;">
 			<comment>* 2. Update mission when player drops a clue.</comment>
 		</line>
-		<line linenr="149" indent="&#160;" interruptable="@">
+		<line linenr="176" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1397,23 +1634,23 @@
 			<text>=</text>
 			<var>$clue</var>
 		</line>
-		<line linenr="150" indent="">
+		<line linenr="177" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="151" indent="" />
-		<line linenr="152" indent="">
+		<line linenr="178" indent="" />
+		<line linenr="179" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="153" indent="" />
-		<line linenr="154" indent="" />
-		<line linenr="155" indent="" />
-		<line linenr="156" indent="">
+		<line linenr="180" indent="" />
+		<line linenr="181" indent="" />
+		<line linenr="182" indent="" />
+		<line linenr="183" indent="">
 			<var>GetShipsAtRenegadeStation</var>
 			<text>:</text>
 		</line>
-		<line linenr="157" indent="&#160;">
+		<line linenr="184" indent="&#160;">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
@@ -1429,14 +1666,14 @@
 			<text>=</text>
 			<text>'RenegadeStation'</text>
 		</line>
-		<line linenr="158" indent="&#160;" />
-		<line linenr="159" indent="&#160;">
+		<line linenr="185" indent="&#160;" />
+		<line linenr="186" indent="&#160;">
 			<comment>* Safety below but should never happen - this script returns null if the gate is already revealed. </comment>
 		</line>
-		<line linenr="160" indent="&#160;">
+		<line linenr="187" indent="&#160;">
 			<comment>* The station otherwise exists until after the gate is revealed.</comment>
 		</line>
-		<line linenr="161" indent="&#160;">
+		<line linenr="188" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -1446,25 +1683,25 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="162" indent="&#160;&#160;">
+		<line linenr="189" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="163" indent="&#160;" />
-		<line linenr="164" indent="&#160;">
+		<line linenr="190" indent="&#160;" />
+		<line linenr="191" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$debug</var>
 		</line>
-		<line linenr="165" indent="&#160;&#160;">
+		<line linenr="192" indent="&#160;&#160;">
 			<var>$shipType</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>{Paranid Proteus Raider}</var>
 		</line>
-		<line linenr="166" indent="&#160;&#160;" interruptable="@">
+		<line linenr="193" indent="&#160;&#160;" interruptable="@">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -1500,7 +1737,7 @@
 			<text>=</text>
 			<var>6</var>
 		</line>
-		<line linenr="167" indent="&#160;&#160;" interruptable="@">
+		<line linenr="194" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1509,17 +1746,17 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="168" indent="&#160;">
+		<line linenr="195" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="169" indent="&#160;" />
-		<line linenr="170" indent="&#160;">
+		<line linenr="196" indent="&#160;" />
+		<line linenr="197" indent="&#160;">
 			<comment>* Add-Ons 1.4.10: Fixed a bug...as it reports NA even though there's ships! As such, better to get the number of owned ships instead (does not count M7Cs that have support fighters).</comment>
 		</line>
-		<line linenr="171" indent="&#160;">
+		<line linenr="198" indent="&#160;">
 			<comment>* Add-Ons 1.4.21: We now get the exact number of ships. On easy, this is always M3. On normal, it's M3 or M6. On hard or insane, it's M6 or M7.</comment>
 		</line>
-		<line linenr="172" indent="&#160;">
+		<line linenr="199" indent="&#160;">
 			<var>$ships</var>
 			<text> </text>
 			<text>=</text>
@@ -1540,7 +1777,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="173" indent="&#160;">
+		<line linenr="200" indent="&#160;">
 			<var>$ships.all</var>
 			<text> </text>
 			<text>=</text>
@@ -1553,8 +1790,8 @@
 			<text> </text>
 			<var>$ships</var>
 		</line>
-		<line linenr="174" indent="&#160;" />
-		<line linenr="175" indent="&#160;">
+		<line linenr="201" indent="&#160;" />
+		<line linenr="202" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$ships.all</var>
@@ -1563,46 +1800,30 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="176" indent="&#160;&#160;">
+		<line linenr="203" indent="&#160;&#160;">
 			<comment>* No ships created and homebased the Renegade station.</comment>
 		</line>
-		<line linenr="177" indent="&#160;&#160;">
+		<line linenr="204" indent="&#160;&#160;">
 			<var>$DockedShipCount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="178" indent="&#160;&#160;">
+		<line linenr="205" indent="&#160;&#160;">
 			<var>$DockedShipClass</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'NA'</text>
 		</line>
-		<line linenr="179" indent="&#160;">
+		<line linenr="206" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="180" indent="&#160;&#160;">
+		<line linenr="207" indent="&#160;&#160;">
 			<comment>* Must have ships homebased to the station for this clue to specify ship count and class.</comment>
 		</line>
-		<line linenr="181" indent="&#160;&#160;" interruptable="@">
-			<var>$difficulty</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.GetDifficulty</call>
-			<text> </text>
-			<text>:</text>
-		</line>
-		<line linenr="182" indent="&#160;&#160;">
+		<line linenr="208" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -1611,10 +1832,10 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="183" indent="&#160;&#160;&#160;">
+		<line linenr="209" indent="&#160;&#160;&#160;">
 			<comment>* Easy: M3s only.</comment>
 		</line>
-		<line linenr="184" indent="&#160;&#160;&#160;">
+		<line linenr="210" indent="&#160;&#160;&#160;">
 			<var>$ships.M3</var>
 			<text> </text>
 			<text>=</text>
@@ -1635,7 +1856,7 @@
 			<text>=</text>
 			<var>[M3]</var>
 		</line>
-		<line linenr="185" indent="&#160;&#160;&#160;">
+		<line linenr="211" indent="&#160;&#160;&#160;">
 			<var>$DockedShipCount</var>
 			<text> </text>
 			<text>=</text>
@@ -1648,14 +1869,14 @@
 			<text> </text>
 			<var>$ships.M3</var>
 		</line>
-		<line linenr="186" indent="&#160;&#160;&#160;">
+		<line linenr="212" indent="&#160;&#160;&#160;">
 			<var>$DockedShipClass</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[M3]</var>
 		</line>
-		<line linenr="187" indent="&#160;&#160;">
+		<line linenr="213" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -1666,10 +1887,10 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="188" indent="&#160;&#160;&#160;">
+		<line linenr="214" indent="&#160;&#160;&#160;">
 			<comment>* Normal: 33% chance to tell how many M6s, 66% chance to tell how many M3.</comment>
 		</line>
-		<line linenr="189" indent="&#160;&#160;&#160;">
+		<line linenr="215" indent="&#160;&#160;&#160;">
 			<var>$rng</var>
 			<text> </text>
 			<text>=</text>
@@ -1685,273 +1906,273 @@
 			<text>to</text>
 			<text> </text>
 			<var>2</var>
-		</line>
-		<line linenr="190" indent="&#160;&#160;&#160;">
-			<var>$ships.M6</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$station</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>owned</text>
-			<text> </text>
-			<text>ships</text>
-			<text>:</text>
-			<text> </text>
-			<text>class</text>
-			<text>/</text>
-			<text>type</text>
-			<text>=</text>
-			<var>[M6]</var>
-		</line>
-		<line linenr="191" indent="&#160;&#160;&#160;">
-			<var>$countM6</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$ships.M6</var>
-		</line>
-		<line linenr="192" indent="&#160;&#160;&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$rng</var>
-			<text> </text>
-			<text>&lt;</text>
-			<text> </text>
-			<var>1</var>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<var>$countM6</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>0</var>
-		</line>
-		<line linenr="193" indent="&#160;&#160;&#160;&#160;">
-			<comment>* There's M6s!</comment>
-		</line>
-		<line linenr="194" indent="&#160;&#160;&#160;&#160;">
-			<var>$DockedShipCount</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$countM6</var>
-		</line>
-		<line linenr="195" indent="&#160;&#160;&#160;&#160;">
-			<var>$DockedShipClass</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[M6]</var>
-		</line>
-		<line linenr="196" indent="&#160;&#160;&#160;">
-			<text>else</text>
-		</line>
-		<line linenr="197" indent="&#160;&#160;&#160;&#160;">
-			<comment>* Otherwise (or if no M6s exist), report how many M3 there are instead.</comment>
-		</line>
-		<line linenr="198" indent="&#160;&#160;&#160;&#160;">
-			<var>$ships.M3</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$station</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>owned</text>
-			<text> </text>
-			<text>ships</text>
-			<text>:</text>
-			<text> </text>
-			<text>class</text>
-			<text>/</text>
-			<text>type</text>
-			<text>=</text>
-			<var>[M3]</var>
-		</line>
-		<line linenr="199" indent="&#160;&#160;&#160;&#160;">
-			<var>$DockedShipCount</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$ships.M3</var>
-		</line>
-		<line linenr="200" indent="&#160;&#160;&#160;&#160;">
-			<var>$DockedShipClass</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[M3]</var>
-		</line>
-		<line linenr="201" indent="&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="202" indent="&#160;&#160;">
-			<text>else</text>
-		</line>
-		<line linenr="203" indent="&#160;&#160;&#160;">
-			<comment>* Hard and insane: 33% chance to tell how many M7s, 66% chance to tell how many M6.</comment>
-		</line>
-		<line linenr="204" indent="&#160;&#160;&#160;">
-			<var>$rng</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>random</text>
-			<text> </text>
-			<text>value</text>
-			<text> </text>
-			<text>from</text>
-			<text> </text>
-			<text>zero</text>
-			<text> </text>
-			<text>to</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="205" indent="&#160;&#160;&#160;">
-			<var>$ships.M7</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$station</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>owned</text>
-			<text> </text>
-			<text>ships</text>
-			<text>:</text>
-			<text> </text>
-			<text>class</text>
-			<text>/</text>
-			<text>type</text>
-			<text>=</text>
-			<var>[M7]</var>
-		</line>
-		<line linenr="206" indent="&#160;&#160;&#160;">
-			<var>$countM7</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$ships.M7</var>
-		</line>
-		<line linenr="207" indent="&#160;&#160;&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$rng</var>
-			<text> </text>
-			<text>&lt;</text>
-			<text> </text>
-			<var>1</var>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<var>$countM7</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>0</var>
-		</line>
-		<line linenr="208" indent="&#160;&#160;&#160;&#160;">
-			<comment>* There's M7s!</comment>
-		</line>
-		<line linenr="209" indent="&#160;&#160;&#160;&#160;">
-			<var>$DockedShipCount</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$countM7</var>
-		</line>
-		<line linenr="210" indent="&#160;&#160;&#160;&#160;">
-			<var>$DockedShipClass</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[M7]</var>
-		</line>
-		<line linenr="211" indent="&#160;&#160;&#160;">
-			<text>else</text>
-		</line>
-		<line linenr="212" indent="&#160;&#160;&#160;&#160;">
-			<comment>* Otherwise (or if no M7s exist), report how many M6 there are instead.</comment>
-		</line>
-		<line linenr="213" indent="&#160;&#160;&#160;&#160;">
-			<var>$ships.M6</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$station</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>owned</text>
-			<text> </text>
-			<text>ships</text>
-			<text>:</text>
-			<text> </text>
-			<text>class</text>
-			<text>/</text>
-			<text>type</text>
-			<text>=</text>
-			<var>[M6]</var>
-		</line>
-		<line linenr="214" indent="&#160;&#160;&#160;&#160;">
-			<var>$DockedShipCount</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$ships.M6</var>
-		</line>
-		<line linenr="215" indent="&#160;&#160;&#160;&#160;">
-			<var>$DockedShipClass</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[M6]</var>
 		</line>
 		<line linenr="216" indent="&#160;&#160;&#160;">
+			<var>$ships.M6</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owned</text>
+			<text> </text>
+			<text>ships</text>
+			<text>:</text>
+			<text> </text>
+			<text>class</text>
+			<text>/</text>
+			<text>type</text>
+			<text>=</text>
+			<var>[M6]</var>
+		</line>
+		<line linenr="217" indent="&#160;&#160;&#160;">
+			<var>$countM6</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$ships.M6</var>
+		</line>
+		<line linenr="218" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$rng</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>1</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$countM6</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="219" indent="&#160;&#160;&#160;&#160;">
+			<comment>* There's M6s!</comment>
+		</line>
+		<line linenr="220" indent="&#160;&#160;&#160;&#160;">
+			<var>$DockedShipCount</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$countM6</var>
+		</line>
+		<line linenr="221" indent="&#160;&#160;&#160;&#160;">
+			<var>$DockedShipClass</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[M6]</var>
+		</line>
+		<line linenr="222" indent="&#160;&#160;&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="223" indent="&#160;&#160;&#160;&#160;">
+			<comment>* Otherwise (or if no M6s exist), report how many M3 there are instead.</comment>
+		</line>
+		<line linenr="224" indent="&#160;&#160;&#160;&#160;">
+			<var>$ships.M3</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owned</text>
+			<text> </text>
+			<text>ships</text>
+			<text>:</text>
+			<text> </text>
+			<text>class</text>
+			<text>/</text>
+			<text>type</text>
+			<text>=</text>
+			<var>[M3]</var>
+		</line>
+		<line linenr="225" indent="&#160;&#160;&#160;&#160;">
+			<var>$DockedShipCount</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$ships.M3</var>
+		</line>
+		<line linenr="226" indent="&#160;&#160;&#160;&#160;">
+			<var>$DockedShipClass</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[M3]</var>
+		</line>
+		<line linenr="227" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="217" indent="&#160;&#160;">
+		<line linenr="228" indent="&#160;&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="229" indent="&#160;&#160;&#160;">
+			<comment>* Hard and insane: 33% chance to tell how many M7s, 66% chance to tell how many M6.</comment>
+		</line>
+		<line linenr="230" indent="&#160;&#160;&#160;">
+			<var>$rng</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>random</text>
+			<text> </text>
+			<text>value</text>
+			<text> </text>
+			<text>from</text>
+			<text> </text>
+			<text>zero</text>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="231" indent="&#160;&#160;&#160;">
+			<var>$ships.M7</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owned</text>
+			<text> </text>
+			<text>ships</text>
+			<text>:</text>
+			<text> </text>
+			<text>class</text>
+			<text>/</text>
+			<text>type</text>
+			<text>=</text>
+			<var>[M7]</var>
+		</line>
+		<line linenr="232" indent="&#160;&#160;&#160;">
+			<var>$countM7</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$ships.M7</var>
+		</line>
+		<line linenr="233" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$rng</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>1</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$countM7</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="234" indent="&#160;&#160;&#160;&#160;">
+			<comment>* There's M7s!</comment>
+		</line>
+		<line linenr="235" indent="&#160;&#160;&#160;&#160;">
+			<var>$DockedShipCount</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$countM7</var>
+		</line>
+		<line linenr="236" indent="&#160;&#160;&#160;&#160;">
+			<var>$DockedShipClass</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[M7]</var>
+		</line>
+		<line linenr="237" indent="&#160;&#160;&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="238" indent="&#160;&#160;&#160;&#160;">
+			<comment>* Otherwise (or if no M7s exist), report how many M6 there are instead.</comment>
+		</line>
+		<line linenr="239" indent="&#160;&#160;&#160;&#160;">
+			<var>$ships.M6</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owned</text>
+			<text> </text>
+			<text>ships</text>
+			<text>:</text>
+			<text> </text>
+			<text>class</text>
+			<text>/</text>
+			<text>type</text>
+			<text>=</text>
+			<var>[M6]</var>
+		</line>
+		<line linenr="240" indent="&#160;&#160;&#160;&#160;">
+			<var>$DockedShipCount</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$ships.M6</var>
+		</line>
+		<line linenr="241" indent="&#160;&#160;&#160;&#160;">
+			<var>$DockedShipClass</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[M6]</var>
+		</line>
+		<line linenr="242" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="218" indent="&#160;">
+		<line linenr="243" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="219" indent="">
+		<line linenr="244" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="245" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -1960,17 +2181,22 @@
 			<sval type="string" val="Renegades.Plot.DropClue" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="93" />
+			<sval type="int" val="117" />
 			<sval type="int" val="0" />
-			<sval type="array" size="37">
+			<sval type="array" size="41">
 				<sval type="string" val="isRenegade" />
+				<sval type="string" val="captured" />
 				<sval type="string" val="debug" />
 				<sval type="string" val="RenegadesGateCreated" />
 				<sval type="string" val="RenegadeSector" />
 				<sval type="string" val="GlobalDisable" />
 				<sval type="string" val="randomizedClues" />
-				<sval type="string" val="cluePrefixes" />
+				<sval type="string" val="cluePrefixes.Destroy" />
+				<sval type="string" val="cluePrefixes.Destroy.size" />
+				<sval type="string" val="cluePrefixes.Capture" />
+				<sval type="string" val="cluePrefixes.Capture.size" />
 				<sval type="string" val="prefix" />
+				<sval type="string" val="difficulty" />
 				<sval type="string" val="commonwealth" />
 				<sval type="string" val="race" />
 				<sval type="string" val="pilotname" />
@@ -1993,7 +2219,6 @@
 				<sval type="string" val="shipType" />
 				<sval type="string" val="ships" />
 				<sval type="string" val="ships.all" />
-				<sval type="string" val="difficulty" />
 				<sval type="string" val="ships.M3" />
 				<sval type="string" val="rng" />
 				<sval type="string" val="ships.M6" />
@@ -2001,10 +2226,10 @@
 				<sval type="string" val="ships.M7" />
 				<sval type="string" val="countM7" />
 			</sval>
-			<sval type="array" size="129">
+			<sval type="array" size="147">
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="1" />
+					<sval type="int" val="2" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
@@ -2015,14 +2240,14 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="RenegadesGateCreated" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610611704" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -2035,14 +2260,14 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="RenegadeSector" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
 					<sval type="int" val="-536869113" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -2055,14 +2280,14 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="RenegadesGlobalDisable" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610610168" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
@@ -2081,19 +2306,52 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Renegade_Clues" />
-					<sval type="int" val="5" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Renegade_CluePrefixes" />
-					<sval type="int" val="6" />
+					<sval type="string" val="Renegade_CluePrefixes_Destroy" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="-536867068" />
+					<sval type="int" val="8" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Renegade_CluePrefixes_Capture" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607613" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-3" />
 				</sval>
 				<sval type="array" size="17">
 					<sval type="int" val="405" />
@@ -2102,7 +2360,7 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Renegades clue Prefixes not found." />
+					<sval type="string" val="Renegades clue prefixes not found. Reinitializing clue prefixes." />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -2114,24 +2372,70 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Renegades.Plot.LoadPrefixes" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
 					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Renegade_CluePrefixes_Destroy" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Renegade_CluePrefixes_Capture" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606845" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.GetRandomElement" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="24" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.GetRandomElement" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetDifficulty" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536855036" />
+					<sval type="int" val="-536852732" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -2141,7 +2445,7 @@
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.GetCommonwealth" />
-					<sval type="int" val="8" />
+					<sval type="int" val="13" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="0" />
@@ -2149,31 +2453,31 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.GetRandomElement" />
-					<sval type="int" val="9" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1039" />
-					<sval type="int" val="10" />
+					<sval type="int" val="15" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="14" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
-					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="20" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606840" />
+					<sval type="int" val="-1610604536" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -2190,16 +2494,16 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606328" />
+					<sval type="int" val="-1610604024" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="2" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -2208,10 +2512,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604541" />
+					<sval type="int" val="-1610602237" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -2223,21 +2527,21 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="86" />
+					<sval type="int" val="105" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9980" />
 					<sval type="int" val="4" />
 					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="15" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="18" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="19" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -2245,12 +2549,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -2271,7 +2575,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
@@ -2283,14 +2587,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="61" />
+					<sval type="int" val="70" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600955" />
+					<sval type="int" val="-1610598651" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -2304,14 +2608,14 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="RenegadeShipList" />
-					<sval type="int" val="15" />
+					<sval type="int" val="20" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603512" />
+					<sval type="int" val="-1610601208" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="20" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -2328,16 +2632,16 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="16" />
+					<sval type="int" val="21" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="20" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602744" />
+					<sval type="int" val="-1610600440" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="16" />
+					<sval type="int" val="21" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -2355,30 +2659,30 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.GetRandomElement" />
-					<sval type="int" val="17" />
+					<sval type="int" val="22" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="20" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="17" />
-					<sval type="int" val="18" />
+					<sval type="int" val="22" />
+					<sval type="int" val="23" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9980" />
 					<sval type="int" val="4" />
 					<sval type="int" val="14" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="15" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="18" />
+					<sval type="int" val="23" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -2388,12 +2692,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -2414,7 +2718,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
@@ -2426,14 +2730,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="61" />
+					<sval type="int" val="70" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610597115" />
+					<sval type="int" val="-1610594811" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -2445,16 +2749,16 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
-					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610599677" />
+					<sval type="int" val="-1610597373" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -2466,7 +2770,7 @@
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9980" />
 					<sval type="int" val="4" />
@@ -2484,14 +2788,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="58" />
+					<sval type="int" val="67" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610598139" />
+					<sval type="int" val="-1610595835" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -2503,10 +2807,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610598653" />
+					<sval type="int" val="-1610596349" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="14" />
 					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -2518,15 +2822,15 @@
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9980" />
 					<sval type="int" val="4" />
 					<sval type="int" val="16" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -2536,19 +2840,19 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="56" />
+					<sval type="int" val="65" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9980" />
 					<sval type="int" val="4" />
 					<sval type="int" val="17" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -2558,17 +2862,17 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="58" />
+					<sval type="int" val="67" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9980" />
 					<sval type="int" val="4" />
 					<sval type="int" val="18" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -2580,12 +2884,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -2606,7 +2910,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
@@ -2625,20 +2929,20 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="NumRenegadesKilled" />
-					<sval type="int" val="19" />
+					<sval type="int" val="24" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610593533" />
+					<sval type="int" val="-1610588669" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="19" />
+					<sval type="int" val="24" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="2" />
 					<sval type="int" val="15" />
 					<sval type="int" val="10" />
 					<sval type="int" val="5" />
@@ -2652,22 +2956,53 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="RenegadeEntryWreck" />
-					<sval type="int" val="20" />
+					<sval type="int" val="25" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="RenegadeEntrySector" />
-					<sval type="int" val="21" />
+					<sval type="int" val="26" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="200" />
 					<sval type="int" val="4" />
 					<sval type="int" val="972" />
 				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610592509" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
+					<sval type="int" val="4" />
+					<sval type="int" val="9980" />
+					<sval type="int" val="4" />
+					<sval type="int" val="7" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="80" />
+				</sval>
+				<sval type="array" size="16">
+					<sval type="int" val="150" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9980" />
 					<sval type="int" val="4" />
@@ -2691,7 +3026,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131075" />
@@ -2701,17 +3036,82 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610591229" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="27" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="You have virtually no margin for error." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="88" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610590459" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="27" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Margin for error is limited." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="88" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="27" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="You have some room for error." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9980" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="21" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+					<sval type="int" val="26" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="27" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -2727,7 +3127,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="17" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131075" />
@@ -2745,12 +3145,12 @@
 				</sval>
 				<sval type="array" size="31">
 					<sval type="int" val="104" />
-					<sval type="int" val="22" />
+					<sval type="int" val="27" />
 					<sval type="int" val="9" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Destroy Renegade ships to get gate code fragments. Get 3 unique code fragments and then scan the " />
+					<sval type="string" val="Recover 3 unique gate code fragments from Renegade vessels, then scan the old Split Dragon " />
 					<sval type="int" val="131074" />
-					<sval type="int" val="20" />
+					<sval type="int" val="25" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -2758,7 +3158,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="21" />
+					<sval type="int" val="26" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -2786,7 +3186,7 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="Renegades" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="22" />
+					<sval type="int" val="27" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -2795,16 +3195,16 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="23" />
+					<sval type="int" val="28" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610590973" />
+					<sval type="int" val="-1610586109" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="23" />
+					<sval type="int" val="28" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -2816,16 +3216,16 @@
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="24" />
+					<sval type="int" val="29" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="6" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="136" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="6" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 				</sval>
@@ -2834,16 +3234,16 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="Renegade_Clues" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="25" />
+					<sval type="int" val="30" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="24" />
+					<sval type="int" val="29" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -2864,7 +3264,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="25" />
+					<sval type="int" val="30" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131075" />
@@ -2890,7 +3290,7 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="Renegades" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="24" />
+					<sval type="int" val="29" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -2905,13 +3305,13 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="RenegadeStation" />
-					<sval type="int" val="26" />
+					<sval type="int" val="31" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
-					<sval type="int" val="-536847865" />
+					<sval type="int" val="31" />
+					<sval type="int" val="-536843001" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -2920,16 +3320,16 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610588669" />
+					<sval type="int" val="-1610583805" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="2" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="27" />
+					<sval type="int" val="32" />
 					<sval type="int" val="1" />
 					<sval type="int" val="9" />
 					<sval type="int" val="459194" />
@@ -2939,18 +3339,18 @@
 				<sval type="array" size="16">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.BuildShip" />
-					<sval type="int" val="17" />
+					<sval type="int" val="22" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="27" />
+					<sval type="int" val="32" />
 					<sval type="int" val="10" />
 					<sval type="int" val="14" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
+					<sval type="int" val="31" />
 					<sval type="int" val="4" />
 					<sval type="int" val="6" />
 				</sval>
@@ -2963,23 +3363,23 @@
 				<sval type="array" size="6">
 					<sval type="int" val="1067" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
-					<sval type="int" val="28" />
+					<sval type="int" val="31" />
+					<sval type="int" val="33" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="29" />
+					<sval type="int" val="34" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="28" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610587133" />
+					<sval type="int" val="-1610582269" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="29" />
+					<sval type="int" val="34" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -2991,7 +3391,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="13" />
+					<sval type="int" val="18" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -3000,7 +3400,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="14" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="NA" />
@@ -3009,22 +3409,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="128" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.GetDifficulty" />
-					<sval type="int" val="30" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="0" />
+					<sval type="int" val="146" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610585597" />
+					<sval type="int" val="-1610580989" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
+					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -3037,20 +3429,20 @@
 				<sval type="array" size="6">
 					<sval type="int" val="1067" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
 					<sval type="int" val="31" />
+					<sval type="int" val="35" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2023" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="13" />
+					<sval type="int" val="18" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="31" />
+					<sval type="int" val="35" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="14" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2023" />
@@ -3059,14 +3451,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="128" />
+					<sval type="int" val="146" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610582523" />
+					<sval type="int" val="-1610577915" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
+					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -3078,36 +3470,36 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
-					<sval type="int" val="32" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1067" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
-					<sval type="int" val="33" />
+					<sval type="int" val="31" />
+					<sval type="int" val="37" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2026" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="34" />
+					<sval type="int" val="38" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="33" />
+					<sval type="int" val="37" />
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610583549" />
+					<sval type="int" val="-1610578941" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="32" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="34" />
+					<sval type="int" val="38" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -3125,16 +3517,16 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="13" />
+					<sval type="int" val="18" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="34" />
+					<sval type="int" val="38" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="14" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2026" />
@@ -3143,25 +3535,25 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="117" />
+					<sval type="int" val="135" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1067" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
 					<sval type="int" val="31" />
+					<sval type="int" val="35" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2023" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="13" />
+					<sval type="int" val="18" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="31" />
+					<sval type="int" val="35" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="14" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2023" />
@@ -3170,40 +3562,40 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="128" />
+					<sval type="int" val="146" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
-					<sval type="int" val="32" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1067" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
-					<sval type="int" val="35" />
+					<sval type="int" val="31" />
+					<sval type="int" val="39" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2027" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="36" />
+					<sval type="int" val="40" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="39" />
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610580733" />
+					<sval type="int" val="-1610576125" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="32" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="36" />
+					<sval type="int" val="40" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -3221,16 +3613,16 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="13" />
+					<sval type="int" val="18" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="36" />
+					<sval type="int" val="40" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="14" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2027" />
@@ -3239,25 +3631,25 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="128" />
+					<sval type="int" val="146" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1067" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
-					<sval type="int" val="33" />
+					<sval type="int" val="31" />
+					<sval type="int" val="37" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2026" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="13" />
+					<sval type="int" val="18" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="33" />
+					<sval type="int" val="37" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="14" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2026" />
@@ -3268,13 +3660,17 @@
 					<sval type="int" val="1168" />
 				</sval>
 			</sval>
-			<sval type="array" size="1">
+			<sval type="array" size="2">
+				<sval type="array" size="2">
+					<sval type="int" val="63" />
+					<sval type="string" val="" />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="63" />
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="100">
+			<sval type="array" size="112">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -3352,44 +3748,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="10" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Initialization" />
+					<sval type="string" val="Initialization. (Add-Ons 1.7 - now fetches 2 sets of prefixes)" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="20" />
 					<sval type="int" val="4" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="15" />
-					<sval type="int" val="1" />
-					<sval type="string" val="the prefix is one of several messages that look like:  &quot;Upon inspection of the ship wreckage you find a communications pod with a partial message still in the buffer:&quot;" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="16" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="16" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="16" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="16" />
-					<sval type="int" val="1" />
-					<sval type="string" val="If the player killed a pirate, there is a small chance they get here and we drop some useful information about the renegades." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="16" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Only a dead renegade can drop a clue about entry into the renegade station system, but pirates can drop useful info." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="17" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.1: Fixed random chance (was 2/11 chance; now 3/20 as intended to drop info) and added random races for more flavor. " />
-				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="20" />
 					<sval type="int" val="2" />
@@ -3397,232 +3761,241 @@
 				<sval type="array" size="3">
 					<sval type="int" val="20" />
 					<sval type="int" val="1" />
-					<sval type="string" val="15% chance we drop a clue from a pirate: 10% useful intel, 5% lore. Note this occurs only if the player directly does the killing.  See !ship.signal.killed." />
+					<sval type="string" val="the prefix is one of several messages that look like:  &quot;Upon inspection of the ship wreckage, you locate a communications pod retaining a partial message in its buffer:&quot;" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="20" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.7 - if ship was captured, use capture prefixes. Otherwise, use destruction prefixes." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="23" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="24" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.7: Moved difficulty getter here." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="25" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
+					<sval type="int" val="25" />
+					<sval type="int" val="1" />
+					<sval type="string" val="If the player killed a pirate, there is a small chance they get here and we drop some useful information about the renegades." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="25" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Only a dead renegade can drop a clue about entry into the renegade station system, but pirates can drop useful info." />
+				</sval>
+				<sval type="array" size="3">
 					<sval type="int" val="26" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.1: Fixed random chance (was 2/11 chance; now 3/20 as intended to drop info) and added random races for more flavor. " />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="29" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="29" />
+					<sval type="int" val="1" />
+					<sval type="string" val="15% chance we drop a clue from a pirate: 10% useful intel, 5% lore. Note this occurs only if the player or player's hired mercs does the killing, boarding, or bailing." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="29" />
+					<sval type="int" val="1" />
+					<sval type="string" val="See !ship.signal.killed, Mayhem.Task.BailMaybe, and ZH.Sig.Captured" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="32" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="34" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="35" />
 					<sval type="int" val="1" />
 					<sval type="string" val="0 = assessment of the renegade station ship strength." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="26" />
+					<sval type="int" val="35" />
 					<sval type="int" val="1" />
 					<sval type="string" val="What's up %s?  Yea, I was just back at that renegade base for repairs and a bath.  The docking bay seemed pretty busy.  I saw at least %s class %s ships sitting there, so they seem ready for anything." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="31" />
+					<sval type="int" val="40" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="33" />
+					<sval type="int" val="42" />
 					<sval type="int" val="1" />
 					<sval type="string" val="1 = a random renegade location" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="33" />
+					<sval type="int" val="42" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Hey %s hows things? I was hunting over in %s and noticed a strange ship hanging out.  Thought he may be one of those renegades so I gave him a wide berth.  Watch your six buddy." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="45" />
+					<sval type="int" val="54" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="47" />
+					<sval type="int" val="56" />
 					<sval type="int" val="1" />
 					<sval type="string" val="2 = random lore" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="47" />
+					<sval type="int" val="56" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.1: Lore includes:" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="47" />
+					<sval type="int" val="56" />
 					<sval type="int" val="1" />
 					<sval type="string" val="1. No one likes the renegades. We offer them bribes to keep them off our backs." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="47" />
+					<sval type="int" val="56" />
 					<sval type="int" val="1" />
 					<sval type="string" val="2. You did not get this from me, but rumor has it that a %s named %s hired the renegades to attack the Independents.  No one knows why they were hired." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="47" />
+					<sval type="int" val="56" />
 					<sval type="int" val="1" />
 					<sval type="string" val="3. I heard rumors that a fellow pirate named %s is secretly funding the renegades. Do not snitch him out or our heads are next." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="55" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="56" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
 					<sval type="int" val="57" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="64" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="58" />
+					<sval type="int" val="65" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="58" />
-					<sval type="int" val="2" />
+					<sval type="int" val="66" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="61" />
+					<sval type="int" val="67" />
 					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="61" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="62" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="62" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="62" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="62" />
-					<sval type="int" val="1" />
-					<sval type="string" val="If this is our first renegade that died, we start the mission and return." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="67" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="67" />
-					<sval type="int" val="1" />
-					<sval type="string" val="What is this broken hull that lies before you? ..." />
+				<sval type="array" size="2">
+					<sval type="int" val="70" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="69" />
+					<sval type="int" val="70" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="69" />
-					<sval type="int" val="1" />
-					<sval type="string" val="... you to believe something important has been staged in %s..." />
+				<sval type="array" size="2">
+					<sval type="int" val="71" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="71" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="72" />
+					<sval type="int" val="71" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="72" />
+					<sval type="int" val="71" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Upon death of the first renegade you start the Renegade Mission" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="72" />
-					<sval type="int" val="1" />
-					<sval type="string" val="1. Start Mission (add-ons 1.2: formalized renegade storyline)" />
+					<sval type="string" val="If this is our first renegade that was defeated, we start the mission and return." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="75" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="75" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="75" />
+					<sval type="int" val="76" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="75" />
+					<sval type="int" val="76" />
 					<sval type="int" val="1" />
-					<sval type="string" val="show one of the static clues." />
+					<sval type="string" val="Add-Ons 1.7: Display captured version if ship was captured." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="75" />
+					<sval type="int" val="77" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Pop clue off stack, combine it with the prefix and show it." />
+					<sval type="string" val="The renegade vessel has been secured and positively identified ..." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="79" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="79" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The shattered hull before you belongs to a renegade vessel ... " />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="80" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="83" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="84" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="84" />
-					<sval type="int" val="1" />
-					<sval type="string" val="2. Update mission when player drops a clue." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="85" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="85" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="86" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="86" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="86" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="88" />
+					<sval type="int" val="81" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="88" />
+					<sval type="int" val="81" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Safety below but should never happen - this script returns null if the gate is already revealed. " />
+					<sval type="string" val="... you to believe something important has been staged in %s..." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="88" />
+					<sval type="int" val="82" />
 					<sval type="int" val="1" />
-					<sval type="string" val="The station otherwise exists until after the gate is revealed." />
+					<sval type="string" val="Add-Ons 1.7: Special warnings depending on difficulty." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="87" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="88" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="90" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
+					<sval type="int" val="91" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="91" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Upon death of the first renegade you start the Renegade Mission" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="91" />
+					<sval type="int" val="1" />
+					<sval type="string" val="1. Start Mission (Add-ons 1.2: formalized renegade storyline)" />
+				</sval>
+				<sval type="array" size="2">
 					<sval type="int" val="94" />
 					<sval type="int" val="4" />
 				</sval>
@@ -3630,95 +4003,172 @@
 					<sval type="int" val="94" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="94" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.4.10: Fixed a bug...as it reports NA even though there's ships! As such, better to get the number of owned ships instead (does not count M7Cs that have support fighters)." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="94" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.4.21: We now get the exact number of ships. On easy, this is always M3. On normal, it's M3 or M6. On hard or insane, it's M6 or M7." />
-				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="96" />
+					<sval type="int" val="94" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="97" />
+					<sval type="int" val="94" />
 					<sval type="int" val="1" />
-					<sval type="string" val="No ships created and homebased the Renegade station." />
+					<sval type="string" val="show one of the static clues." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="94" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Pop clue off stack, combine it with the prefix and show it." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="100" />
-					<sval type="int" val="5" />
+					<sval type="int" val="99" />
+					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="100" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Must have ships homebased to the station for this clue to specify ship count and class." />
-				</sval>
-				<sval type="array" size="3">
+				<sval type="array" size="2">
 					<sval type="int" val="102" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="103" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Easy: M3s only." />
+					<sval type="string" val="2. Update mission when player drops a clue." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="105" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="105" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="105" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="107" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="107" />
 					<sval type="int" val="1" />
+					<sval type="string" val="Safety below but should never happen - this script returns null if the gate is already revealed. " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="107" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The station otherwise exists until after the gate is revealed." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="109" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="113" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="113" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="113" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.4.10: Fixed a bug...as it reports NA even though there's ships! As such, better to get the number of owned ships instead (does not count M7Cs that have support fighters)." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="113" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.4.21: We now get the exact number of ships. On easy, this is always M3. On normal, it's M3 or M6. On hard or insane, it's M6 or M7." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="115" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="116" />
+					<sval type="int" val="1" />
+					<sval type="string" val="No ships created and homebased the Renegade station." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="119" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="119" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Must have ships homebased to the station for this clue to specify ship count and class." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="120" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Easy: M3s only." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="125" />
+					<sval type="int" val="1" />
 					<sval type="string" val="Normal: 33% chance to tell how many M6s, 66% chance to tell how many M3." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="111" />
+					<sval type="int" val="129" />
 					<sval type="int" val="1" />
 					<sval type="string" val="There's M6s!" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="114" />
+					<sval type="int" val="132" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="114" />
+					<sval type="int" val="132" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Otherwise (or if no M6s exist), report how many M3 there are instead." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="117" />
+					<sval type="int" val="135" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="118" />
+					<sval type="int" val="136" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="118" />
+					<sval type="int" val="136" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Hard and insane: 33% chance to tell how many M7s, 66% chance to tell how many M6." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="122" />
+					<sval type="int" val="140" />
 					<sval type="int" val="1" />
 					<sval type="string" val="There's M7s!" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="125" />
+					<sval type="int" val="143" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="125" />
+					<sval type="int" val="143" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Otherwise (or if no M7s exist), report how many M6 there are instead." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="128" />
+					<sval type="int" val="146" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="128" />
+					<sval type="int" val="146" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="128" />
+					<sval type="int" val="146" />
 					<sval type="int" val="4" />
 				</sval>
 			</sval>
