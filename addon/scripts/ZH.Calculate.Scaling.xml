@@ -1,0 +1,847 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>ZH.Calculate.Scaling</name>
+	<version>15</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments />
+	<sourcetext>
+		<line linenr="001" indent="">
+			<comment>*************************************************</comment>
+		</line>
+		<line linenr="002" indent="">
+			<comment>* SCRIPT NAME: ZH.Calculate.Scaling</comment>
+		</line>
+		<line linenr="003" indent="">
+			<comment>* DESCRIPTION: Calculates a percentage to scale main factions' and OCV fleets. Used by Mayhem.Squadron.GetGlobalNeeds and Mayhem.Monitor.OCV.</comment>
+		</line>
+		<line linenr="004" indent="">
+			<comment>* The percentage is based on the player's supply consumption. If within consumption, scaling is 100%. if above, scaling caps at 400%.</comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* It steps up in 25% increments if (player's supply consumption - current scaling) &gt;= 25. Otherwise steps up by the difference.</comment>
+		</line>
+		<line linenr="006" indent="">
+			<comment>* Steps down in 10% increments if (current scaling - player's supply consumption) &gt;= 10. Otherwise steps down by the difference.</comment>
+		</line>
+		<line linenr="007" indent="" />
+		<line linenr="008" indent="">
+			<comment>* AUTHOR:           DATE: 4 February 2026</comment>
+		</line>
+		<line linenr="009" indent="">
+			<comment>*************************************************</comment>
+		</line>
+		<line linenr="010" indent="">
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'ZH_overextensionScaling'</text>
+		</line>
+		<line linenr="011" indent="" />
+		<line linenr="012" indent="">
+			<comment>* Will never be less than 100. Can be null upon initialization however.</comment>
+		</line>
+		<line linenr="013" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="014" indent="&#160;">
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="015" indent="">
+			<text>end</text>
+			<text> </text>
+		</line>
+		<line linenr="016" indent="" />
+		<line linenr="017" indent="" interruptable="@">
+			<var>$currentSupply</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>ZH.Get.Power.Race</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>[Player]</var>
+			<text> </text>
+			<text>calcSupply</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="018" indent="" interruptable="@">
+			<var>$totalSupply</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetTotalSupply</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="019" indent="" />
+		<line linenr="020" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$currentSupply</var>
+			<text> </text>
+			<text>&lt;=</text>
+			<text> </text>
+			<var>$totalSupply</var>
+		</line>
+		<line linenr="021" indent="&#160;">
+			<comment>* Default if not over cap.</comment>
+		</line>
+		<line linenr="022" indent="&#160;">
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="023" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="024" indent="&#160;">
+			<comment>* Over cap. Does nothing if player's supply factor equals NPC scale factor.</comment>
+		</line>
+		<line linenr="025" indent="&#160;">
+			<var>$supply.factor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$currentSupply</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>100</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>$totalSupply</var>
+		</line>
+		<line linenr="026" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$supply.factor</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+		</line>
+		<line linenr="027" indent="&#160;&#160;">
+			<comment>* Player's supply factor is greater than NPC scale factor. Get the difference between supply factor and NPC scaling.</comment>
+		</line>
+		<line linenr="028" indent="&#160;&#160;">
+			<var>$difference</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$supply.factor</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+		</line>
+		<line linenr="029" indent="&#160;&#160;">
+			<var>$step</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>25</var>
+		</line>
+		<line linenr="030" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$difference</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>25</var>
+		</line>
+		<line linenr="031" indent="&#160;&#160;&#160;">
+			<var>$step</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$difference</var>
+		</line>
+		<line linenr="032" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="033" indent="&#160;&#160;">
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$step</var>
+		</line>
+		<line linenr="034" indent="&#160;&#160;" />
+		<line linenr="035" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$supply.factor</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+		</line>
+		<line linenr="036" indent="&#160;&#160;">
+			<comment>* Player's supply factor is less than NPC scale factor. Get the difference between current scaling and supply factor.</comment>
+		</line>
+		<line linenr="037" indent="&#160;&#160;">
+			<var>$difference</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>$supply.factor</var>
+		</line>
+		<line linenr="038" indent="&#160;&#160;">
+			<var>$step</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>10</var>
+		</line>
+		<line linenr="039" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$difference</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>10</var>
+		</line>
+		<line linenr="040" indent="&#160;&#160;&#160;">
+			<var>$step</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$difference</var>
+		</line>
+		<line linenr="041" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="042" indent="&#160;&#160;">
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>$step</var>
+		</line>
+		<line linenr="043" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="044" indent="&#160;" />
+		<line linenr="045" indent="&#160;">
+			<comment>* Clamp. Always between 100 - 400%.</comment>
+		</line>
+		<line linenr="046" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>400</var>
+		</line>
+		<line linenr="047" indent="&#160;&#160;">
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>400</var>
+		</line>
+		<line linenr="048" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="049" indent="&#160;&#160;">
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="050" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="051" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="052" indent="" />
+		<line linenr="053" indent="">
+			<text>set</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'ZH_overextensionScaling'</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>$npcScaleFactor</var>
+		</line>
+		<line linenr="054" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="ZH.Calculate.Scaling" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="15" />
+			<sval type="int" val="0" />
+			<sval type="array" size="6">
+				<sval type="string" val="npcScaleFactor" />
+				<sval type="string" val="currentSupply" />
+				<sval type="string" val="totalSupply" />
+				<sval type="string" val="supply.factor" />
+				<sval type="string" val="difference" />
+				<sval type="string" val="step" />
+			</sval>
+			<sval type="array" size="29">
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="ZH_overextensionScaling" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611965" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="ZH.Get.Power.Race" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetTotalSupply" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610685" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="27" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608637" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="25" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609149" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="25" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="22" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607099" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607357" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606333" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="400" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="400" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="27" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605819" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="157" />
+					<sval type="int" val="5" />
+					<sval type="string" val="ZH_overextensionScaling" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+			<sval type="array" size="28">
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="SCRIPT NAME: ZH.Calculate.Scaling" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DESCRIPTION: Calculates a percentage to scale main factions' and OCV fleets. Used by Mayhem.Squadron.GetGlobalNeeds and Mayhem.Monitor.OCV." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The percentage is based on the player's supply consumption. If within consumption, scaling is 100%. if above, scaling caps at 400%." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="It steps up in 25% increments if (player's supply consumption - current scaling) &gt;= 25. Otherwise steps up by the difference." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Steps down in 10% increments if (current scaling - player's supply consumption) &gt;= 10. Otherwise steps down by the difference." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="AUTHOR:           DATE: 4 February 2026" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Will never be less than 100. Can be null upon initialization however." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="3" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="6" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Default if not over cap." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="8" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Over cap. Does nothing if player's supply factor equals NPC scale factor." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Player's supply factor is greater than NPC scale factor. Get the difference between supply factor and NPC scaling." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="14" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Player's supply factor is less than NPC scale factor. Get the difference between current scaling and supply factor." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="22" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="22" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="22" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Clamp. Always between 100 - 400%." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="2" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>
