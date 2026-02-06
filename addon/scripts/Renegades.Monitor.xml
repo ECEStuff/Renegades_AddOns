@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Renegades.Monitor</name>
-	<version>307</version>
+	<version>309</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -1263,10 +1263,10 @@
 			<comment>* ** DEBUG **</comment>
 		</line>
 		<line linenr="195" indent="&#160;">
-			<comment>*$t = 'Player info: ' + $powerAndSupply</comment>
+			<comment>* $t = 'Player info: ' + $powerAndSupply</comment>
 		</line>
 		<line linenr="196" indent="&#160;">
-			<comment>*write to player logbook $t</comment>
+			<comment>* write to player logbook $t</comment>
 		</line>
 		<line linenr="197" indent="&#160;">
 			<comment>* ** END DEBUG **</comment>
@@ -1520,9 +1520,12 @@
 		</line>
 		<line linenr="235" indent="&#160;&#160;" />
 		<line linenr="236" indent="&#160;&#160;">
-			<comment>* If player exceeds supply cap, then increase ship difficulty by 1 tier.</comment>
+			<comment>* If player is over supply, ship difficulty increases by 1. Caps at 5 (scaled insane).</comment>
 		</line>
 		<line linenr="237" indent="&#160;&#160;">
+			<comment>* This means they spawn tougher enemies, and even easy difficulty can run into an M7 if the player is overextended and fields too much fleet power!</comment>
+		</line>
+		<line linenr="238" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$currentSupply</var>
@@ -1531,37 +1534,37 @@
 			<text> </text>
 			<var>$totalSupply</var>
 		</line>
-		<line linenr="238" indent="&#160;&#160;&#160;">
+		<line linenr="239" indent="&#160;&#160;&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$shipDifficulty</var>
 		</line>
-		<line linenr="239" indent="&#160;&#160;">
+		<line linenr="240" indent="&#160;&#160;">
 			<text>end</text>
 			<text> </text>
 		</line>
-		<line linenr="240" indent="&#160;&#160;" />
-		<line linenr="241" indent="&#160;&#160;">
+		<line linenr="241" indent="&#160;&#160;" />
+		<line linenr="242" indent="&#160;&#160;">
 			<comment>* If we're seeking the player because player's fleet strength is high enough: increase difficulty by 1 tier. For example, normal will spawn hard enemies!</comment>
 		</line>
-		<line linenr="242" indent="&#160;&#160;">
+		<line linenr="243" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$seekBecausePower</var>
 		</line>
-		<line linenr="243" indent="&#160;&#160;&#160;">
+		<line linenr="244" indent="&#160;&#160;&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$shipDifficulty</var>
 		</line>
-		<line linenr="244" indent="&#160;&#160;">
+		<line linenr="245" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="245" indent="&#160;&#160;" />
-		<line linenr="246" indent="&#160;&#160;">
+		<line linenr="246" indent="&#160;&#160;" />
+		<line linenr="247" indent="&#160;&#160;">
 			<comment>* Clamp. Should never happen anyway but just in case.</comment>
 		</line>
-		<line linenr="247" indent="&#160;&#160;">
+		<line linenr="248" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1572,30 +1575,30 @@
 			<text> </text>
 			<var>5</var>
 		</line>
-		<line linenr="248" indent="&#160;&#160;&#160;">
+		<line linenr="249" indent="&#160;&#160;&#160;">
 			<var>$shipDifficulty</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>5</var>
 		</line>
-		<line linenr="249" indent="&#160;&#160;" />
-		<line linenr="250" indent="&#160;&#160;">
+		<line linenr="250" indent="&#160;&#160;" />
+		<line linenr="251" indent="&#160;&#160;">
 			<comment>* find a sector to spawn in.  </comment>
 		</line>
-		<line linenr="251" indent="&#160;&#160;">
+		<line linenr="252" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>FindAvailableSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="252" indent="&#160;&#160;">
+		<line linenr="253" indent="&#160;&#160;">
 			<comment>* Could not find a valid non-player sector to spawn in.  Just return.</comment>
 		</line>
-		<line linenr="253" indent="&#160;&#160;">
+		<line linenr="254" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.6.1: Don't return! We now spawn multiple ships at once, so move to the next attempt.</comment>
 		</line>
-		<line linenr="254" indent="&#160;&#160;">
+		<line linenr="255" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$RenegadeSpawnSector</var>
@@ -1604,38 +1607,38 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="255" indent="&#160;&#160;&#160;">
+		<line linenr="256" indent="&#160;&#160;&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$counter</var>
 		</line>
-		<line linenr="256" indent="&#160;&#160;&#160;">
+		<line linenr="257" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="257" indent="&#160;&#160;">
+		<line linenr="258" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="258" indent="&#160;&#160;" />
-		<line linenr="259" indent="&#160;&#160;">
+		<line linenr="259" indent="&#160;&#160;" />
+		<line linenr="260" indent="&#160;&#160;">
 			<comment>* ** DEBUG **</comment>
 		</line>
-		<line linenr="260" indent="&#160;&#160;">
+		<line linenr="261" indent="&#160;&#160;">
 			<comment>* $sowner = $RenegadeSpawnSector-&gt; get owner race</comment>
 		</line>
-		<line linenr="261" indent="&#160;&#160;">
+		<line linenr="262" indent="&#160;&#160;">
 			<comment>* write to log file 1 append=[TRUE] printf: fmt='Spawning Renegade in: %s.  Owned by: %s and Within 10 jumps of: %s', $RenegadeSpawnSector, $sowner, $StartSector, null, null</comment>
 		</line>
-		<line linenr="262" indent="&#160;&#160;">
+		<line linenr="263" indent="&#160;&#160;">
 			<comment>* ** END DEBUG **</comment>
 		</line>
-		<line linenr="263" indent="&#160;&#160;" />
-		<line linenr="264" indent="&#160;&#160;">
+		<line linenr="264" indent="&#160;&#160;" />
+		<line linenr="265" indent="&#160;&#160;">
 			<comment>* Spawn a new renegade. Alternate ship types with the faster one being rarer to spawn. Spawn an M6 on harder difficulties and an M3 on easy/normal difficulty levels.</comment>
 		</line>
-		<line linenr="265" indent="&#160;&#160;">
+		<line linenr="266" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.2: Pulls from a larger ship list. (1.6.1 - can spawn 1 difficulty tier higher (including M7 if scaled difficulty is hard or insane) if player's fleet power is too high.)</comment>
 		</line>
-		<line linenr="266" indent="&#160;&#160;" interruptable="@">
+		<line linenr="267" indent="&#160;&#160;" interruptable="@">
 			<var>$posArray</var>
 			<text> </text>
 			<text>=</text>
@@ -1671,7 +1674,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="267" indent="&#160;&#160;" interruptable="@">
+		<line linenr="268" indent="&#160;&#160;" interruptable="@">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -1711,11 +1714,11 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="268" indent="&#160;&#160;" />
-		<line linenr="269" indent="&#160;&#160;">
+		<line linenr="269" indent="&#160;&#160;" />
+		<line linenr="270" indent="&#160;&#160;">
 			<comment>* Tell the player when the first renegade apears.</comment>
 		</line>
-		<line linenr="270" indent="&#160;&#160;">
+		<line linenr="271" indent="&#160;&#160;">
 			<var>$firstSpawn</var>
 			<text> </text>
 			<text>=</text>
@@ -1731,7 +1734,7 @@
 			<text>=</text>
 			<text>'FirstRenegade'</text>
 		</line>
-		<line linenr="271" indent="&#160;&#160;">
+		<line linenr="272" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$firstSpawn</var>
@@ -1740,14 +1743,14 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="272" indent="&#160;&#160;&#160;">
+		<line linenr="273" indent="&#160;&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'WARNING: The first Renegade vessel is now active. Analysts report aggressive patrol patterns in distant sectors. Trade and logistics assets are advised to exercise caution.'</text>
 		</line>
-		<line linenr="273" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="274" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1773,14 +1776,14 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="274" indent="&#160;&#160;&#160;">
+		<line linenr="275" indent="&#160;&#160;&#160;">
 			<var>$firstSpawn</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="275" indent="&#160;&#160;&#160;">
+		<line linenr="276" indent="&#160;&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -1796,19 +1799,19 @@
 			<text>=</text>
 			<var>$firstSpawn</var>
 		</line>
-		<line linenr="276" indent="&#160;&#160;">
+		<line linenr="277" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="277" indent="&#160;&#160;" />
-		<line linenr="278" indent="&#160;&#160;">
+		<line linenr="278" indent="&#160;&#160;" />
+		<line linenr="279" indent="&#160;&#160;">
 			<comment>* Tell the player when renegades begin seeking the player.</comment>
 		</line>
-		<line linenr="279" indent="&#160;&#160;">
+		<line linenr="280" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$seekPlayer</var>
 		</line>
-		<line linenr="280" indent="&#160;&#160;&#160;">
+		<line linenr="281" indent="&#160;&#160;&#160;">
 			<var>$firstRaid</var>
 			<text> </text>
 			<text>=</text>
@@ -1824,7 +1827,7 @@
 			<text>=</text>
 			<text>'FirstRenegadeRaid'</text>
 		</line>
-		<line linenr="281" indent="&#160;&#160;&#160;">
+		<line linenr="282" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$firstRaid</var>
@@ -1833,14 +1836,14 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="282" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="283" indent="&#160;&#160;&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'STRATEGIC ALERT: Renegade forces appear to be reorganizing. Analysts suspect preparations for coordinated raids against your space.'</text>
 		</line>
-		<line linenr="283" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="284" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1866,14 +1869,14 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="284" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="285" indent="&#160;&#160;&#160;&#160;">
 			<var>$firstRaid</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="285" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="286" indent="&#160;&#160;&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -1889,17 +1892,17 @@
 			<text>=</text>
 			<var>$firstRaid</var>
 		</line>
-		<line linenr="286" indent="&#160;&#160;&#160;">
+		<line linenr="287" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="287" indent="&#160;&#160;">
+		<line linenr="288" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="288" indent="&#160;&#160;" />
-		<line linenr="289" indent="&#160;&#160;">
+		<line linenr="289" indent="&#160;&#160;" />
+		<line linenr="290" indent="&#160;&#160;">
 			<comment>* Start the ship task.</comment>
 		</line>
-		<line linenr="290" indent="&#160;&#160;">
+		<line linenr="291" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$ship</var>
@@ -1907,7 +1910,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="291" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="292" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>$ship</var>
@@ -1925,7 +1928,7 @@
 			<text>=</text>
 			<var>$seekPlayer</var>
 		</line>
-		<line linenr="292" indent="&#160;&#160;&#160;">
+		<line linenr="293" indent="&#160;&#160;&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$ship</var>
@@ -1936,7 +1939,7 @@
 			<text> </text>
 			<var>$RenegadeShipList</var>
 		</line>
-		<line linenr="293" indent="&#160;&#160;&#160;">
+		<line linenr="294" indent="&#160;&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -1952,59 +1955,59 @@
 			<text>=</text>
 			<var>$RenegadeShipList</var>
 		</line>
-		<line linenr="294" indent="&#160;&#160;&#160;">
+		<line linenr="295" indent="&#160;&#160;&#160;">
 			<comment>* Incrementing $shipCount is not needed at the moment but future-proofs the while loop for later changes.</comment>
 		</line>
-		<line linenr="295" indent="&#160;&#160;&#160;">
+		<line linenr="296" indent="&#160;&#160;&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$shipCount</var>
 		</line>
-		<line linenr="296" indent="&#160;&#160;">
+		<line linenr="297" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="297" indent="&#160;&#160;" />
-		<line linenr="298" indent="&#160;&#160;">
+		<line linenr="298" indent="&#160;&#160;" />
+		<line linenr="299" indent="&#160;&#160;">
 			<comment>* Increment counters. </comment>
 		</line>
-		<line linenr="299" indent="&#160;&#160;">
+		<line linenr="300" indent="&#160;&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$counter</var>
 		</line>
-		<line linenr="300" indent="&#160;">
+		<line linenr="301" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="301" indent="">
+		<line linenr="302" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="302" indent="" />
-		<line linenr="303" indent="">
+		<line linenr="303" indent="" />
+		<line linenr="304" indent="">
 			<var>FindAvailableSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="304" indent="&#160;">
+		<line linenr="305" indent="&#160;">
 			<comment>* display subtitle text: text='Finding Renegade Player Sector' duration=3000 ms    </comment>
 		</line>
-		<line linenr="305" indent="&#160;">
+		<line linenr="306" indent="&#160;">
 			<var>$RenegadeSpawnSector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="306" indent="&#160;">
+		<line linenr="307" indent="&#160;">
 			<var>$foundSector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="307" indent="&#160;" />
-		<line linenr="308" indent="&#160;">
+		<line linenr="308" indent="&#160;" />
+		<line linenr="309" indent="&#160;">
 			<comment>* find a random player owned sector</comment>
 		</line>
-		<line linenr="309" indent="&#160;">
+		<line linenr="310" indent="&#160;">
 			<var>$entireGalaxy</var>
 			<text> </text>
 			<text>=</text>
@@ -2033,7 +2036,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="310" indent="&#160;">
+		<line linenr="311" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2044,10 +2047,10 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="311" indent="&#160;&#160;">
+		<line linenr="312" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="312" indent="&#160;" interruptable="@">
+		<line linenr="313" indent="&#160;" interruptable="@">
 			<var>$allSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -2067,7 +2070,7 @@
 			<text>=</text>
 			<var>$entireGalaxy</var>
 		</line>
-		<line linenr="313" indent="&#160;">
+		<line linenr="314" indent="&#160;">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -2080,17 +2083,17 @@
 			<text> </text>
 			<var>$allSectors</var>
 		</line>
-		<line linenr="314" indent="&#160;&#160;">
+		<line linenr="315" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="315" indent="&#160;&#160;">
+		<line linenr="316" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="316" indent="&#160;&#160;">
+		<line linenr="317" indent="&#160;&#160;">
 			<var>$StartSector</var>
 			<text> </text>
 			<text>=</text>
@@ -2100,7 +2103,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="317" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="318" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -2117,7 +2120,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="318" indent="&#160;&#160;&#160;">
+		<line linenr="319" indent="&#160;&#160;&#160;">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
@@ -2131,7 +2134,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="319" indent="&#160;&#160;&#160;">
+		<line linenr="320" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$owner</var>
@@ -2140,30 +2143,30 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="320" indent="&#160;&#160;">
+		<line linenr="321" indent="&#160;&#160;">
 			<var>$foundSector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$StartSector</var>
 		</line>
-		<line linenr="321" indent="&#160;">
+		<line linenr="322" indent="&#160;">
 			<comment>* write to logfile 1 append=[TRUE] printf: fmt='Random Player Sector: %s',   $StartSector, null, null, null, null</comment>
 		</line>
-		<line linenr="322" indent="&#160;">
-			<text>break</text>
-		</line>
 		<line linenr="323" indent="&#160;">
-			<text>end</text>
+			<text>break</text>
 		</line>
 		<line linenr="324" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="325" indent="&#160;&#160;" />
-		<line linenr="326" indent="&#160;&#160;">
+		<line linenr="325" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="326" indent="&#160;&#160;" />
+		<line linenr="327" indent="&#160;&#160;">
 			<comment>* no player sectors found.</comment>
 		</line>
-		<line linenr="327" indent="&#160;">
+		<line linenr="328" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$foundSector</var>
@@ -2172,20 +2175,20 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="328" indent="&#160;">
+		<line linenr="329" indent="&#160;">
 			<comment>* display subtitle text: text='Could not find any player sectors for a Renegade test.' duration=8000 ms   </comment>
 		</line>
-		<line linenr="329" indent="&#160;">
+		<line linenr="330" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="330" indent="&#160;">
+		<line linenr="331" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="331" indent="&#160;" />
-		<line linenr="332" indent="&#160;">
+		<line linenr="332" indent="&#160;" />
+		<line linenr="333" indent="&#160;">
 			<comment>* Build a list of player ship locations</comment>
 		</line>
-		<line linenr="333" indent="&#160;&#160;">
+		<line linenr="334" indent="&#160;&#160;">
 			<var>$playerships</var>
 			<text> </text>
 			<text>=</text>
@@ -2209,7 +2212,7 @@
 			<text>=</text>
 			<var>[Moveable Ship]</var>
 		</line>
-		<line linenr="334" indent="&#160;&#160;">
+		<line linenr="335" indent="&#160;&#160;">
 			<var>$playerLocationsArray</var>
 			<text> </text>
 			<text>=</text>
@@ -2223,7 +2226,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="335" indent="&#160;&#160;">
+		<line linenr="336" indent="&#160;&#160;">
 			<var>$shipiterator</var>
 			<text> </text>
 			<text>=</text>
@@ -2236,17 +2239,17 @@
 			<text> </text>
 			<var>$playerships</var>
 		</line>
-		<line linenr="336" indent="&#160;&#160;&#160;">
+		<line linenr="337" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$shipiterator</var>
 		</line>
-		<line linenr="337" indent="&#160;&#160;&#160;">
+		<line linenr="338" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$shipiterator</var>
 		</line>
-		<line linenr="338" indent="&#160;&#160;">
+		<line linenr="339" indent="&#160;&#160;">
 			<var>$playership</var>
 			<text> </text>
 			<text>=</text>
@@ -2256,7 +2259,7 @@
 			<var>$shipiterator</var>
 			<text>]</text>
 		</line>
-		<line linenr="339" indent="&#160;">
+		<line linenr="340" indent="&#160;">
 			<var>$playershipLocation</var>
 			<text> </text>
 			<text>=</text>
@@ -2268,7 +2271,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="340" indent="&#160;">
+		<line linenr="341" indent="&#160;">
 			<var>$s.Idx</var>
 			<text> </text>
 			<text>=</text>
@@ -2291,7 +2294,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="341" indent="&#160;">
+		<line linenr="342" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$s.Idx</var>
@@ -2300,7 +2303,7 @@
 			<text> </text>
 			<var>-1</var>
 		</line>
-		<line linenr="342" indent="&#160;">
+		<line linenr="343" indent="&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$playershipLocation</var>
@@ -2311,7 +2314,7 @@
 			<text> </text>
 			<var>$playerLocationsArray</var>
 		</line>
-		<line linenr="343" indent="&#160;" interruptable="@">
+		<line linenr="344" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -2320,18 +2323,18 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="344" indent="&#160;">
-			<text>end</text>
-		</line>
 		<line linenr="345" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="346" indent="&#160;&#160;" />
+		<line linenr="346" indent="&#160;">
+			<text>end</text>
+		</line>
 		<line linenr="347" indent="&#160;&#160;" />
-		<line linenr="348" indent="&#160;&#160;">
+		<line linenr="348" indent="&#160;&#160;" />
+		<line linenr="349" indent="&#160;&#160;">
 			<comment>* Now get a random sector within 10 jumps of the player sector above, that are not owned by player or pirates etc.. and do not have a player ship it.</comment>
 		</line>
-		<line linenr="349" indent="&#160;&#160;">
+		<line linenr="350" indent="&#160;&#160;">
 			<var>$sectorswithinrange</var>
 			<text> </text>
 			<text>=</text>
@@ -2360,7 +2363,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="350" indent="&#160;&#160;" interruptable="@">
+		<line linenr="351" indent="&#160;&#160;" interruptable="@">
 			<var>$randomized</var>
 			<text> </text>
 			<text>=</text>
@@ -2380,7 +2383,7 @@
 			<text>=</text>
 			<var>$sectorswithinrange</var>
 		</line>
-		<line linenr="351" indent="&#160;&#160;&#160;">
+		<line linenr="352" indent="&#160;&#160;&#160;">
 			<var>$sectoriterator</var>
 			<text> </text>
 			<text>=</text>
@@ -2393,17 +2396,17 @@
 			<text> </text>
 			<var>$randomized</var>
 		</line>
-		<line linenr="352" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="353" indent="&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$sectoriterator</var>
 		</line>
-		<line linenr="353" indent="&#160;&#160;">
+		<line linenr="354" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$sectoriterator</var>
 		</line>
-		<line linenr="354" indent="&#160;&#160;&#160;">
+		<line linenr="355" indent="&#160;&#160;&#160;">
 			<var>$secinrange</var>
 			<text> </text>
 			<text>=</text>
@@ -2413,7 +2416,7 @@
 			<var>$sectoriterator</var>
 			<text>]</text>
 		</line>
-		<line linenr="355" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="356" indent="&#160;&#160;&#160;&#160;">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
@@ -2427,11 +2430,11 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="356" indent="&#160;&#160;" />
-		<line linenr="357" indent="&#160;&#160;">
+		<line linenr="357" indent="&#160;&#160;" />
+		<line linenr="358" indent="&#160;&#160;">
 			<comment>* Herobetty: if the player joined the OCV, then Xenon sectors are eligible. OCV sectors never exist, but they won't be exempt just in case.</comment>
 		</line>
-		<line linenr="358" indent="&#160;&#160;">
+		<line linenr="359" indent="&#160;&#160;">
 			<var>$OCVplotstage</var>
 			<text> </text>
 			<text>=</text>
@@ -2447,7 +2450,7 @@
 			<text>=</text>
 			<text>'OCVplotstage'</text>
 		</line>
-		<line linenr="359" indent="&#160;&#160;">
+		<line linenr="360" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$OCVplotstage</var>
@@ -2456,7 +2459,7 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="360" indent="&#160;&#160;&#160;">
+		<line linenr="361" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2477,13 +2480,13 @@
 			<var>[Yaki]</var>
 			<text>)</text>
 		</line>
-		<line linenr="361" indent="&#160;&#160;">
+		<line linenr="362" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="362" indent="&#160;&#160;">
+		<line linenr="363" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="363" indent="&#160;&#160;">
+		<line linenr="364" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2520,16 +2523,16 @@
 			<var>[Xenon]</var>
 			<text>)</text>
 		</line>
-		<line linenr="364" indent="&#160;&#160;">
+		<line linenr="365" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="365" indent="&#160;&#160;">
+		<line linenr="366" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="366" indent="&#160;&#160;&#160;">
+		<line linenr="367" indent="&#160;&#160;&#160;">
 			<comment>* Does it have a Player ship in it?</comment>
 		</line>
-		<line linenr="367" indent="&#160;&#160;&#160;">
+		<line linenr="368" indent="&#160;&#160;&#160;">
 			<var>$s.Idx</var>
 			<text> </text>
 			<text>=</text>
@@ -2552,7 +2555,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="368" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="369" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2563,11 +2566,11 @@
 			<text> </text>
 			<var>-1</var>
 		</line>
-		<line linenr="369" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="370" indent="&#160;&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="370" indent="&#160;&#160;&#160;" />
-		<line linenr="371" indent="&#160;&#160;" interruptable="@">
+		<line linenr="371" indent="&#160;&#160;&#160;" />
+		<line linenr="372" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -2576,15 +2579,15 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="372" indent="&#160;&#160;" />
-		<line linenr="373" indent="&#160;&#160;&#160;">
+		<line linenr="373" indent="&#160;&#160;" />
+		<line linenr="374" indent="&#160;&#160;&#160;">
 			<var>$foundshipinsector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="374" indent="&#160;&#160;">
+		<line linenr="375" indent="&#160;&#160;">
 			<var>$shipiterator</var>
 			<text> </text>
 			<text>=</text>
@@ -2597,17 +2600,17 @@
 			<text> </text>
 			<var>$playerships</var>
 		</line>
-		<line linenr="375" indent="&#160;&#160;">
+		<line linenr="376" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$shipiterator</var>
 		</line>
-		<line linenr="376" indent="&#160;&#160;">
+		<line linenr="377" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$shipiterator</var>
 		</line>
-		<line linenr="377" indent="&#160;&#160;">
+		<line linenr="378" indent="&#160;&#160;">
 			<var>$playership</var>
 			<text> </text>
 			<text>=</text>
@@ -2617,7 +2620,7 @@
 			<var>$shipiterator</var>
 			<text>]</text>
 		</line>
-		<line linenr="378" indent="&#160;&#160;">
+		<line linenr="379" indent="&#160;&#160;">
 			<var>$shiploc</var>
 			<text> </text>
 			<text>=</text>
@@ -2629,7 +2632,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="379" indent="&#160;">
+		<line linenr="380" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$shiploc</var>
@@ -2638,54 +2641,54 @@
 			<text> </text>
 			<var>$secinrange</var>
 		</line>
-		<line linenr="380" indent="&#160;">
+		<line linenr="381" indent="&#160;">
 			<var>$foundshipinsector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="381" indent="&#160;">
+		<line linenr="382" indent="&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="382" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="383" indent="&#160;">
+		<line linenr="383" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
 		<line linenr="384" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="385" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$foundshipinsector</var>
 		</line>
-		<line linenr="385" indent="">
+		<line linenr="386" indent="">
 			<text>continue</text>
 		</line>
-		<line linenr="386" indent="" />
-		<line linenr="387" indent="">
+		<line linenr="387" indent="" />
+		<line linenr="388" indent="">
 			<var>$RenegadeSpawnSector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$secinrange</var>
 		</line>
-		<line linenr="388" indent="">
+		<line linenr="389" indent="">
 			<comment>* $t = 'Found valid sector: ' + $secinrange</comment>
 		</line>
-		<line linenr="389" indent="&#160;">
+		<line linenr="390" indent="&#160;">
 			<comment>* display subtitle text: text=$t duration=8000 ms   </comment>
 		</line>
-		<line linenr="390" indent="&#160;">
+		<line linenr="391" indent="&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="391" indent="&#160;">
+		<line linenr="392" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="392" indent="&#160;" />
-		<line linenr="393" indent="&#160;&#160;">
+		<line linenr="393" indent="&#160;" />
+		<line linenr="394" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$RenegadeSpawnSector</var>
@@ -2694,25 +2697,25 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="394" indent="&#160;">
+		<line linenr="395" indent="&#160;">
 			<comment>* write to logfile 1 append=[TRUE] printf: fmt='No valid sector found.  Sectors within range of %s: \n%s',   $StartSector, $sectorswithinrange, null, null, null</comment>
 		</line>
-		<line linenr="395" indent="&#160;">
+		<line linenr="396" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="396" indent="&#160;" />
-		<line linenr="397" indent="&#160;">
+		<line linenr="397" indent="&#160;" />
+		<line linenr="398" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="398" indent="&#160;" />
-		<line linenr="399" indent="&#160;">
+		<line linenr="399" indent="&#160;" />
+		<line linenr="400" indent="&#160;">
 			<comment>* Mordan3 Updates all Hauler's to show a display to the right of their name indicating the level of cargo they are carrying in percent.   [] to [.........]</comment>
 		</line>
-		<line linenr="400" indent="&#160;">
+		<line linenr="401" indent="&#160;">
 			<var>UpdateCargoLevelDisplay</var>
 			<text>:</text>
 		</line>
-		<line linenr="401" indent="&#160;&#160;">
+		<line linenr="402" indent="&#160;&#160;">
 			<var>$ships</var>
 			<text> </text>
 			<text>=</text>
@@ -2736,7 +2739,7 @@
 			<text>=</text>
 			<var>[TS]</var>
 		</line>
-		<line linenr="402" indent="&#160;&#160;">
+		<line linenr="403" indent="&#160;&#160;">
 			<var>$shipsTL</var>
 			<text> </text>
 			<text>=</text>
@@ -2760,8 +2763,8 @@
 			<text>=</text>
 			<var>[TL]</var>
 		</line>
-		<line linenr="403" indent="&#160;&#160;" />
-		<line linenr="404" indent="&#160;&#160;">
+		<line linenr="404" indent="&#160;&#160;" />
+		<line linenr="405" indent="&#160;&#160;">
 			<var>$XS.Iterator2</var>
 			<text> </text>
 			<text>=</text>
@@ -2774,17 +2777,17 @@
 			<text> </text>
 			<var>$shipsTL</var>
 		</line>
-		<line linenr="405" indent="&#160;&#160;">
+		<line linenr="406" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="406" indent="&#160;&#160;">
+		<line linenr="407" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="407" indent="&#160;&#160;">
+		<line linenr="408" indent="&#160;&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -2794,7 +2797,7 @@
 			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="408" indent="&#160;&#160;">
+		<line linenr="409" indent="&#160;&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$ship</var>
@@ -2805,26 +2808,26 @@
 			<text> </text>
 			<var>$ships</var>
 		</line>
-		<line linenr="409" indent="&#160;&#160;">
+		<line linenr="410" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="410" indent="&#160;&#160;" />
-		<line linenr="411" indent="&#160;&#160;">
+		<line linenr="411" indent="&#160;&#160;" />
+		<line linenr="412" indent="&#160;&#160;">
 			<var>$startchar</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'&lt;'</text>
 		</line>
-		<line linenr="412" indent="&#160;&#160;">
+		<line linenr="413" indent="&#160;&#160;">
 			<var>$endchar</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'&gt;'</text>
 		</line>
-		<line linenr="413" indent="&#160;&#160;" />
-		<line linenr="414" indent="&#160;&#160;">
+		<line linenr="414" indent="&#160;&#160;" />
+		<line linenr="415" indent="&#160;&#160;">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -2837,17 +2840,17 @@
 			<text> </text>
 			<var>$ships</var>
 		</line>
-		<line linenr="415" indent="&#160;&#160;&#160;">
+		<line linenr="416" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="416" indent="&#160;&#160;&#160;">
+		<line linenr="417" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="417" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="418" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -2864,8 +2867,8 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="418" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="419" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="419" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="420" indent="&#160;&#160;&#160;&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -2875,14 +2878,14 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="420" indent="&#160;&#160;&#160;">
+		<line linenr="421" indent="&#160;&#160;&#160;">
 			<var>$fullcount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="421" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="422" indent="&#160;&#160;&#160;&#160;">
 			<var>$volFree</var>
 			<text> </text>
 			<text>=</text>
@@ -2902,7 +2905,7 @@
 			<text> </text>
 			<text>bay</text>
 		</line>
-		<line linenr="422" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="423" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$volMax</var>
 			<text> </text>
 			<text>=</text>
@@ -2918,7 +2921,7 @@
 			<text> </text>
 			<text>size</text>
 		</line>
-		<line linenr="423" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="424" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$volUsed</var>
 			<text> </text>
 			<text>=</text>
@@ -2929,7 +2932,7 @@
 			<text> </text>
 			<var>$volFree</var>
 		</line>
-		<line linenr="424" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="425" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$tenpercentvol</var>
 			<text> </text>
 			<text>=</text>
@@ -2940,11 +2943,11 @@
 			<text> </text>
 			<var>10</var>
 		</line>
-		<line linenr="425" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="426" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="426" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="427" indent="&#160;&#160;&#160;&#160;">
 			<comment>* build new []</comment>
 		</line>
-		<line linenr="427" indent="&#160;&#160;&#160;">
+		<line linenr="428" indent="&#160;&#160;&#160;">
 			<var>$indicator</var>
 			<text> </text>
 			<text>=</text>
@@ -2955,24 +2958,24 @@
 			<text> </text>
 			<var>$startchar</var>
 		</line>
-		<line linenr="428" indent="&#160;&#160;">
+		<line linenr="429" indent="&#160;&#160;">
 			<var>$loopcount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>10</var>
 		</line>
-		<line linenr="429" indent="&#160;&#160;">
+		<line linenr="430" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$loopcount</var>
 		</line>
-		<line linenr="430" indent="&#160;&#160;">
+		<line linenr="431" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$loopcount</var>
 		</line>
-		<line linenr="431" indent="&#160;&#160;">
+		<line linenr="432" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$volUsed</var>
@@ -2981,12 +2984,12 @@
 			<text> </text>
 			<var>$tenpercentvol</var>
 		</line>
-		<line linenr="432" indent="&#160;&#160;">
+		<line linenr="433" indent="&#160;&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$fullcount</var>
 		</line>
-		<line linenr="433" indent="&#160;&#160;">
+		<line linenr="434" indent="&#160;&#160;">
 			<var>$volUsed</var>
 			<text> </text>
 			<text>=</text>
@@ -2997,7 +3000,7 @@
 			<text> </text>
 			<var>$tenpercentvol</var>
 		</line>
-		<line linenr="434" indent="&#160;&#160;">
+		<line linenr="435" indent="&#160;&#160;">
 			<var>$indicator</var>
 			<text> </text>
 			<text>=</text>
@@ -3008,10 +3011,10 @@
 			<text> </text>
 			<text>'.'</text>
 		</line>
-		<line linenr="435" indent="&#160;&#160;">
+		<line linenr="436" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="436" indent="&#160;&#160;">
+		<line linenr="437" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$loopcount</var>
@@ -3020,10 +3023,10 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="437" indent="&#160;&#160;">
+		<line linenr="438" indent="&#160;&#160;">
 			<comment>* For the last bar, we don't look for an exact 100% full, but rather if it's within 3% of being full.  Not everything fits exactly to fill up a cargo hold and it is still basically full.</comment>
 		</line>
-		<line linenr="438" indent="&#160;&#160;&#160;">
+		<line linenr="439" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$volUsed</var>
@@ -3042,7 +3045,7 @@
 			<var>3</var>
 			<text>)</text>
 		</line>
-		<line linenr="439" indent="&#160;&#160;&#160;">
+		<line linenr="440" indent="&#160;&#160;&#160;">
 			<var>$indicator</var>
 			<text> </text>
 			<text>=</text>
@@ -3053,19 +3056,19 @@
 			<text> </text>
 			<text>''</text>
 		</line>
-		<line linenr="440" indent="&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
 		<line linenr="441" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="442" indent="&#160;&#160;">
+		<line linenr="442" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
 		<line linenr="443" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
 		<line linenr="444" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="445" indent="&#160;&#160;">
 			<var>$indicator</var>
 			<text> </text>
 			<text>=</text>
@@ -3076,8 +3079,8 @@
 			<text> </text>
 			<var>$endchar</var>
 		</line>
-		<line linenr="445" indent="&#160;&#160;" />
-		<line linenr="446" indent="&#160;&#160;">
+		<line linenr="446" indent="&#160;&#160;" />
+		<line linenr="447" indent="&#160;&#160;">
 			<var>$name</var>
 			<text> </text>
 			<text>=</text>
@@ -3089,14 +3092,14 @@
 			<text> </text>
 			<text>name</text>
 		</line>
-		<line linenr="447" indent="&#160;&#160;" />
-		<line linenr="448" indent="&#160;&#160;">
+		<line linenr="448" indent="&#160;&#160;" />
+		<line linenr="449" indent="&#160;&#160;">
 			<comment>* TODO:  I can remove this segment below for version 2.7</comment>
 		</line>
-		<line linenr="449" indent="&#160;&#160;&#160;">
+		<line linenr="450" indent="&#160;&#160;&#160;">
 			<comment>* strip off any [...] that might be in the name from previous failure.</comment>
 		</line>
-		<line linenr="450" indent="&#160;&#160;&#160;">
+		<line linenr="451" indent="&#160;&#160;&#160;">
 			<var>$startbracket</var>
 			<text> </text>
 			<text>=</text>
@@ -3115,7 +3118,7 @@
 			<text> </text>
 			<var>$name</var>
 		</line>
-		<line linenr="451" indent="&#160;&#160;&#160;">
+		<line linenr="452" indent="&#160;&#160;&#160;">
 			<var>$endbracket</var>
 			<text> </text>
 			<text>=</text>
@@ -3134,7 +3137,7 @@
 			<text> </text>
 			<var>$name</var>
 		</line>
-		<line linenr="452" indent="&#160;&#160;&#160;">
+		<line linenr="453" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$startbracket</var>
@@ -3151,7 +3154,7 @@
 			<text> </text>
 			<var>-1</var>
 		</line>
-		<line linenr="453" indent="&#160;&#160;&#160;">
+		<line linenr="454" indent="&#160;&#160;&#160;">
 			<var>$len</var>
 			<text> </text>
 			<text>=</text>
@@ -3162,7 +3165,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="454" indent="&#160;&#160;&#160;">
+		<line linenr="455" indent="&#160;&#160;&#160;">
 			<var>$basename</var>
 			<text> </text>
 			<text>=</text>
@@ -3183,7 +3186,7 @@
 			<text>=</text>
 			<var>$len</var>
 		</line>
-		<line linenr="455" indent="&#160;&#160;&#160;">
+		<line linenr="456" indent="&#160;&#160;&#160;">
 			<var>$newname</var>
 			<text> </text>
 			<text>=</text>
@@ -3194,22 +3197,22 @@
 			<text> </text>
 			<var>$indicator</var>
 		</line>
-		<line linenr="456" indent="&#160;&#160;&#160;">
+		<line linenr="457" indent="&#160;&#160;&#160;">
 			<var>$name</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$newname</var>
 		</line>
-		<line linenr="457" indent="&#160;&#160;">
+		<line linenr="458" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="458" indent="&#160;&#160;" />
 		<line linenr="459" indent="&#160;&#160;" />
-		<line linenr="460" indent="&#160;&#160;">
+		<line linenr="460" indent="&#160;&#160;" />
+		<line linenr="461" indent="&#160;&#160;">
 			<comment>* check ship name to see if the pattern is already there and if so, modify it.</comment>
 		</line>
-		<line linenr="461" indent="&#160;&#160;">
+		<line linenr="462" indent="&#160;&#160;">
 			<var>$startbracket</var>
 			<text> </text>
 			<text>=</text>
@@ -3228,7 +3231,7 @@
 			<text> </text>
 			<var>$name</var>
 		</line>
-		<line linenr="462" indent="&#160;">
+		<line linenr="463" indent="&#160;">
 			<var>$endbracket</var>
 			<text> </text>
 			<text>=</text>
@@ -3247,7 +3250,7 @@
 			<text> </text>
 			<var>$name</var>
 		</line>
-		<line linenr="463" indent="&#160;">
+		<line linenr="464" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$startbracket</var>
@@ -3264,13 +3267,13 @@
 			<text> </text>
 			<var>-1</var>
 		</line>
-		<line linenr="464" indent="">
+		<line linenr="465" indent="">
 			<comment>* write to logfile 1 append=[TRUE] printf: fmt='VolMax = %s, VolFree = %s, TenPercent = %s', $volMax, $volFree, $tenpercentvol, null, null</comment>
 		</line>
-		<line linenr="465" indent="">
+		<line linenr="466" indent="">
 			<comment>* Everything lines up.. We have [123456789X] in a name, so we work with it.</comment>
 		</line>
-		<line linenr="466" indent="">
+		<line linenr="467" indent="">
 			<var>$len</var>
 			<text> </text>
 			<text>=</text>
@@ -3281,7 +3284,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="467" indent="">
+		<line linenr="468" indent="">
 			<var>$basename</var>
 			<text> </text>
 			<text>=</text>
@@ -3302,7 +3305,7 @@
 			<text>=</text>
 			<var>$len</var>
 		</line>
-		<line linenr="468" indent="">
+		<line linenr="469" indent="">
 			<var>$newname</var>
 			<text> </text>
 			<text>=</text>
@@ -3313,7 +3316,7 @@
 			<text> </text>
 			<var>$indicator</var>
 		</line>
-		<line linenr="469" indent="">
+		<line linenr="470" indent="">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3325,18 +3328,18 @@
 			<text> </text>
 			<var>$newname</var>
 		</line>
-		<line linenr="470" indent="&#160;">
+		<line linenr="471" indent="&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="471" indent="&#160;" />
-		<line linenr="472" indent="&#160;">
+		<line linenr="472" indent="&#160;" />
+		<line linenr="473" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="473" indent="&#160;" />
-		<line linenr="474" indent="&#160;">
+		<line linenr="474" indent="&#160;" />
+		<line linenr="475" indent="&#160;">
 			<comment>* Pattern wasn't there, so append the indicator.</comment>
 		</line>
-		<line linenr="475" indent="&#160;">
+		<line linenr="476" indent="&#160;">
 			<var>$newname</var>
 			<text> </text>
 			<text>=</text>
@@ -3347,7 +3350,7 @@
 			<text> </text>
 			<var>$indicator</var>
 		</line>
-		<line linenr="476" indent="&#160;">
+		<line linenr="477" indent="&#160;">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3359,29 +3362,29 @@
 			<text> </text>
 			<var>$newname</var>
 		</line>
-		<line linenr="477" indent="&#160;">
+		<line linenr="478" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="478" indent="&#160;&#160;" />
-		<line linenr="479" indent="&#160;&#160;">
+		<line linenr="479" indent="&#160;&#160;" />
+		<line linenr="480" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="480" indent="&#160;&#160;" />
-		<line linenr="481" indent="&#160;&#160;">
+		<line linenr="481" indent="&#160;&#160;" />
+		<line linenr="482" indent="&#160;&#160;">
 			<comment>* Mordan3 - Checks and updates total number of player owned beacons.  We now restrict how many  they can own, but there are too many places in the code</comment>
 		</line>
-		<line linenr="482" indent="&#160;&#160;">
+		<line linenr="483" indent="&#160;&#160;">
 			<comment>* where beacons can be killed, captured, and whatnot, to absolutely determine the player hasn't found a way around this restriction. Also, just the act of droppoing</comment>
 		</line>
-		<line linenr="483" indent="&#160;&#160;">
+		<line linenr="484" indent="&#160;&#160;">
 			<comment>* a beacon (eject ware) from a ship doesn't appear to have any intercept point in the code that I can find, so we need to peridocally update our count.</comment>
 		</line>
-		<line linenr="484" indent="&#160;&#160;">
+		<line linenr="485" indent="&#160;&#160;">
 			<var>CheckPlayerBeacons</var>
 			<text>:</text>
 		</line>
-		<line linenr="485" indent="&#160;&#160;" />
-		<line linenr="486" indent="&#160;&#160;">
+		<line linenr="486" indent="&#160;&#160;" />
+		<line linenr="487" indent="&#160;&#160;">
 			<var>$maxPlayerBeacons</var>
 			<text> </text>
 			<text>=</text>
@@ -3397,15 +3400,15 @@
 			<text>=</text>
 			<text>'MaxPlayerBeacons'</text>
 		</line>
-		<line linenr="487" indent="&#160;&#160;" />
 		<line linenr="488" indent="&#160;&#160;" />
-		<line linenr="489" indent="&#160;&#160;">
+		<line linenr="489" indent="&#160;&#160;" />
+		<line linenr="490" indent="&#160;&#160;">
 			<comment>* are any beacons in systems the player doesn't own. If so, revert ownership to Neutral.  If a player beacon is found in a Phanon sector, it is given to the Phanon.</comment>
 		</line>
-		<line linenr="490" indent="&#160;&#160;&#160;">
+		<line linenr="491" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.4.6: Why remove beacons from unknown space? These are neutral - keep beacons there. However, remove them if placed in the renegade sector and the plot is not yet completed.</comment>
 		</line>
-		<line linenr="491" indent="&#160;&#160;">
+		<line linenr="492" indent="&#160;&#160;">
 			<var>$ownedBeacons</var>
 			<text> </text>
 			<text>=</text>
@@ -3429,7 +3432,7 @@
 			<text>=</text>
 			<var>{Neutral Race Jump Beacon}</var>
 		</line>
-		<line linenr="492" indent="&#160;&#160;&#160;">
+		<line linenr="493" indent="&#160;&#160;&#160;">
 			<var>$XS.Iterator3</var>
 			<text> </text>
 			<text>=</text>
@@ -3442,17 +3445,17 @@
 			<text> </text>
 			<var>$ownedBeacons</var>
 		</line>
-		<line linenr="493" indent="&#160;&#160;&#160;">
+		<line linenr="494" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator3</var>
 		</line>
-		<line linenr="494" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="495" indent="&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator3</var>
 		</line>
-		<line linenr="495" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="496" indent="&#160;&#160;&#160;&#160;">
 			<var>$beacon</var>
 			<text> </text>
 			<text>=</text>
@@ -3462,7 +3465,7 @@
 			<var>$XS.Iterator3</var>
 			<text>]</text>
 		</line>
-		<line linenr="496" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="497" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -3479,7 +3482,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="497" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="498" indent="&#160;&#160;&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -3491,7 +3494,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="498" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="499" indent="&#160;&#160;&#160;&#160;">
 			<var>$sectorowner</var>
 			<text> </text>
 			<text>=</text>
@@ -3505,7 +3508,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="499" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="500" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$sector.renegade</var>
 			<text> </text>
 			<text>=</text>
@@ -3521,7 +3524,7 @@
 			<text>=</text>
 			<text>'RenegadeSector'</text>
 		</line>
-		<line linenr="500" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="501" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$RenegadesPlotCompleted</var>
 			<text> </text>
 			<text>=</text>
@@ -3537,14 +3540,14 @@
 			<text>=</text>
 			<text>'RenegadesPlotCompleted'</text>
 		</line>
-		<line linenr="501" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="502" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="502" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="503" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Mordan8 - only convert player beacons to Phanon if we're not yet done with the Close Bonds mission.  (See PhanonJumpBeaconConnected.xml)</comment>
 		</line>
-		<line linenr="503" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="504" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.6: Or convert only if Phanon has no beacons in that sector. Must not be allied with OCV (therefore, player is allied with Phanon).</comment>
 		</line>
-		<line linenr="504" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="505" indent="&#160;&#160;&#160;&#160;">
 			<var>$doneWithPhanonBeaconConversion</var>
 			<text> </text>
 			<text>=</text>
@@ -3560,7 +3563,7 @@
 			<text>=</text>
 			<text>'doneWithPhanonBeaconConversion'</text>
 		</line>
-		<line linenr="505" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="506" indent="&#160;&#160;&#160;&#160;">
 			<var>$foundJB</var>
 			<text> </text>
 			<text>=</text>
@@ -3606,7 +3609,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="506" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="507" indent="&#160;&#160;&#160;&#160;">
 			<var>$OCVplotstage</var>
 			<text> </text>
 			<text>=</text>
@@ -3622,7 +3625,7 @@
 			<text>=</text>
 			<text>'OCVplotstage'</text>
 		</line>
-		<line linenr="507" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="508" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$sectorowner</var>
@@ -3651,7 +3654,7 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="508" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="509" indent="&#160;&#160;&#160;&#160;">
 			<var>$beacon</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3665,7 +3668,7 @@
 			<text> </text>
 			<var>[Phanon]</var>
 		</line>
-		<line linenr="509" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="510" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -3709,10 +3712,10 @@
 			<var>$RenegadesPlotCompleted</var>
 			<text>)</text>
 		</line>
-		<line linenr="510" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="511" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Hard difficulty, we won't allow player beacons in systems they don't own unless the player has X Notoriety or better with them.</comment>
 		</line>
-		<line linenr="511" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="512" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -3721,16 +3724,16 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="512" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="513" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Mordan4.  Rather than revert ownership and lose it entirely, we can just put it in the nearest outpost.</comment>
 		</line>
-		<line linenr="513" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="514" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Patch.  Also, now allowing you to have beacon in Friendly territory, provided your notoriety with them is at least 3333 (level 6). (Add-Ons 1.3) On insane, 10000 notoriety (rank 7) is required.</comment>
 		</line>
-		<line linenr="514" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="515" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* see https://x3.solasistim.net/index.php/Reputation/  for list of notoriety rankings and values.</comment>
 		</line>
-		<line linenr="515" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="516" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$not</var>
 			<text> </text>
 			<text>=</text>
@@ -3751,7 +3754,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="516" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="517" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -3760,21 +3763,21 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="517" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="518" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$threshold</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>3333</var>
 		</line>
-		<line linenr="518" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="519" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$level</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>6</var>
 		</line>
-		<line linenr="519" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="520" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -3785,31 +3788,31 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="520" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="521" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$threshold</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>10000</var>
 		</line>
-		<line linenr="521" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="522" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$level</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>7</var>
 		</line>
-		<line linenr="522" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="523" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="523" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="524" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="524" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="525" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* write to logfile 1 append=[TRUE] printf: fmt='Beacon found, sector owner = %s, notoriety = %s', $sectorowner, $not, null, null, null   </comment>
 		</line>
-		<line linenr="525" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="526" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.3: Must have +7 reputation rank to keep beacon in NPC space. </comment>
 		</line>
-		<line linenr="526" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="527" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$not</var>
@@ -3818,7 +3821,7 @@
 			<text> </text>
 			<var>$threshold</var>
 		</line>
-		<line linenr="527" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="528" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$flags</var>
 			<text> </text>
 			<text>=</text>
@@ -3829,11 +3832,11 @@
 			<text> </text>
 			<var>[Find.Nearest]</var>
 		</line>
-		<line linenr="528" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="529" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="529" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="530" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Mordan9 - Get nearest outpost</comment>
 		</line>
-		<line linenr="530" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="531" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$outpost</var>
 			<text> </text>
 			<text>=</text>
@@ -3857,26 +3860,26 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="531" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="532" indent="&#160;&#160;&#160;">
+		<line linenr="532" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="533" indent="&#160;&#160;&#160;">
 			<comment>* $outposts = [NULL]-&gt; call script 'Joubarbe.Lib.GetNearestStations' : stationType={Player Outpost} refObject=$beacon race=null</comment>
 		</line>
-		<line linenr="533" indent="&#160;&#160;">
+		<line linenr="534" indent="&#160;&#160;">
 			<comment>* if $outposts</comment>
 		</line>
-		<line linenr="534" indent="&#160;">
+		<line linenr="535" indent="&#160;">
 			<comment>* add a new beacon to the outpost</comment>
 		</line>
-		<line linenr="535" indent="&#160;">
+		<line linenr="536" indent="&#160;">
 			<comment>* $outposts = [NULL]-&gt; call script 'Joubarbe.Lib.SortByDistance' : refObject=$beacon array=$outposts</comment>
 		</line>
-		<line linenr="536" indent="&#160;">
+		<line linenr="537" indent="&#160;">
 			<comment>* $outposts = reverse array $outposts</comment>
 		</line>
-		<line linenr="537" indent="&#160;">
+		<line linenr="538" indent="&#160;">
 			<comment>* $outpost = $outposts[0]</comment>
 		</line>
-		<line linenr="538" indent="&#160;">
+		<line linenr="539" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$outpost</var>
@@ -3884,7 +3887,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="539" indent="&#160;">
+		<line linenr="540" indent="&#160;">
 			<var>$outpost</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3903,7 +3906,7 @@
 			<text> </text>
 			<var>{Jump Beacon}</var>
 		</line>
-		<line linenr="540" indent="&#160;">
+		<line linenr="541" indent="&#160;">
 			<text>=</text>
 			<text> </text>
 			<var>$outpost</var>
@@ -3919,11 +3922,11 @@
 			<text> </text>
 			<var>{Jump Beacon}</var>
 		</line>
-		<line linenr="541" indent="&#160;&#160;" />
-		<line linenr="542" indent="&#160;&#160;">
+		<line linenr="542" indent="&#160;&#160;" />
+		<line linenr="543" indent="&#160;&#160;">
 			<comment>* destroy the beacon</comment>
 		</line>
-		<line linenr="543" indent="&#160;&#160;" interruptable="@">
+		<line linenr="544" indent="&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -3945,8 +3948,8 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="544" indent="&#160;&#160;" />
-		<line linenr="545" indent="&#160;">
+		<line linenr="545" indent="&#160;&#160;" />
+		<line linenr="546" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -3973,7 +3976,7 @@
 			<text> </text>
 			<var>$outpost</var>
 		</line>
-		<line linenr="546" indent="&#160;" interruptable="@">
+		<line linenr="547" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -4003,11 +4006,8 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="547" indent="">
-			<comment>* end</comment>
-		</line>
 		<line linenr="548" indent="">
-			<text>end</text>
+			<comment>* end</comment>
 		</line>
 		<line linenr="549" indent="">
 			<text>end</text>
@@ -4015,20 +4015,23 @@
 		<line linenr="550" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="551" indent="&#160;">
+		<line linenr="551" indent="">
 			<text>end</text>
 		</line>
 		<line linenr="552" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="553" indent="&#160;&#160;" />
-		<line linenr="554" indent="&#160;&#160;">
+		<line linenr="553" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="554" indent="&#160;&#160;" />
+		<line linenr="555" indent="&#160;&#160;">
 			<comment>* There really is nothing to prevent the player from dropping beacons all over the place.  There's no intercept point in the code.  All we can do </comment>
 		</line>
-		<line linenr="555" indent="&#160;&#160;">
+		<line linenr="556" indent="&#160;&#160;">
 			<comment>* is passively poll how many they put down and delete extras.</comment>
 		</line>
-		<line linenr="556" indent="&#160;&#160;&#160;">
+		<line linenr="557" indent="&#160;&#160;&#160;">
 			<var>$ownedBeacons</var>
 			<text> </text>
 			<text>=</text>
@@ -4052,7 +4055,7 @@
 			<text>=</text>
 			<var>{Neutral Race Jump Beacon}</var>
 		</line>
-		<line linenr="557" indent="&#160;&#160;&#160;">
+		<line linenr="558" indent="&#160;&#160;&#160;">
 			<var>$beaconCount</var>
 			<text> </text>
 			<text>=</text>
@@ -4065,7 +4068,7 @@
 			<text> </text>
 			<var>$ownedBeacons</var>
 		</line>
-		<line linenr="558" indent="&#160;&#160;&#160;">
+		<line linenr="559" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$beaconCount</var>
@@ -4074,7 +4077,7 @@
 			<text> </text>
 			<var>$maxPlayerBeacons</var>
 		</line>
-		<line linenr="559" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="560" indent="&#160;&#160;&#160;&#160;">
 			<var>$beacon0</var>
 			<text> </text>
 			<text>=</text>
@@ -4084,7 +4087,7 @@
 			<var>0</var>
 			<text>]</text>
 		</line>
-		<line linenr="560" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="561" indent="&#160;&#160;&#160;&#160;">
 			<var>$beacon0</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4099,7 +4102,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="561" indent="&#160;&#160;&#160;">
+		<line linenr="562" indent="&#160;&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -4118,7 +4121,7 @@
 			<text> </text>
 			<var>$maxPlayerBeacons</var>
 		</line>
-		<line linenr="562" indent="&#160;&#160;">
+		<line linenr="563" indent="&#160;&#160;">
 			<text>display</text>
 			<text> </text>
 			<text>subtitle</text>
@@ -4136,22 +4139,22 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="563" indent="&#160;&#160;">
+		<line linenr="564" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="564" indent="&#160;&#160;" />
-		<line linenr="565" indent="&#160;">
+		<line linenr="565" indent="&#160;&#160;" />
+		<line linenr="566" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="566" indent="" />
-		<line linenr="567" indent="">
+		<line linenr="567" indent="" />
+		<line linenr="568" indent="">
 			<comment>* Any player ship smaller than M1/M2 class can not have a Triplex.  Should a player transfer one to a ship, this will periodically go remove it.</comment>
 		</line>
-		<line linenr="568" indent="">
+		<line linenr="569" indent="">
 			<var>CheckForTriplex</var>
 			<text>:</text>
 		</line>
-		<line linenr="569" indent="">
+		<line linenr="570" indent="">
 			<var>$ships</var>
 			<text> </text>
 			<text>=</text>
@@ -4175,7 +4178,7 @@
 			<text>=</text>
 			<var>[Moveable Ship]</var>
 		</line>
-		<line linenr="570" indent="">
+		<line linenr="571" indent="">
 			<var>$XS.Iterator4</var>
 			<text> </text>
 			<text>=</text>
@@ -4188,17 +4191,17 @@
 			<text> </text>
 			<var>$ships</var>
 		</line>
-		<line linenr="571" indent="">
+		<line linenr="572" indent="">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator4</var>
 		</line>
-		<line linenr="572" indent="">
+		<line linenr="573" indent="">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator4</var>
 		</line>
-		<line linenr="573" indent="">
+		<line linenr="574" indent="">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -4208,8 +4211,8 @@
 			<var>$XS.Iterator4</var>
 			<text>]</text>
 		</line>
-		<line linenr="574" indent="" />
-		<line linenr="575" indent="">
+		<line linenr="575" indent="" />
+		<line linenr="576" indent="">
 			<var>$isHuge</var>
 			<text> </text>
 			<text>=</text>
@@ -4225,17 +4228,17 @@
 			<text> </text>
 			<var>[Huge Ship]</var>
 		</line>
-		<line linenr="576" indent="">
+		<line linenr="577" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
 			<text> </text>
 			<var>$isHuge</var>
 		</line>
-		<line linenr="577" indent="">
+		<line linenr="578" indent="">
 			<comment>* get built in components and see if there's a triplex scanner.  If so, remove it.</comment>
 		</line>
-		<line linenr="578" indent="">
+		<line linenr="579" indent="">
 			<var>$InCargoBay</var>
 			<text> </text>
 			<text>=</text>
@@ -4259,7 +4262,7 @@
 			<text> </text>
 			<text>bay</text>
 		</line>
-		<line linenr="579" indent="">
+		<line linenr="580" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$InCargoBay</var>
@@ -4268,7 +4271,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="580" indent="">
+		<line linenr="581" indent="">
 			<text>=</text>
 			<text> </text>
 			<var>$ship</var>
@@ -4284,21 +4287,21 @@
 			<text> </text>
 			<var>{Triplex Scanner}</var>
 		</line>
-		<line linenr="581" indent="">
-			<comment>* = $ship-&gt; add -1 units of {Triplex Scanner}</comment>
-		</line>
 		<line linenr="582" indent="">
-			<text>end</text>
+			<comment>* = $ship-&gt; add -1 units of {Triplex Scanner}</comment>
 		</line>
 		<line linenr="583" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="584" indent="" />
-		<line linenr="585" indent="" />
-		<line linenr="586" indent="">
+		<line linenr="584" indent="">
 			<text>end</text>
 		</line>
+		<line linenr="585" indent="" />
+		<line linenr="586" indent="" />
 		<line linenr="587" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="588" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -4307,7 +4310,7 @@
 			<sval type="string" val="Renegades.Monitor" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="307" />
+			<sval type="int" val="309" />
 			<sval type="int" val="0" />
 			<sval type="array" size="97">
 				<sval type="string" val="shipCheckTime1" />
@@ -7603,7 +7606,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="277">
+			<sval type="array" size="278">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -8120,7 +8123,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="128" />
 					<sval type="int" val="1" />
-					<sval type="string" val="If player exceeds supply cap, then increase ship difficulty by 1 tier." />
+					<sval type="string" val="If player is over supply, ship difficulty increases by 1. Caps at 5 (scaled insane)." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="128" />
+					<sval type="int" val="1" />
+					<sval type="string" val="This means they spawn tougher enemies, and even easy difficulty can run into an M7 if the player is overextended and fields too much fleet power!" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="130" />
