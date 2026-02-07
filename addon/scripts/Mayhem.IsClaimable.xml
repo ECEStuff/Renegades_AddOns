@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.IsClaimable</name>
-	<version>39</version>
+	<version>47</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -14,7 +14,7 @@
 	<sourcetext>
 		<line linenr="001" indent="" />
 		<line linenr="002" indent="">
-			<comment>*$debug = 0</comment>
+			<comment>* $debug = 0</comment>
 		</line>
 		<line linenr="003" indent="">
 			<var>$sector.owner</var>
@@ -1566,16 +1566,16 @@
 			<comment>* ** DEBUG **</comment>
 		</line>
 		<line linenr="196" indent="">
-			<comment>*if $debug</comment>
+			<comment>* if $debug</comment>
 		</line>
 		<line linenr="197" indent="">
-			<comment>*$t = 'race: ' + $race + '; strategy: ' + $OffensiveStrategy</comment>
+			<comment>* $t = 'race: ' + $race + '; strategy: ' + $OffensiveStrategy</comment>
 		</line>
 		<line linenr="198" indent="">
-			<comment>*write to player logbook $t</comment>
+			<comment>* write to player logbook $t</comment>
 		</line>
 		<line linenr="199" indent="&#160;">
-			<comment>*end</comment>
+			<comment>* end</comment>
 		</line>
 		<line linenr="200" indent="&#160;">
 			<comment>* ** END DEBUG ** </comment>
@@ -1970,7 +1970,116 @@
 			<text>=</text>
 			<text>'MinPlayerSystemsBeforeAIExpansion'</text>
 		</line>
-		<line linenr="259" indent="&#160;" interruptable="@">
+		<line linenr="259" indent="&#160;&#160;" />
+		<line linenr="260" indent="&#160;">
+			<comment>* Clamp first in case.</comment>
+		</line>
+		<line linenr="261" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$numSystems</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="262" indent="&#160;">
+			<var>$numSystems</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="263" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$numSystems</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>3</var>
+		</line>
+		<line linenr="264" indent="&#160;">
+			<var>$numSystems</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>3</var>
+		</line>
+		<line linenr="265" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="266" indent="&#160;&#160;" />
+		<line linenr="267" indent="&#160;">
+			<comment>* Add-Ons 1.7: Difficulty influences grace radius (at this point, bounded between 0-3). Easy: unchanged; normal: -1 sector; hard and up: N/A</comment>
+		</line>
+		<line linenr="268" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="269" indent="&#160;">
+			<var>$numSystems</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$numSystems</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="270" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>&gt;=</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="271" indent="&#160;">
+			<var>$numSystems</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="272" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="273" indent="&#160;&#160;" />
+		<line linenr="274" indent="&#160;">
+			<comment>* Clamp again in case.</comment>
+		</line>
+		<line linenr="275" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$numSystems</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="276" indent="&#160;">
+			<var>$numSystems</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="277" indent="&#160;" />
+		<line linenr="278" indent="&#160;" interruptable="@">
 			<var>$playerSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -1994,7 +2103,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="260" indent="&#160;">
+		<line linenr="279" indent="&#160;">
 			<var>$playerSectorCount</var>
 			<text> </text>
 			<text>=</text>
@@ -2007,13 +2116,32 @@
 			<text> </text>
 			<var>$playerSectors</var>
 		</line>
-		<line linenr="261" indent="&#160;&#160;">
+		<line linenr="280" indent="&#160;&#160;" />
+		<line linenr="281" indent="&#160;">
+			<comment>* Should never happen. Just in case.</comment>
+		</line>
+		<line linenr="282" indent="&#160;">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$playerSectorCount</var>
+		</line>
+		<line linenr="283" indent="&#160;">
+			<var>$playerSectorCount</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="284" indent="&#160;" />
+		<line linenr="285" indent="&#160;&#160;">
 			<comment>* Herobetty 5.4: Check if galaxy is an origin galaxy. If it is not an origin galaxy AND the player doesn't have X systems, AI is not allowed to expand. </comment>
 		</line>
-		<line linenr="262" indent="&#160;">
-			<comment>* Add-Ons 1.3.8: Only on hard and lower. Insane difficulty has the 1-sector challenge, so this restriction cannot apply.</comment>
+		<line linenr="286" indent="">
+			<comment>* Add-Ons 1.3.8: Only on normal (as of 1.7; was previously hard) and lower. Insane difficulty has the 1-sector challenge, so this restriction cannot apply.</comment>
 		</line>
-		<line linenr="263" indent="">
+		<line linenr="287" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2028,29 +2156,18 @@
 			<text> </text>
 			<text>!</text>
 			<var>$isOriginGalaxy</var>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<var>$difficulty</var>
-			<text> </text>
-			<text>&lt;=</text>
-			<text> </text>
-			<var>2</var>
 		</line>
-		<line linenr="264" indent="">
+		<line linenr="288" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="265" indent="" />
-		<line linenr="266" indent="">
+		<line linenr="289" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="267" indent="" />
-		<line linenr="268" indent="" />
-		<line linenr="269" indent="" />
-		<line linenr="270" indent="" />
-		<line linenr="271" indent="">
+		<line linenr="290" indent="" />
+		<line linenr="291" indent="" />
+		<line linenr="292" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>[TRUE]</var>
@@ -2061,7 +2178,7 @@
 			<sval type="string" val="Mayhem.IsClaimable" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="39" />
+			<sval type="int" val="47" />
 			<sval type="int" val="0" />
 			<sval type="array" size="39">
 				<sval type="string" val="sector" />
@@ -2104,7 +2221,7 @@
 				<sval type="string" val="playerSectors" />
 				<sval type="string" val="playerSectorCount" />
 			</sval>
-			<sval type="array" size="141">
+			<sval type="array" size="155">
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
@@ -3315,7 +3432,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610576893" />
+					<sval type="int" val="-1610573309" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -3463,6 +3580,140 @@
 					<sval type="string" val="MinPlayerSystemsBeforeAIExpansion" />
 					<sval type="int" val="36" />
 				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610577149" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="36" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="36" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="141" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610576635" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="36" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="36" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610575869" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="20" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="36" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="36" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="146" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610575355" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="20" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="36" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610574840" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="36" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="36" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetOwnedSectors" />
@@ -3481,10 +3732,28 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="37" />
 				</sval>
-				<sval type="array" size="34">
+				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610576888" />
-					<sval type="int" val="10" />
+					<sval type="int" val="-536831993" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="38" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="38" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610573304" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="38" />
 					<sval type="int" val="131074" />
@@ -3497,25 +3766,13 @@
 					<sval type="int" val="65556" />
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="20" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="10" />
+					<sval type="int" val="6" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-2" />
 					<sval type="int" val="9" />
 					<sval type="int" val="65556" />
 					<sval type="int" val="-4" />
-					<sval type="int" val="9" />
-					<sval type="int" val="-7" />
-					<sval type="int" val="5" />
-					<sval type="int" val="-8" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -3542,7 +3799,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="134">
+			<sval type="array" size="143">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -4110,38 +4367,78 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan9 - Don't allow A.I. to expand until the player owns X amount of systems.  9973 option. Defaults to 3." />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="136" />
+					<sval type="int" val="2" />
+				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="138" />
+					<sval type="int" val="136" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Clamp first in case." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="141" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="141" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="141" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.7: Difficulty influences grace radius (at this point, bounded between 0-3). Easy: unchanged; normal: -1 sector; hard and up: N/A" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="146" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="146" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="146" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Clamp again in case." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="148" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="150" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="150" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Should never happen. Just in case." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="152" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="152" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Herobetty 5.4: Check if galaxy is an origin galaxy. If it is not an origin galaxy AND the player doesn't have X systems, AI is not allowed to expand. " />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="138" />
+					<sval type="int" val="152" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.3.8: Only on hard and lower. Insane difficulty has the 1-sector challenge, so this restriction cannot apply." />
+					<sval type="string" val="Add-Ons 1.3.8: Only on normal (as of 1.7; was previously hard) and lower. Insane difficulty has the 1-sector challenge, so this restriction cannot apply." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="140" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="140" />
+					<sval type="int" val="154" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="140" />
+					<sval type="int" val="154" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="140" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="140" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="140" />
+					<sval type="int" val="154" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
