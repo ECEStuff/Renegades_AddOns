@@ -18,9 +18,8 @@ If you're installing Renegades Add-Ons from scratch:
   - DO NOT put your copy in your /Program Files or /Program Files (x86) folder.
 - Go to the main Renegades thread (https://forum.egosoft.com/viewtopic.php?t=460221) and download the Renegades zip. As of July 2025, it is currently a full install of Renegades 5.4.
 - Open the Renegades zip you downloaded in step 2. Extract its contents to the Renegades directory.
-- Download the Add-Ons zip in Releases. Once you've downloaded it, open the zip and double-click the folder inside. Make sure you see the addon, mayhem_data, etc. contents. Extract all contents to the Renegades directory.
+- Download the Add-Ons zip in Releases. Once you've downloaded it, open the zip and double-click the folder inside. Make sure you see the addon, mayhem_data, updated cleanup.bat, and any other contents. Extract all contents to the Renegades directory.
 - Run cleanup.bat.
-  - Optional: Go to your Renegades directory. In the addon/loadscr directory, delete any screenshots that start with x3screen, as these weren't deleted by cleanup.bat. Keep the screenshots that start with x3Ren.
 - Open the original galaxy generator found in the Renegades root directory (Mayhem Galaxy Generator.exe). Set your root and savegame folder paths accordingly; this should automatically be done by clicking the "default" buttons. Verify that the paths are correct.
 - Generate a galaxy using the original galaxy generator (Mayhem Galaxy Generator.exe).
 - Verify that the galaxy generator generated a galaxy. You should see your galaxy generated in mayhem_galaxies.
