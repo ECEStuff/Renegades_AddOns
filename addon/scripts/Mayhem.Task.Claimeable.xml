@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Task.Claimeable</name>
-	<version>35</version>
+	<version>39</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -626,46 +626,13 @@
 		<line linenr="070" indent="">
 			<comment>* Herobetty 5.4: Removed redundant black market mission variable getter, as it's already done earlier in this script.</comment>
 		</line>
-		<line linenr="071" indent="&#160;">
+		<line linenr="071" indent="">
 			<comment>* Also checks if the new owner is not the player. If so, and the ship is a black market ship, mission fails.</comment>
 		</line>
 		<line linenr="072" indent="&#160;">
 			<comment>* The player has 4/3/2 +/- 0.5 hours on easy/normal/hard to claim the ship for their own. After that, the ship becomes open for anyone to grab.</comment>
 		</line>
 		<line linenr="073" indent="&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>[OWNER]</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Player]</var>
-		</line>
-		<line linenr="074" indent="&#160;">
-			<comment>* ZH 2.0</comment>
-		</line>
-		<line linenr="075" indent="&#160;" interruptable="@">
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>ZH.EquipShip.Safety</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>ship</text>
-			<text>=</text>
-			<var>[THIS]</var>
-		</line>
-		<line linenr="076" indent="&#160;&#160;">
-			<comment>* Remnant and black market &quot;missions&quot;.</comment>
-		</line>
-		<line linenr="077" indent="&#160;&#160;">
 			<var>$remnantMission</var>
 			<text> </text>
 			<text>=</text>
@@ -683,6 +650,39 @@
 			<text>name</text>
 			<text>=</text>
 			<text>'mayhem_remnantMission'</text>
+		</line>
+		<line linenr="074" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>[OWNER]</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Player]</var>
+		</line>
+		<line linenr="075" indent="&#160;">
+			<comment>* ZH 2.0</comment>
+		</line>
+		<line linenr="076" indent="&#160;&#160;" interruptable="@">
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>ZH.EquipShip.Safety</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>ship</text>
+			<text>=</text>
+			<var>[THIS]</var>
+		</line>
+		<line linenr="077" indent="&#160;&#160;">
+			<comment>* Remnant and black market &quot;missions&quot;.</comment>
 		</line>
 		<line linenr="078" indent="&#160;">
 			<text>if</text>
@@ -895,7 +895,7 @@
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="097" indent="&#160;">
+		<line linenr="097" indent="&#160;&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -921,7 +921,7 @@
 			<text> </text>
 			<var>[Friend]</var>
 		</line>
-		<line linenr="099" indent="">
+		<line linenr="099" indent="&#160;">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -956,23 +956,49 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="100" indent="">
+		<line linenr="100" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="101" indent="">
+		<line linenr="101" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="102" indent="">
-			<comment>* Herobetty 5.4: an NPC faction claimed this ship, and it is a black market ship!</comment>
+		<line linenr="102" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$remnantMission</var>
 		</line>
 		<line linenr="103" indent="">
-			<text>do</text>
+			<comment>* Add-Ons 1.7.4: Possible fix for extremely rare case where the ship is claimed. Will never happen, but add it anyway.</comment>
+		</line>
+		<line linenr="104" indent="" interruptable="@">
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.MissionEntry.Abort</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>missionName</text>
+			<text>=</text>
+			<var>$remnantMission</var>
+		</line>
+		<line linenr="105" indent="">
+			<text>else</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$blackmarketMission</var>
 		</line>
-		<line linenr="104" indent="&#160;" interruptable="@">
+		<line linenr="106" indent="">
+			<comment>* Herobetty 5.4: an NPC faction claimed this ship, and it is a black market ship!</comment>
+		</line>
+		<line linenr="107" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -990,22 +1016,25 @@
 			<text>=</text>
 			<var>$blackmarketMission</var>
 		</line>
-		<line linenr="105" indent="&#160;">
+		<line linenr="108" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="106" indent="&#160;&#160;" />
-		<line linenr="107" indent="&#160;&#160;&#160;">
+		<line linenr="109" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="110" indent="&#160;" />
+		<line linenr="111" indent="">
 			<comment>* Herobetty 5.4: remove the ship from the black market ship array, if it's present.</comment>
 		</line>
-		<line linenr="108" indent="&#160;&#160;&#160;">
+		<line linenr="112" indent="">
 			<comment>* This array is used in the monitor script to determine when to allow the ship to be capturable by tugs.</comment>
 		</line>
-		<line linenr="109" indent="&#160;&#160;">
+		<line linenr="113" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$blackmarketMission</var>
 		</line>
-		<line linenr="110" indent="&#160;">
+		<line linenr="114" indent="">
 			<var>$blackMarketShips</var>
 			<text> </text>
 			<text>=</text>
@@ -1021,47 +1050,28 @@
 			<text>=</text>
 			<text>'blackMarketShips'</text>
 		</line>
-		<line linenr="111" indent="">
-			<var>$index</var>
+		<line linenr="115" indent="">
+			<var>$BMIndex</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>size</text>
+			<text>get</text>
+			<text> </text>
+			<text>index</text>
 			<text> </text>
 			<text>of</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text> </text>
+			<text>in</text>
 			<text> </text>
 			<text>array</text>
 			<text> </text>
 			<var>$blackMarketShips</var>
-		</line>
-		<line linenr="112" indent="">
-			<text>while</text>
 			<text> </text>
-			<var>$index</var>
-		</line>
-		<line linenr="113" indent="">
-			<text>dec</text>
-			<text> </text>
-			<var>$index</var>
-		</line>
-		<line linenr="114" indent="">
-			<var>$blackMarketShip</var>
-			<text> </text>
+			<text>offset</text>
 			<text>=</text>
-			<text> </text>
-			<var>$blackMarketShips</var>
-			<text>[</text>
-			<var>$index</var>
-			<text>]</text>
-		</line>
-		<line linenr="115" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$blackMarketShip</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[THIS]</var>
+			<var>0</var>
 		</line>
 		<line linenr="116" indent="">
 			<text>remove</text>
@@ -1078,22 +1088,13 @@
 			<text> </text>
 			<text>index</text>
 			<text> </text>
-			<var>$index</var>
+			<var>$BMIndex</var>
 		</line>
 		<line linenr="117" indent="">
-			<text>break</text>
-		</line>
-		<line linenr="118" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="119" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="120" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="121" indent="" />
-		<line linenr="122" indent="" interruptable="@">
+		<line linenr="118" indent="" />
+		<line linenr="119" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1102,8 +1103,8 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="123" indent="&#160;" />
-		<line linenr="124" indent="">
+		<line linenr="120" indent="" />
+		<line linenr="121" indent="">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
@@ -1117,7 +1118,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="125" indent="">
+		<line linenr="122" indent="">
 			<var>$pilotName</var>
 			<text> </text>
 			<text>=</text>
@@ -1133,8 +1134,8 @@
 			<text>=</text>
 			<var>$owner</var>
 		</line>
-		<line linenr="126" indent="" />
-		<line linenr="127" indent="" interruptable="@">
+		<line linenr="123" indent="&#160;" />
+		<line linenr="124" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1156,12 +1157,12 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="128" indent="" />
-		<line linenr="129" indent="" />
-		<line linenr="130" indent="">
+		<line linenr="125" indent="" />
+		<line linenr="126" indent="" />
+		<line linenr="127" indent="">
 			<comment>* Mordan2 - we name our own captured ships elsewhere.</comment>
 		</line>
-		<line linenr="131" indent="">
+		<line linenr="128" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -1170,7 +1171,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="132" indent="" interruptable="@">
+		<line linenr="129" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1196,11 +1197,11 @@
 			<text>=</text>
 			<var>$pilotName</var>
 		</line>
-		<line linenr="133" indent="">
+		<line linenr="130" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="134" indent="" />
-		<line linenr="135" indent="">
+		<line linenr="131" indent="" />
+		<line linenr="132" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -1211,7 +1212,7 @@
 			<sval type="string" val="Mayhem.Task.Claimeable" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="35" />
+			<sval type="int" val="39" />
 			<sval type="int" val="0" />
 			<sval type="array" size="23">
 				<sval type="string" val="ScriptName" />
@@ -1234,11 +1235,11 @@
 				<sval type="string" val="ship" />
 				<sval type="string" val="XS.Iterator1" />
 				<sval type="string" val="blackMarketShips" />
-				<sval type="string" val="blackMarketShip" />
+				<sval type="string" val="BMIndex" />
 				<sval type="string" val="owner" />
 				<sval type="string" val="pilotName" />
 			</sval>
-			<sval type="array" size="82">
+			<sval type="array" size="79">
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
 					<sval type="int" val="-2147483647" />
@@ -1668,6 +1669,14 @@
 					<sval type="int" val="112" />
 					<sval type="int" val="31" />
 				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_remnantMission" />
+					<sval type="int" val="12" />
+				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610596605" />
@@ -1692,14 +1701,6 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="156" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_remnantMission" />
-					<sval type="int" val="12" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -1874,11 +1875,34 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="65" />
+					<sval type="int" val="68" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610596088" />
+					<sval type="int" val="-1610595837" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.MissionEntry.Abort" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="68" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610595323" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -1897,7 +1921,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610593533" />
+					<sval type="int" val="-1610594301" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -1910,62 +1934,22 @@
 					<sval type="string" val="blackMarketShips" />
 					<sval type="int" val="19" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="19" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610593527" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="143" />
-					<sval type="int" val="11" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="129" />
+				<sval type="array" size="8">
+					<sval type="int" val="1083" />
 					<sval type="int" val="20" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="19" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610593789" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="20" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="136" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="19" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="75" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="68" />
+					<sval type="int" val="20" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
@@ -1999,7 +1983,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610591997" />
+					<sval type="int" val="-1610592765" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -2033,7 +2017,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="61">
+			<sval type="array" size="60">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -2199,12 +2183,12 @@
 					<sval type="string" val="The player has 4/3/2 +/- 0.5 hours on easy/normal/hard to claim the ship for their own. After that, the ship becomes open for anyone to grab." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="39" />
+					<sval type="int" val="40" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="40" />
+					<sval type="int" val="41" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Remnant and black market &quot;missions&quot;." />
 				</sval>
@@ -2229,43 +2213,48 @@
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="63" />
+					<sval type="int" val="64" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.7.4: Possible fix for extremely rare case where the ship is claimed. Will never happen, but add it anyway." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="67" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Herobetty 5.4: an NPC faction claimed this ship, and it is a black market ship!" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="65" />
+					<sval type="int" val="68" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="65" />
+					<sval type="int" val="68" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="68" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="65" />
+					<sval type="int" val="68" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Herobetty 5.4: remove the ship from the black market ship array, if it's present." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="65" />
+					<sval type="int" val="68" />
 					<sval type="int" val="1" />
 					<sval type="string" val="This array is used in the monitor script to determine when to allow the ship to be capturable by tugs." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="74" />
-					<sval type="int" val="7" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="74" />
+					<sval type="int" val="72" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="75" />
-					<sval type="int" val="4" />
+					<sval type="int" val="72" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="75" />
-					<sval type="int" val="4" />
+					<sval type="int" val="73" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="75" />
@@ -2276,28 +2265,20 @@
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="78" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="79" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="79" />
+					<sval type="int" val="76" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="79" />
+					<sval type="int" val="76" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan2 - we name our own captured ships elsewhere." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="81" />
+					<sval type="int" val="78" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="81" />
+					<sval type="int" val="78" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
