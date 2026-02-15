@@ -8,6 +8,8 @@ Base Renegades Full Install - Download from Google Drive: https://drive.google.c
 
 Russian localization: https://github.com/alexalsp2/Renegades_AddOns_russian
 
+Modified ZMap for Renegades Add-Ons: https://github.com/ECEStuff/ZMap_AddOns/tree/main
+
 # Fresh installation 
 If you're installing Renegades Add-Ons from scratch:
 1. Prepare a clean game directory. Obtain a fresh copy of vanilla X3AP.
