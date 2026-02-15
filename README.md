@@ -37,7 +37,7 @@ Do not reverse or change this order. Installing in the wrong sequence will cause
 # Installation from existing Renegades 5.4 or patching Add-Ons
 If you already have Renegades 5.4 or you are patching Add-Ons:
   - Simply download the latest release and copy-paste the contents to your game's root directory.
-  - Copy over TShips.txt and TBullets.txt in the release to your existing ZMap directory.
+  - If ZMap is installed somewhere else other than in your game's root directory, copy over TShips.txt and TBullets.txt found in the release to your existing ZMap directory.
 
 # Versioning Policy
 - Minor versions (e.g. 1.X) may change persistent world behavior and can require a new game in specific cases.
