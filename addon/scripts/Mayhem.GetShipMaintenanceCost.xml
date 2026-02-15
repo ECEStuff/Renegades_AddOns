@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GetShipMaintenanceCost</name>
-	<version>29</version>
+	<version>37</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -708,36 +708,111 @@
 			<comment>* Add-Ons 1.8: Added Neutral race to foreign exception. These include OWPs.</comment>
 		</line>
 		<line linenr="086" indent="">
+			<comment>* Add-Ons 1.8.1: Xenon defect start exempts Phanon ships from foreign penalty. These ships are obtainable only from the defect's starting options or from capship bailing.</comment>
+		</line>
+		<line linenr="087" indent="">
 			<var>$foreignExempt</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="087" indent="">
-			<text>do</text>
-			<text> </text>
+		<line linenr="088" indent="" />
+		<line linenr="089" indent="">
+			<comment>* Xenon defects pay 15% more maintenance for OCV ships.</comment>
+		</line>
+		<line linenr="090" indent="">
 			<text>if</text>
 			<text> </text>
+			<var>$playerRace</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Xenon]</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$ship.makerRace</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[OCV]</var>
+		</line>
+		<line linenr="091" indent="&#160;">
+			<var>$maintenance</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
 			<text>(</text>
+			<var>$maintenance</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>115</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="092" indent="&#160;">
+			<var>$foreignExempt</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="093" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="094" indent="" />
+		<line linenr="095" indent="">
+			<comment>* Handle existing exceptions.</comment>
+		</line>
+		<line linenr="096" indent="">
+			<text>if</text>
+			<text> </text>
 			<var>$ship.makerRace</var>
 			<text> </text>
 			<text>==</text>
 			<text> </text>
 			<var>[Phanon]</var>
+		</line>
+		<line linenr="097" indent="&#160;">
+			<text>do</text>
 			<text> </text>
-			<text>AND</text>
+			<text>if</text>
 			<text> </text>
 			<var>$mainplot.completed</var>
 			<text> </text>
 			<text>==</text>
 			<text> </text>
 			<var>[TRUE]</var>
-			<text>)</text>
 			<text> </text>
 			<text>OR</text>
 			<text> </text>
-			<text>(</text>
+			<var>$playerRace</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Xenon]</var>
+		</line>
+		<line linenr="098" indent="&#160;&#160;">
+			<var>$foreignExempt</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="099" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="100" indent="" />
+		<line linenr="101" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
 			<var>$ship.makerRace</var>
 			<text> </text>
 			<text>==</text>
@@ -751,9 +826,19 @@
 			<text>&gt;</text>
 			<text> </text>
 			<var>0</var>
-			<text>)</text>
+		</line>
+		<line linenr="102" indent="&#160;">
+			<var>$foreignExempt</var>
 			<text> </text>
-			<text>OR</text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="103" indent="" />
+		<line linenr="104" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
 			<text> </text>
 			<var>$ship.makerRace</var>
 			<text> </text>
@@ -769,15 +854,18 @@
 			<text> </text>
 			<var>[Private Corp.]</var>
 		</line>
-		<line linenr="088" indent="&#160;">
+		<line linenr="105" indent="&#160;">
 			<var>$foreignExempt</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="089" indent="" />
-		<line linenr="090" indent="">
+		<line linenr="106" indent="" />
+		<line linenr="107" indent="">
+			<comment>* Normal foreign penalty.</comment>
+		</line>
+		<line linenr="108" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$playerRace</var>
@@ -788,13 +876,10 @@
 			<text> </text>
 			<text>AND</text>
 			<text> </text>
+			<text>!</text>
 			<var>$foreignExempt</var>
-			<text> </text>
-			<text>!=</text>
-			<text> </text>
-			<var>[TRUE]</var>
 		</line>
-		<line linenr="091" indent="&#160;">
+		<line linenr="109" indent="&#160;">
 			<var>$maintenance</var>
 			<text> </text>
 			<text>=</text>
@@ -811,12 +896,11 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="092" indent="">
+		<line linenr="110" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="093" indent="" />
-		<line linenr="094" indent="" />
-		<line linenr="095" indent="">
+		<line linenr="111" indent="" />
+		<line linenr="112" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$quality</var>
@@ -825,34 +909,34 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="096" indent="&#160;">
+		<line linenr="113" indent="&#160;">
 			<var>$shipQuality</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$quality</var>
 		</line>
-		<line linenr="097" indent="&#160;">
+		<line linenr="114" indent="&#160;">
 			<var>$ignoreSupply</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="098" indent="">
+		<line linenr="115" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="099" indent="&#160;">
+		<line linenr="116" indent="&#160;">
 			<comment>* Use maintenance for reference, e.g. in ship compendium.</comment>
 		</line>
-		<line linenr="100" indent="&#160;">
+		<line linenr="117" indent="&#160;">
 			<var>$ignoreSupply</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="101" indent="&#160;" interruptable="@">
+		<line linenr="118" indent="&#160;" interruptable="@">
 			<var>$shipQuality</var>
 			<text> </text>
 			<text>=</text>
@@ -876,26 +960,26 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="102" indent="">
+		<line linenr="119" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="103" indent="" />
-		<line linenr="104" indent="">
+		<line linenr="120" indent="" />
+		<line linenr="121" indent="">
 			<comment>* ZH 2.0 introduced diminishing returns.</comment>
 		</line>
-		<line linenr="105" indent="">
+		<line linenr="122" indent="">
 			<comment>* Add-Ons 1.4.9: Changed maintenance factors to reflect ship material costs. </comment>
 		</line>
-		<line linenr="106" indent="">
+		<line linenr="123" indent="">
 			<comment>* By default, the material costs are 100%, 109%, 118%, 127%, 136%, 145%, and 154% from garbage to impeccable. See Mayhem.Costs.Ship.</comment>
 		</line>
-		<line linenr="107" indent="">
+		<line linenr="124" indent="">
 			<comment>* This means garbage is 79%, mediocre is 86%, flawed is 93%, normal is 100%, good is 107%, exceptional is 114%, and impeccable is 121% of normal.</comment>
 		</line>
-		<line linenr="108" indent="">
+		<line linenr="125" indent="">
 			<comment>* Old maintenance factors are 58, 82, 94, 100, 106, 110, 111 (why SO LOW for impeccable)? Changed to garbage, mediocre, and impeccable to 66, 83, and 112. </comment>
 		</line>
-		<line linenr="109" indent="">
+		<line linenr="126" indent="">
 			<var>$maintenanceMods</var>
 			<text> </text>
 			<text>=</text>
@@ -909,7 +993,7 @@
 			<text>=</text>
 			<var>7</var>
 		</line>
-		<line linenr="110" indent="">
+		<line linenr="127" indent="">
 			<var>$maintenanceMods</var>
 			<text>[</text>
 			<var>0</var>
@@ -919,7 +1003,7 @@
 			<text> </text>
 			<var>66</var>
 		</line>
-		<line linenr="111" indent="">
+		<line linenr="128" indent="">
 			<var>$maintenanceMods</var>
 			<text>[</text>
 			<var>1</var>
@@ -929,7 +1013,7 @@
 			<text> </text>
 			<var>83</var>
 		</line>
-		<line linenr="112" indent="">
+		<line linenr="129" indent="">
 			<var>$maintenanceMods</var>
 			<text>[</text>
 			<var>2</var>
@@ -939,7 +1023,7 @@
 			<text> </text>
 			<var>94</var>
 		</line>
-		<line linenr="113" indent="">
+		<line linenr="130" indent="">
 			<var>$maintenanceMods</var>
 			<text>[</text>
 			<var>3</var>
@@ -949,7 +1033,7 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="114" indent="">
+		<line linenr="131" indent="">
 			<var>$maintenanceMods</var>
 			<text>[</text>
 			<var>4</var>
@@ -959,7 +1043,7 @@
 			<text> </text>
 			<var>106</var>
 		</line>
-		<line linenr="115" indent="">
+		<line linenr="132" indent="">
 			<var>$maintenanceMods</var>
 			<text>[</text>
 			<var>5</var>
@@ -969,7 +1053,7 @@
 			<text> </text>
 			<var>110</var>
 		</line>
-		<line linenr="116" indent="&#160;">
+		<line linenr="133" indent="&#160;">
 			<var>$maintenanceMods</var>
 			<text>[</text>
 			<var>6</var>
@@ -979,7 +1063,7 @@
 			<text> </text>
 			<var>112</var>
 		</line>
-		<line linenr="117" indent="&#160;">
+		<line linenr="134" indent="&#160;">
 			<var>$maintenanceMod</var>
 			<text> </text>
 			<text>=</text>
@@ -989,7 +1073,7 @@
 			<var>$shipQuality</var>
 			<text>]</text>
 		</line>
-		<line linenr="118" indent="&#160;&#160;">
+		<line linenr="135" indent="&#160;&#160;">
 			<var>$maintenance</var>
 			<text> </text>
 			<text>=</text>
@@ -1004,11 +1088,11 @@
 			<text> </text>
 			<var>$maintenanceMod</var>
 		</line>
-		<line linenr="119" indent="" />
-		<line linenr="120" indent="">
+		<line linenr="136" indent="" />
+		<line linenr="137" indent="">
 			<comment>* Event: Kernel Bug.</comment>
 		</line>
-		<line linenr="121" indent="">
+		<line linenr="138" indent="">
 			<var>$buildHomebase</var>
 			<text> </text>
 			<text>=</text>
@@ -1027,7 +1111,7 @@
 			<text>=</text>
 			<text>'mayhem_buildHomebase'</text>
 		</line>
-		<line linenr="122" indent="">
+		<line linenr="139" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$buildHomebase</var>
@@ -1035,7 +1119,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="123" indent="&#160;">
+		<line linenr="140" indent="&#160;">
 			<var>$event</var>
 			<text> </text>
 			<text>=</text>
@@ -1054,7 +1138,7 @@
 			<text>=</text>
 			<text>'mayhem_event'</text>
 		</line>
-		<line linenr="124" indent="">
+		<line linenr="141" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1065,7 +1149,7 @@
 			<text> </text>
 			<text>'Kernel Bug'</text>
 		</line>
-		<line linenr="125" indent="">
+		<line linenr="142" indent="">
 			<var>$maintenance</var>
 			<text> </text>
 			<text>=</text>
@@ -1076,14 +1160,14 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="126" indent="">
+		<line linenr="143" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="127" indent="" />
-		<line linenr="128" indent="">
+		<line linenr="144" indent="" />
+		<line linenr="145" indent="">
 			<comment>* advanced engineering perk where this was built.</comment>
 		</line>
-		<line linenr="129" indent="&#160;">
+		<line linenr="146" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1102,7 +1186,7 @@
 			<text>=</text>
 			<text>'mayhem_advancedEngineered'</text>
 		</line>
-		<line linenr="130" indent="">
+		<line linenr="147" indent="">
 			<var>$maintenance</var>
 			<text> </text>
 			<text>=</text>
@@ -1113,14 +1197,14 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="131" indent="" />
-		<line linenr="132" indent="">
+		<line linenr="148" indent="" />
+		<line linenr="149" indent="">
 			<comment>* &quot;Advanced&quot; ships are more expensive to maintain;  as it should be.</comment>
 		</line>
-		<line linenr="133" indent="">
+		<line linenr="150" indent="">
 			<comment>* Mordan2. - 35% more ship maintenance costs</comment>
 		</line>
-		<line linenr="134" indent="&#160;">
+		<line linenr="151" indent="&#160;">
 			<var>$ship.variation</var>
 			<text> </text>
 			<text>=</text>
@@ -1136,7 +1220,7 @@
 			<text>=</text>
 			<var>$shipType</var>
 		</line>
-		<line linenr="135" indent="">
+		<line linenr="152" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1147,7 +1231,7 @@
 			<text> </text>
 			<var>21</var>
 		</line>
-		<line linenr="136" indent="">
+		<line linenr="153" indent="">
 			<var>$maintenance</var>
 			<text> </text>
 			<text>=</text>
@@ -1164,11 +1248,11 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="137" indent="" />
-		<line linenr="138" indent="&#160;">
+		<line linenr="154" indent="" />
+		<line linenr="155" indent="&#160;">
 			<comment>* Add-Ons 1.3: Insane mode increases maintenance by 50%.</comment>
 		</line>
-		<line linenr="139" indent="" interruptable="@">
+		<line linenr="156" indent="" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -1184,7 +1268,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="140" indent="&#160;">
+		<line linenr="157" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1195,7 +1279,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="141" indent="">
+		<line linenr="158" indent="">
 			<var>$maintenance</var>
 			<text> </text>
 			<text>=</text>
@@ -1212,11 +1296,11 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="142" indent="" />
-		<line linenr="143" indent="">
+		<line linenr="159" indent="" />
+		<line linenr="160" indent="">
 			<comment>* Add-Ons 1.6.1: Being over the supply cap increases maintenance proportionately.</comment>
 		</line>
-		<line linenr="144" indent="">
+		<line linenr="161" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>(</text>
@@ -1232,7 +1316,7 @@
 			<text>!</text>
 			<var>$ignoreSupply</var>
 		</line>
-		<line linenr="145" indent="">
+		<line linenr="162" indent="">
 			<var>$supply.factor</var>
 			<text> </text>
 			<text>=</text>
@@ -1249,21 +1333,21 @@
 			<text> </text>
 			<var>$totalSupply</var>
 		</line>
-		<line linenr="146" indent="&#160;">
+		<line linenr="163" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="147" indent="">
+		<line linenr="164" indent="">
 			<var>$supply.factor</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="148" indent="">
+		<line linenr="165" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="149" indent="" />
-		<line linenr="150" indent="">
+		<line linenr="166" indent="" />
+		<line linenr="167" indent="">
 			<var>$maintenance</var>
 			<text> </text>
 			<text>=</text>
@@ -1280,8 +1364,8 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="151" indent="" />
-		<line linenr="152" indent="">
+		<line linenr="168" indent="" />
+		<line linenr="169" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -1292,15 +1376,15 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="153" indent="">
+		<line linenr="170" indent="">
 			<var>$maintenance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="154" indent="" />
-		<line linenr="155" indent="">
+		<line linenr="171" indent="" />
+		<line linenr="172" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$maintenance</var>
@@ -1311,7 +1395,7 @@
 			<sval type="string" val="Mayhem.GetShipMaintenanceCost" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="29" />
+			<sval type="int" val="37" />
 			<sval type="int" val="0" />
 			<sval type="array" size="27">
 				<sval type="string" val="ship" />
@@ -1342,7 +1426,7 @@
 				<sval type="string" val="difficulty" />
 				<sval type="string" val="supply.factor" />
 			</sval>
-			<sval type="array" size="95">
+			<sval type="array" size="103">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -1832,24 +1916,120 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="77">
+				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610598392" />
-					<sval type="int" val="23" />
+					<sval type="int" val="-1610598141" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="10" />
+					<sval type="int" val="6" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="10" />
+					<sval type="int" val="16" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="115" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597373" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597368" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="15" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="10" />
+					<sval type="int" val="6" />
 					<sval type="int" val="15" />
-					<sval type="int" val="9" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610596856" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
 					<sval type="int" val="10" />
@@ -1864,52 +2044,14 @@
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
-					<sval type="int" val="10" />
-					<sval type="int" val="12" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="10" />
-					<sval type="int" val="9" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="27" />
-					<sval type="int" val="16" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 					<sval type="int" val="9" />
 					<sval type="int" val="-4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-5" />
-					<sval type="int" val="17" />
-					<sval type="int" val="10" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-8" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-9" />
-					<sval type="int" val="9" />
-					<sval type="int" val="-11" />
 					<sval type="int" val="2" />
-					<sval type="int" val="-12" />
-					<sval type="int" val="17" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-16" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-17" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-20" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-21" />
+					<sval type="int" val="-5" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -1922,8 +2064,44 @@
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610597885" />
+					<sval type="int" val="-1610596344" />
 					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="10" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="10" />
+					<sval type="int" val="9" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610595837" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="14" />
 					<sval type="int" val="131074" />
@@ -1932,20 +2110,17 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="17" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="10" />
 					<sval type="int" val="15" />
-					<sval type="int" val="1" />
+					<sval type="int" val="65556" />
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
-					<sval type="int" val="7" />
+					<sval type="int" val="6" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-2" />
 					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
 					<sval type="int" val="-4" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-5" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
@@ -1972,7 +2147,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610596861" />
+					<sval type="int" val="-1610594813" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -2005,7 +2180,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="64" />
+					<sval type="int" val="72" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -2138,7 +2313,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="22" />
-					<sval type="int" val="-1610592509" />
+					<sval type="int" val="-1610590461" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
@@ -2150,7 +2325,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610592504" />
+					<sval type="int" val="-1610590456" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="23" />
@@ -2184,7 +2359,7 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_advancedEngineered" />
-					<sval type="int" val="-1610591992" />
+					<sval type="int" val="-1610589944" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -2209,7 +2384,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610591224" />
+					<sval type="int" val="-1610589176" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="24" />
@@ -2255,7 +2430,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610590456" />
+					<sval type="int" val="-1610588408" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="25" />
@@ -2293,7 +2468,7 @@
 				</sval>
 				<sval type="array" size="24">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610589693" />
+					<sval type="int" val="-1610587645" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -2342,7 +2517,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="91" />
+					<sval type="int" val="99" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -2378,7 +2553,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536846841" />
+					<sval type="int" val="-536844793" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="12" />
@@ -2424,7 +2599,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="67">
+			<sval type="array" size="76">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -2588,136 +2763,176 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.8: Added Neutral race to foreign exception. These include OWPs." />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="56" />
-					<sval type="int" val="2" />
+				<sval type="array" size="3">
+					<sval type="int" val="53" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.8.1: Xenon defect start exempts Phanon ships from foreign penalty. These ships are obtainable only from the defect's starting options or from capship bailing." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="58" />
+					<sval type="int" val="54" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="54" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Xenon defects pay 15% more maintenance for OCV ships." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="57" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="58" />
+					<sval type="int" val="57" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="57" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Handle existing exceptions." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="58" />
+					<sval type="int" val="60" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="60" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="62" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="64" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="64" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Normal foreign penalty." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="66" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="66" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="70" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="62" />
+					<sval type="int" val="70" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Use maintenance for reference, e.g. in ship compendium." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="64" />
+					<sval type="int" val="72" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="64" />
+					<sval type="int" val="72" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="64" />
+					<sval type="int" val="72" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 introduced diminishing returns." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="64" />
+					<sval type="int" val="72" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.4.9: Changed maintenance factors to reflect ship material costs. " />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="64" />
+					<sval type="int" val="72" />
 					<sval type="int" val="1" />
 					<sval type="string" val="By default, the material costs are 100%, 109%, 118%, 127%, 136%, 145%, and 154% from garbage to impeccable. See Mayhem.Costs.Ship." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="64" />
+					<sval type="int" val="72" />
 					<sval type="int" val="1" />
 					<sval type="string" val="This means garbage is 79%, mediocre is 86%, flawed is 93%, normal is 100%, good is 107%, exceptional is 114%, and impeccable is 121% of normal." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="64" />
+					<sval type="int" val="72" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Old maintenance factors are 58, 82, 94, 100, 106, 110, 111 (why SO LOW for impeccable)? Changed to garbage, mediocre, and impeccable to 66, 83, and 112. " />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="74" />
+					<sval type="int" val="82" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="74" />
+					<sval type="int" val="82" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Event: Kernel Bug." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="79" />
+					<sval type="int" val="87" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="79" />
+					<sval type="int" val="87" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="79" />
+					<sval type="int" val="87" />
 					<sval type="int" val="1" />
 					<sval type="string" val="advanced engineering perk where this was built." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="81" />
+					<sval type="int" val="89" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="81" />
+					<sval type="int" val="89" />
 					<sval type="int" val="1" />
 					<sval type="string" val="&quot;Advanced&quot; ships are more expensive to maintain;  as it should be." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="81" />
+					<sval type="int" val="89" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan2. - 35% more ship maintenance costs" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="84" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="84" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.3: Insane mode increases maintenance by 50%." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="87" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="87" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.6.1: Being over the supply cap increases maintenance proportionately." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="90" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="91" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="91" />
-					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="92" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="92" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.3: Insane mode increases maintenance by 50%." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="94" />
+					<sval type="int" val="95" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="95" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.6.1: Being over the supply cap increases maintenance proportionately." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="98" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="99" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="99" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="100" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="102" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
