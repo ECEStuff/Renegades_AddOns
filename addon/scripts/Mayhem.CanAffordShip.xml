@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.CanAffordShip</name>
-	<version>5</version>
+	<version>7</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -34,7 +34,7 @@
 		</line>
 		<line linenr="004" indent="" />
 		<line linenr="005" indent="">
-			<comment>* Add-Ons 1.6.1: Ship cost factors in current supply.</comment>
+			<comment>* Add-Ons 1.6.1: Ship cost factors in current supply. (1.9.5: industrial flag affects machine ships.)</comment>
 		</line>
 		<line linenr="006" indent="">
 			<var>$outpost.owner</var>
@@ -50,7 +50,27 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="007" indent="">
+		<line linenr="007" indent="" interruptable="@">
+			<var>$hasIndustrial</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$outpost</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsPerkUnlocked</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>perk</text>
+			<text>=</text>
+			<text>'Industrial overdrive'</text>
+		</line>
+		<line linenr="008" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$outpost.owner</var>
@@ -59,7 +79,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="008" indent="&#160;" interruptable="@">
+		<line linenr="009" indent="&#160;" interruptable="@">
 			<var>$peopleNeeded</var>
 			<text> </text>
 			<text>=</text>
@@ -78,8 +98,16 @@
 			<text>shipOrType</text>
 			<text>=</text>
 			<var>$shipType</var>
+			<text> </text>
+			<text>IsRecycle</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+			<text> </text>
+			<text>IsIndustrial</text>
+			<text>=</text>
+			<var>$hasIndustrial</var>
 		</line>
-		<line linenr="009" indent="&#160;">
+		<line linenr="010" indent="&#160;">
 			<var>$people</var>
 			<text> </text>
 			<text>=</text>
@@ -98,7 +126,7 @@
 			<text>=</text>
 			<text>'mayhem_people'</text>
 		</line>
-		<line linenr="010" indent="&#160;">
+		<line linenr="011" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -113,16 +141,16 @@
 			<text> </text>
 			<var>$peopleNeeded</var>
 		</line>
-		<line linenr="011" indent="&#160;&#160;">
+		<line linenr="012" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="012" indent="">
+		<line linenr="013" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="013" indent="" />
-		<line linenr="014" indent="" interruptable="@">
+		<line linenr="014" indent="" />
+		<line linenr="015" indent="" interruptable="@">
 			<var>$costs</var>
 			<text> </text>
 			<text>=</text>
@@ -166,7 +194,7 @@
 			<text>=</text>
 			<var>$totalSupply</var>
 		</line>
-		<line linenr="015" indent="" interruptable="@">
+		<line linenr="016" indent="" interruptable="@">
 			<var>$canAfford</var>
 			<text> </text>
 			<text>=</text>
@@ -190,8 +218,8 @@
 			<text>=</text>
 			<var>$costs</var>
 		</line>
-		<line linenr="016" indent="" />
-		<line linenr="017" indent="">
+		<line linenr="017" indent="" />
+		<line linenr="018" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$canAfford</var>
@@ -202,9 +230,9 @@
 			<sval type="string" val="Mayhem.CanAffordShip" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="5" />
+			<sval type="int" val="7" />
 			<sval type="int" val="0" />
-			<sval type="array" size="11">
+			<sval type="array" size="12">
 				<sval type="string" val="outpost" />
 				<sval type="string" val="shipType" />
 				<sval type="string" val="qty" />
@@ -212,12 +240,13 @@
 				<sval type="string" val="currentSupply" />
 				<sval type="string" val="totalSupply" />
 				<sval type="string" val="outpost.owner" />
+				<sval type="string" val="hasIndustrial" />
 				<sval type="string" val="peopleNeeded" />
 				<sval type="string" val="people" />
 				<sval type="string" val="costs" />
 				<sval type="string" val="canAfford" />
 			</sval>
-			<sval type="array" size="11">
+			<sval type="array" size="12">
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610612216" />
@@ -244,9 +273,19 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="6" />
 				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsPerkUnlocked" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Industrial overdrive" />
+				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610685" />
+					<sval type="int" val="-1610610429" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="6" />
@@ -259,15 +298,19 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="8">
+				<sval type="array" size="12">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetNeededPeopleInShip" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
-					<sval type="int" val="1" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
@@ -275,18 +318,18 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_people" />
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610680" />
+					<sval type="int" val="-1610610424" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
 					<sval type="int" val="15" />
@@ -306,7 +349,7 @@
 				<sval type="array" size="20">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Costs.Ship" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="7" />
@@ -328,19 +371,19 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.CanAffordGeneric" />
-					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 				</sval>
 			</sval>
 			<sval type="array" size="6">
@@ -381,18 +424,18 @@
 				<sval type="array" size="3">
 					<sval type="int" val="2" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.6.1: Ship cost factors in current supply." />
+					<sval type="string" val="Add-Ons 1.6.1: Ship cost factors in current supply. (1.9.5: industrial flag affects machine ships.)" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>

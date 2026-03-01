@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GetNaturalGrowth</name>
-	<version>43</version>
+	<version>48</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -24,11 +24,11 @@
 			<text>sector</text>
 		</line>
 		<line linenr="003" indent="">
-			<var>$sector.owner</var>
+			<var>$outpost.owner</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$sector</var>
+			<var>$outpost</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>get</text>
@@ -115,15 +115,93 @@
 		</line>
 		<line linenr="011" indent="" />
 		<line linenr="012" indent="">
-			<comment>* Add-Ons 1.8: Moved terraforming up here. Now affected by growth penalty if the perk is not enabled.</comment>
+			<comment>* Add-Ons 1.9.5: If this Outpost has the Industrial overdrive perk, then natural growth is disabled. Same applies to OCV playthroughs.</comment>
 		</line>
 		<line linenr="013" indent="">
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'OCVplotstage'</text>
+		</line>
+		<line linenr="014" indent="" interruptable="@">
+			<var>$hasIndustrial</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$outpost</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsPerkUnlocked</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>perk</text>
+			<text>=</text>
+			<text>'Industrial overdrive'</text>
+		</line>
+		<line linenr="015" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$hasIndustrial</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<text>(</text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'playerJoinedOCV'</text>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$outpost.owner</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Player]</var>
+			<text>)</text>
+		</line>
+		<line linenr="016" indent="&#160;">
+			<var>$naturalGrowth</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="017" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>$naturalGrowth</var>
+		</line>
+		<line linenr="018" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="019" indent="" />
+		<line linenr="020" indent="">
+			<comment>* Add-Ons 1.8: Moved terraforming up here. Now affected by growth penalty if the perk is not enabled.</comment>
+		</line>
+		<line linenr="021" indent="">
 			<comment>* Herobetty 5.3: AI factions, if they control a terraformed sector obtained from the player, can benefit from this perk as well. </comment>
 		</line>
-		<line linenr="014" indent="">
+		<line linenr="022" indent="">
 			<comment>* MordanC fixed this.</comment>
 		</line>
-		<line linenr="015" indent="" interruptable="@">
+		<line linenr="023" indent="" interruptable="@">
 			<var>$terraformingEffects</var>
 			<text> </text>
 			<text>=</text>
@@ -147,7 +225,7 @@
 			<text>=</text>
 			<text>'growthRate'</text>
 		</line>
-		<line linenr="016" indent="" interruptable="@">
+		<line linenr="024" indent="" interruptable="@">
 			<var>$terraformingEffects.plus</var>
 			<text> </text>
 			<text>=</text>
@@ -171,14 +249,14 @@
 			<text>=</text>
 			<text>'population+'</text>
 		</line>
-		<line linenr="017" indent="">
+		<line linenr="025" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$terraformingEffects</var>
 		</line>
-		<line linenr="018" indent="&#160;">
+		<line linenr="026" indent="&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
@@ -195,14 +273,14 @@
 			<var>5</var>
 			<text>)</text>
 		</line>
-		<line linenr="019" indent="">
+		<line linenr="027" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$terraformingEffects.plus</var>
 		</line>
-		<line linenr="020" indent="&#160;">
+		<line linenr="028" indent="&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
@@ -219,21 +297,21 @@
 			<var>3</var>
 			<text>)</text>
 		</line>
-		<line linenr="021" indent="" />
-		<line linenr="022" indent="">
+		<line linenr="029" indent="" />
+		<line linenr="030" indent="">
 			<comment>* Add-Ons 1.8: Reworked population growth rate scaling from Add-Ons 1.2 (was +1 pop growth per 100 pops).</comment>
 		</line>
-		<line linenr="023" indent="">
+		<line linenr="031" indent="">
 			<comment>* If the maximum population is more than 100, then bonus growth scales by 1% for every 2 additional pops.</comment>
 		</line>
-		<line linenr="024" indent="">
+		<line linenr="032" indent="">
 			<var>$bonusGrowth</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="025" indent="">
+		<line linenr="033" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$maxPeople</var>
@@ -242,7 +320,7 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="026" indent="&#160;">
+		<line linenr="034" indent="&#160;">
 			<var>$bonusGrowth.factor</var>
 			<text> </text>
 			<text>=</text>
@@ -259,7 +337,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="027" indent="&#160;">
+		<line linenr="035" indent="&#160;">
 			<var>$bonusGrowth</var>
 			<text> </text>
 			<text>=</text>
@@ -276,11 +354,11 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="036" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="029" indent="" />
-		<line linenr="030" indent="">
+		<line linenr="037" indent="" />
+		<line linenr="038" indent="">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
@@ -291,58 +369,20 @@
 			<text> </text>
 			<var>$bonusGrowth</var>
 		</line>
-		<line linenr="031" indent="" />
-		<line linenr="032" indent="">
+		<line linenr="039" indent="" />
+		<line linenr="040" indent="">
 			<comment>* -------------------------</comment>
 		</line>
-		<line linenr="033" indent="">
+		<line linenr="041" indent="">
 			<comment>* Growth limter</comment>
 		</line>
-		<line linenr="034" indent="">
+		<line linenr="042" indent="">
 			<comment>* -------------------------</comment>
 		</line>
-		<line linenr="035" indent="">
-			<var>$OCVplotstage</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>global</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'OCVplotstage'</text>
-		</line>
-		<line linenr="036" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$OCVplotstage</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'playerJoinedOCV'</text>
-		</line>
-		<line linenr="037" indent="&#160;">
-			<comment>* If we joined OCV, pop growth is always max people.</comment>
-		</line>
-		<line linenr="038" indent="&#160;">
-			<var>$naturalGrowth</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$maxPeople</var>
-		</line>
-		<line linenr="039" indent="">
-			<text>else</text>
-		</line>
-		<line linenr="040" indent="&#160;">
+		<line linenr="043" indent="">
 			<comment>* Normal empire. So growth rate limitation is dynamic.</comment>
 		</line>
-		<line linenr="041" indent="&#160;">
+		<line linenr="044" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$people</var>
@@ -351,13 +391,13 @@
 			<text> </text>
 			<var>30</var>
 		</line>
-		<line linenr="042" indent="&#160;&#160;">
+		<line linenr="045" indent="&#160;">
 			<comment>* ZH 2.0 - flat initial growth rate to always get beyond first 30 people very quickly</comment>
 		</line>
-		<line linenr="043" indent="&#160;&#160;">
+		<line linenr="046" indent="&#160;">
 			<comment>* Add-Ons 1.8: If the natural pop growth limit is less than 20, set amount to 20.</comment>
 		</line>
-		<line linenr="044" indent="&#160;&#160;">
+		<line linenr="047" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -368,17 +408,17 @@
 			<text> </text>
 			<var>20</var>
 		</line>
-		<line linenr="045" indent="&#160;&#160;&#160;">
+		<line linenr="048" indent="&#160;&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>20</var>
 		</line>
-		<line linenr="046" indent="&#160;">
+		<line linenr="049" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="047" indent="&#160;&#160;" interruptable="@">
+		<line linenr="050" indent="&#160;" interruptable="@">
 			<var>$popGrowthUnlocked</var>
 			<text> </text>
 			<text>=</text>
@@ -398,17 +438,17 @@
 			<text>=</text>
 			<text>'Population stability'</text>
 		</line>
-		<line linenr="048" indent="&#160;&#160;">
+		<line linenr="051" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
 			<text> </text>
 			<var>$popGrowthUnlocked</var>
 		</line>
-		<line linenr="049" indent="&#160;&#160;&#160;">
+		<line linenr="052" indent="&#160;&#160;">
 			<comment>* over 75% population</comment>
 		</line>
-		<line linenr="050" indent="&#160;&#160;&#160;">
+		<line linenr="053" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$people</var>
@@ -427,10 +467,10 @@
 			<var>4</var>
 			<text>)</text>
 		</line>
-		<line linenr="051" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="054" indent="&#160;&#160;&#160;">
 			<comment>* Drop growth to 1/4</comment>
 		</line>
-		<line linenr="052" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="055" indent="&#160;&#160;&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
@@ -441,13 +481,13 @@
 			<text> </text>
 			<var>4</var>
 		</line>
-		<line linenr="053" indent="&#160;&#160;&#160;">
+		<line linenr="056" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="054" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="057" indent="&#160;&#160;&#160;">
 			<comment>* Drop growth to 1/3</comment>
 		</line>
-		<line linenr="055" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="058" indent="&#160;&#160;&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
@@ -458,14 +498,14 @@
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="056" indent="&#160;&#160;&#160;">
+		<line linenr="059" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="057" indent="&#160;&#160;">
+		<line linenr="060" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="058" indent="&#160;&#160;" />
-		<line linenr="059" indent="&#160;&#160;" interruptable="@">
+		<line linenr="061" indent="&#160;" />
+		<line linenr="062" indent="&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>$outpost</var>
@@ -483,13 +523,13 @@
 			<text>=</text>
 			<text>'Tax'</text>
 		</line>
-		<line linenr="060" indent="&#160;&#160;&#160;">
+		<line linenr="063" indent="&#160;&#160;">
 			<comment>* ZH 2.0 - Tax perk is even worse, but only above half pop limit</comment>
 		</line>
-		<line linenr="061" indent="&#160;&#160;&#160;">
+		<line linenr="064" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.8: Now reduces growth rate to 20% as much rather than just 1.</comment>
 		</line>
-		<line linenr="062" indent="&#160;&#160;&#160;">
+		<line linenr="065" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -506,7 +546,7 @@
 			<var>2</var>
 			<text>)</text>
 		</line>
-		<line linenr="063" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="066" indent="&#160;&#160;&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
@@ -517,20 +557,18 @@
 			<text> </text>
 			<var>5</var>
 		</line>
-		<line linenr="064" indent="&#160;&#160;">
+		<line linenr="067" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="065" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="066" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="067" indent="" />
 		<line linenr="068" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="069" indent="" />
+		<line linenr="070" indent="" />
+		<line linenr="071" indent="">
 			<comment>* Clamp to at least 1 AFTER perk/limiter stage but before restrictions.</comment>
 		</line>
-		<line linenr="069" indent="">
+		<line linenr="072" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -541,15 +579,15 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="070" indent="&#160;">
+		<line linenr="073" indent="&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="071" indent="" />
-		<line linenr="072" indent="">
+		<line linenr="074" indent="" />
+		<line linenr="075" indent="">
 			<var>$peopleRestriction</var>
 			<text> </text>
 			<text>=</text>
@@ -568,7 +606,7 @@
 			<text>=</text>
 			<text>'mayhem_peopleRestriction'</text>
 		</line>
-		<line linenr="073" indent="">
+		<line linenr="076" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -585,7 +623,7 @@
 			<text> </text>
 			<var>$peopleRestriction</var>
 		</line>
-		<line linenr="074" indent="&#160;">
+		<line linenr="077" indent="&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
@@ -596,12 +634,12 @@
 			<text> </text>
 			<var>$people</var>
 		</line>
-		<line linenr="075" indent="" />
-		<line linenr="076" indent="" />
-		<line linenr="077" indent="">
+		<line linenr="078" indent="" />
+		<line linenr="079" indent="" />
+		<line linenr="080" indent="">
 			<comment>* Zero Hour handles max population here by limiting growth and not by limiting max pop in Mayhem.Task.Station.Outpost because of Refugees</comment>
 		</line>
-		<line linenr="078" indent="">
+		<line linenr="081" indent="">
 			<var>$maxPeople</var>
 			<text> </text>
 			<text>=</text>
@@ -620,7 +658,7 @@
 			<text>=</text>
 			<text>'mayhem_sector.manpower'</text>
 		</line>
-		<line linenr="079" indent="">
+		<line linenr="082" indent="">
 			<var>$maxGrowth</var>
 			<text> </text>
 			<text>=</text>
@@ -631,7 +669,7 @@
 			<text> </text>
 			<var>$people</var>
 		</line>
-		<line linenr="080" indent="">
+		<line linenr="083" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -642,14 +680,14 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="081" indent="&#160;">
+		<line linenr="084" indent="&#160;">
 			<var>$maxGrowth</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="082" indent="">
+		<line linenr="085" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -660,18 +698,18 @@
 			<text> </text>
 			<var>$maxGrowth</var>
 		</line>
-		<line linenr="083" indent="&#160;">
+		<line linenr="086" indent="&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$maxGrowth</var>
 		</line>
-		<line linenr="084" indent="" />
-		<line linenr="085" indent="">
+		<line linenr="087" indent="" />
+		<line linenr="088" indent="">
 			<comment>* Final safety clamp. Never negative.</comment>
 		</line>
-		<line linenr="086" indent="">
+		<line linenr="089" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -682,16 +720,16 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="087" indent="&#160;">
+		<line linenr="090" indent="&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="088" indent="" />
-		<line linenr="089" indent="" />
-		<line linenr="090" indent="">
+		<line linenr="091" indent="" />
+		<line linenr="092" indent="" />
+		<line linenr="093" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$naturalGrowth</var>
@@ -702,25 +740,26 @@
 			<sval type="string" val="Mayhem.GetNaturalGrowth" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="43" />
+			<sval type="int" val="48" />
 			<sval type="int" val="0" />
-			<sval type="array" size="14">
+			<sval type="array" size="15">
 				<sval type="string" val="outpost" />
 				<sval type="string" val="sector" />
-				<sval type="string" val="sector.owner" />
+				<sval type="string" val="outpost.owner" />
 				<sval type="string" val="maxPeople" />
 				<sval type="string" val="people" />
 				<sval type="string" val="naturalGrowth" />
+				<sval type="string" val="OCVplotstage" />
+				<sval type="string" val="hasIndustrial" />
 				<sval type="string" val="terraformingEffects" />
 				<sval type="string" val="terraformingEffects.plus" />
 				<sval type="string" val="bonusGrowth" />
 				<sval type="string" val="bonusGrowth.factor" />
-				<sval type="string" val="OCVplotstage" />
 				<sval type="string" val="popGrowthUnlocked" />
 				<sval type="string" val="peopleRestriction" />
 				<sval type="string" val="maxGrowth" />
 			</sval>
-			<sval type="array" size="49">
+			<sval type="array" size="50">
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
 					<sval type="int" val="131074" />
@@ -730,7 +769,7 @@
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="0" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="6">
@@ -779,10 +818,75 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="OCVplotstage" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsPerkUnlocked" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Industrial overdrive" />
+				</sval>
+				<sval type="array" size="33">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609661" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="5" />
+					<sval type="string" val="playerJoinedOCV" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-5" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-6" />
+					<sval type="int" val="17" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.CountTerraformingEffects" />
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -794,7 +898,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.CountTerraformingEffects" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -805,10 +909,10 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609912" />
+					<sval type="int" val="-1610608632" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -819,7 +923,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="int" val="15" />
@@ -837,10 +941,10 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609400" />
+					<sval type="int" val="-1610608120" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -851,7 +955,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 					<sval type="int" val="15" />
@@ -869,126 +973,92 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="8" />
+					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610608381" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="4" />
-					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
-					<sval type="int" val="9" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="4" />
-					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="12" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="12" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
-				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="4" />
-					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="5" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="158" />
-					<sval type="int" val="5" />
-					<sval type="string" val="OCVplotstage" />
-					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610607101" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="5" />
-					<sval type="string" val="playerJoinedOCV" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
 					<sval type="int" val="15" />
-					<sval type="int" val="0" />
+					<sval type="int" val="2" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
+					<sval type="int" val="2" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="7">
+				<sval type="array" size="21">
 					<sval type="int" val="104" />
+					<sval type="int" val="11" />
 					<sval type="int" val="5" />
-					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
-					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
 					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="35" />
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606077" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605821" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -1003,7 +1073,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606328" />
+					<sval type="int" val="-1610606072" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -1027,12 +1097,12 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="35" />
+					<sval type="int" val="36" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsPerkUnlocked" />
-					<sval type="int" val="11" />
+					<sval type="int" val="12" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1041,16 +1111,16 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536862716" />
+					<sval type="int" val="-536862460" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="27">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604797" />
+					<sval type="int" val="-1610604541" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -1094,7 +1164,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="32" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -1114,7 +1184,7 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsPerkUnlocked" />
-					<sval type="int" val="-1610603773" />
+					<sval type="int" val="-1610603517" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1123,7 +1193,7 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603768" />
+					<sval type="int" val="-1610603512" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -1161,7 +1231,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536861433" />
+					<sval type="int" val="-536861177" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -1189,11 +1259,11 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_peopleRestriction" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602488" />
+					<sval type="int" val="-1610602232" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -1202,7 +1272,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 					<sval type="int" val="7" />
@@ -1219,7 +1289,7 @@
 					<sval type="int" val="5" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 					<sval type="int" val="15" />
@@ -1239,7 +1309,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="13" />
+					<sval type="int" val="14" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -1254,10 +1324,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610601464" />
+					<sval type="int" val="-1610601208" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="14" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -1269,7 +1339,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="13" />
+					<sval type="int" val="14" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -1278,12 +1348,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600952" />
+					<sval type="int" val="-1610600696" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="14" />
 					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 					<sval type="int" val="3" />
@@ -1296,13 +1366,13 @@
 					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="14" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600440" />
+					<sval type="int" val="-1610600184" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -1336,7 +1406,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="44">
+			<sval type="array" size="45">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1357,181 +1427,185 @@
 				<sval type="array" size="3">
 					<sval type="int" val="7" />
 					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.9.5: If this Outpost has the Industrial overdrive perk, then natural growth is disabled. Same applies to OCV playthroughs." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.8: Moved terraforming up here. Now affected by growth penalty if the perk is not enabled." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="7" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Herobetty 5.3: AI factions, if they control a terraformed sector obtained from the player, can benefit from this perk as well. " />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="7" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="string" val="MordanC fixed this." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="13" />
+					<sval type="int" val="18" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="13" />
+					<sval type="int" val="18" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.8: Reworked population growth rate scaling from Add-Ons 1.2 (was +1 pop growth per 100 pops)." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="13" />
+					<sval type="int" val="18" />
 					<sval type="int" val="1" />
 					<sval type="string" val="If the maximum population is more than 100, then bonus growth scales by 1% for every 2 additional pops." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="17" />
+					<sval type="int" val="22" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="17" />
+					<sval type="int" val="22" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="18" />
+					<sval type="int" val="23" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="18" />
+					<sval type="int" val="23" />
 					<sval type="int" val="1" />
 					<sval type="string" val="-------------------------" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="18" />
+					<sval type="int" val="23" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Growth limter" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="18" />
+					<sval type="int" val="23" />
 					<sval type="int" val="1" />
 					<sval type="string" val="-------------------------" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="20" />
-					<sval type="int" val="1" />
-					<sval type="string" val="If we joined OCV, pop growth is always max people." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="22" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="22" />
+					<sval type="int" val="23" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Normal empire. So growth rate limitation is dynamic." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="23" />
+					<sval type="int" val="24" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 - flat initial growth rate to always get beyond first 30 people very quickly" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="23" />
+					<sval type="int" val="24" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.8: If the natural pop growth limit is less than 20, set amount to 20." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="26" />
+					<sval type="int" val="27" />
 					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="28" />
-					<sval type="int" val="1" />
-					<sval type="string" val="over 75% population" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="29" />
 					<sval type="int" val="1" />
+					<sval type="string" val="over 75% population" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="30" />
+					<sval type="int" val="1" />
 					<sval type="string" val="Drop growth to 1/4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="31" />
+					<sval type="int" val="32" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="31" />
+					<sval type="int" val="32" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Drop growth to 1/3" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="32" />
+					<sval type="int" val="33" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="32" />
+					<sval type="int" val="33" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="32" />
+					<sval type="int" val="33" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="33" />
+					<sval type="int" val="34" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 - Tax perk is even worse, but only above half pop limit" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="33" />
+					<sval type="int" val="34" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.8: Now reduces growth rate to 20% as much rather than just 1." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
-					<sval type="int" val="4" />
+					<sval type="int" val="36" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="36" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="35" />
+					<sval type="int" val="36" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Clamp to at least 1 AFTER perk/limiter stage but before restrictions." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="37" />
+					<sval type="int" val="38" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="40" />
+					<sval type="int" val="41" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="40" />
+					<sval type="int" val="41" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="40" />
+					<sval type="int" val="41" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Zero Hour handles max population here by limiting growth and not by limiting max pop in Mayhem.Task.Station.Outpost because of Refugees" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="46" />
+					<sval type="int" val="47" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="46" />
+					<sval type="int" val="47" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Final safety clamp. Never negative." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
+					<sval type="int" val="49" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
+					<sval type="int" val="49" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
