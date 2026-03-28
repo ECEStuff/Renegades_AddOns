@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>!fight.attack.object.owp.simpl</name>
-	<version>36</version>
+	<version>42</version>
 	<engineversion>50</engineversion>
 	<description>Attack an object for OWPs</description>
 	<arguments>
@@ -417,9 +417,15 @@
 			<comment>* Add-Ons 1.10.1: Respect turret commands. Only in OOS does the OWP fire all at once. Otherwise, let the turret scripts do the work.</comment>
 		</line>
 		<line linenr="057" indent="&#160;&#160;&#160;">
-			<text>skip</text>
+			<comment>* Note that turret scripts do not independently attack freighters unless the freighter is the ship's current target. </comment>
+		</line>
+		<line linenr="058" indent="&#160;&#160;&#160;">
+			<comment>* But the OWP selects targets within its range, including freighters, so no need to check explicitly for freighters.</comment>
+		</line>
+		<line linenr="059" indent="&#160;&#160;&#160;">
+			<var>$inIS</var>
 			<text> </text>
-			<text>if</text>
+			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
 			<text>-&gt;</text>
@@ -432,7 +438,15 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="058" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="060" indent="&#160;&#160;&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<text>!</text>
+			<var>$inIS</var>
+		</line>
+		<line linenr="061" indent="&#160;&#160;&#160;&#160;">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -460,25 +474,25 @@
 			<text>=</text>
 			<var>[Ship]</var>
 		</line>
-		<line linenr="059" indent="&#160;&#160;">
+		<line linenr="062" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="060" indent="&#160;">
+		<line linenr="063" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="061" indent="&#160;&#160;">
+		<line linenr="064" indent="&#160;&#160;">
 			<comment>* target has moved out of range.  </comment>
 		</line>
-		<line linenr="062" indent="&#160;&#160;">
+		<line linenr="065" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="063" indent="&#160;">
+		<line linenr="066" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="064" indent="&#160;" />
-		<line linenr="065" indent="&#160;" interruptable="@">
+		<line linenr="067" indent="&#160;" />
+		<line linenr="068" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -495,30 +509,30 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="066" indent="&#160;" />
-		<line linenr="067" indent="&#160;" />
-		<line linenr="068" indent="">
+		<line linenr="069" indent="&#160;" />
+		<line linenr="070" indent="&#160;" />
+		<line linenr="071" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="069" indent="" />
-		<line linenr="070" indent="">
+		<line linenr="072" indent="" />
+		<line linenr="073" indent="">
 			<comment>* target died or left system</comment>
 		</line>
-		<line linenr="071" indent="">
+		<line linenr="074" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="072" indent="" />
+		<line linenr="075" indent="" />
 	</sourcetext>
 	<codearray>
 		<sval type="array" size="10">
 			<sval type="string" val="!fight.attack.object.owp.simpl" />
 			<sval type="int" val="50" />
 			<sval type="string" val="Attack an object for OWPs" />
-			<sval type="int" val="36" />
+			<sval type="int" val="42" />
 			<sval type="int" val="0" />
-			<sval type="array" size="10">
+			<sval type="array" size="11">
 				<sval type="string" val="victim" />
 				<sval type="string" val="onlyShields" />
 				<sval type="string" val="OWP.Laser.range" />
@@ -529,8 +543,9 @@
 				<sval type="string" val="isM5" />
 				<sval type="string" val="dist" />
 				<sval type="string" val="Time" />
+				<sval type="string" val="inIS" />
 			</sval>
-			<sval type="array" size="39">
+			<sval type="array" size="40">
 				<sval type="array" size="4">
 					<sval type="int" val="761" />
 					<sval type="int" val="131075" />
@@ -675,7 +690,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610602999" />
+					<sval type="int" val="-1610602743" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="732" />
@@ -687,7 +702,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="38" />
+					<sval type="int" val="39" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="727" />
@@ -699,7 +714,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="38" />
+					<sval type="int" val="39" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="738" />
@@ -711,7 +726,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603773" />
+					<sval type="int" val="-1610603517" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="8" />
@@ -730,7 +745,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604029" />
+					<sval type="int" val="-1610603773" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
@@ -812,7 +827,19 @@
 					<sval type="int" val="761" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-536862201" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610603768" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="2" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="1583" />
@@ -826,7 +853,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="36" />
+					<sval type="int" val="37" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -861,7 +888,7 @@
 					<sval type="string" val="Only attack shields" />
 				</sval>
 			</sval>
-			<sval type="array" size="38">
+			<sval type="array" size="40">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -979,30 +1006,32 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.10.1: Respect turret commands. Only in OOS does the OWP fire all at once. Otherwise, let the turret scripts do the work." />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="32" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Note that turret scripts do not independently attack freighters unless the freighter is the ship's current target. " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="32" />
+					<sval type="int" val="1" />
+					<sval type="string" val="But the OWP selects targets within its range, including freighters, so no need to check explicitly for freighters." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="34" />
+					<sval type="int" val="35" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="36" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="35" />
+					<sval type="int" val="36" />
 					<sval type="int" val="1" />
 					<sval type="string" val="target has moved out of range.  " />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="36" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="36" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
 					<sval type="int" val="37" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="37" />
@@ -1010,19 +1039,27 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="38" />
-					<sval type="int" val="4" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="38" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="39" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="39" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="38" />
+					<sval type="int" val="39" />
 					<sval type="int" val="1" />
 					<sval type="string" val="target died or left system" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="39" />
+					<sval type="int" val="40" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
