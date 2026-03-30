@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.ActivateYakis</name>
-	<version>2</version>
+	<version>41</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -202,9 +202,129 @@
 		</line>
 		<line linenr="019" indent="" />
 		<line linenr="020" indent="">
-			<comment>* Transfer some sectors to the Yakis.</comment>
+			<comment>* Transfer some sectors to the Yakis. Add-Ons 1.10.2: Reworked - now picks unknown sectors first, then non-core sectors.</comment>
 		</line>
-		<line linenr="021" indent="" interruptable="@">
+		<line linenr="021" indent="" />
+		<line linenr="022" indent="">
+			<comment>* 1. Find a valid starting point. Conquer it and stock its Outpost.</comment>
+		</line>
+		<line linenr="023" indent="">
+			<var>$sector.renegade</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'RenegadeSector'</text>
+		</line>
+		<line linenr="024" indent="">
+			<var>$activeSector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>sector</text>
+		</line>
+		<line linenr="025" indent="" interruptable="@">
+			<var>$startingSector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetFactionStartingSector</call>
+			<text>:</text>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>[Yaki]</var>
+		</line>
+		<line linenr="026" indent="" interruptable="@">
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.TransferSectorToRace</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>$startingSector</var>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>[Yaki]</var>
+		</line>
+		<line linenr="027" indent="" />
+		<line linenr="028" indent="" interruptable="@">
+			<var>$yakiOutpost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetOutpost</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>$startingSector</var>
+			<text> </text>
+			<text>owner</text>
+			<text>=</text>
+			<var>[Yaki]</var>
+		</line>
+		<line linenr="029" indent="" interruptable="@">
+			<text>START</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.StockOutpost</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>outpost</text>
+			<text>=</text>
+			<var>$yakiOutpost</var>
+		</line>
+		<line linenr="030" indent="" />
+		<line linenr="031" indent="">
+			<comment>* 2. Conquer adjacent commonwealth or unknown sectors using BFS.</comment>
+		</line>
+		<line linenr="032" indent="" interruptable="@">
 			<var>$galaxy</var>
 			<text> </text>
 			<text>=</text>
@@ -216,7 +336,7 @@
 			<text> </text>
 			<text>script</text>
 			<text> </text>
-			<call>Mayhem.GetGalaxySorted</call>
+			<call>Mayhem.GetGalaxy</call>
 			<text> </text>
 			<text>:</text>
 			<text> </text>
@@ -224,7 +344,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="022" indent="">
+		<line linenr="033" indent="">
 			<var>$galaxy.size</var>
 			<text> </text>
 			<text>=</text>
@@ -237,34 +357,7 @@
 			<text> </text>
 			<var>$galaxy</var>
 		</line>
-		<line linenr="023" indent="" interruptable="@">
-			<var>$compatibleRaces</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.GetCommonwealth</call>
-			<text> </text>
-			<text>:</text>
-		</line>
-		<line linenr="024" indent="">
-			<text>append</text>
-			<text> </text>
-			<var>[Unknown]</var>
-			<text> </text>
-			<text>to</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$compatibleRaces</var>
-		</line>
-		<line linenr="025" indent="">
+		<line linenr="034" indent="">
 			<var>$yakiStartingSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -280,7 +373,7 @@
 			<text>=</text>
 			<text>'mayhem_yakiStartingSectors'</text>
 		</line>
-		<line linenr="026" indent="">
+		<line linenr="035" indent="">
 			<var>$yakiNbSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -297,7 +390,35 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="036" indent="" interruptable="@">
+			<var>$compatibleRaces</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.GetCommonwealth</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="037" indent="">
+			<text>append</text>
+			<text> </text>
+			<var>[Unknown]</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$compatibleRaces</var>
+		</line>
+		<line linenr="038" indent="" />
+		<line linenr="039" indent="">
 			<var>$yakiSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -311,21 +432,86 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="028" indent="">
-			<var>$activeSector</var>
+		<line linenr="040" indent="">
+			<var>$frontier</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>[PLAYERSHIP]</var>
-			<text>-&gt;</text>
+			<text>array</text>
 			<text> </text>
-			<text>get</text>
+			<text>alloc</text>
+			<text>:</text>
 			<text> </text>
-			<text>sector</text>
+			<text>size</text>
+			<text>=</text>
+			<var>0</var>
 		</line>
-		<line linenr="029" indent="" />
-		<line linenr="030" indent="">
-			<var>$XS.Iterator1</var>
+		<line linenr="041" indent="">
+			<var>$visited</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<text>alloc</text>
+			<text>:</text>
+			<text> </text>
+			<text>size</text>
+			<text>=</text>
+			<var>0</var>
+		</line>
+		<line linenr="042" indent="">
+			<var>$deferredActiveSector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="043" indent="" />
+		<line linenr="044" indent="">
+			<text>append</text>
+			<text> </text>
+			<var>$startingSector</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$frontier</var>
+		</line>
+		<line linenr="045" indent="">
+			<text>append</text>
+			<text> </text>
+			<var>$startingSector</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$visited</var>
+		</line>
+		<line linenr="046" indent="">
+			<text>append</text>
+			<text> </text>
+			<var>$startingSector</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$yakiSectors</var>
+		</line>
+		<line linenr="047" indent="" />
+		<line linenr="048" indent="">
+			<text>while</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="049" indent="&#160;">
+			<comment>* Stop if we reached target size.</comment>
+		</line>
+		<line linenr="050" indent="&#160;">
+			<var>$yakiSectors.size</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -335,29 +521,116 @@
 			<text> </text>
 			<text>array</text>
 			<text> </text>
-			<var>$galaxy</var>
+			<var>$yakiSectors</var>
 		</line>
-		<line linenr="031" indent="&#160;">
-			<text>while</text>
+		<line linenr="051" indent="&#160;">
+			<text>do</text>
 			<text> </text>
-			<var>$XS.Iterator1</var>
-		</line>
-		<line linenr="032" indent="&#160;&#160;">
-			<text>dec</text>
+			<text>if</text>
 			<text> </text>
-			<var>$XS.Iterator1</var>
+			<var>$yakiSectors.size</var>
+			<text> </text>
+			<text>&gt;=</text>
+			<text> </text>
+			<var>$yakiNbSectors</var>
 		</line>
-		<line linenr="033" indent="&#160;">
+		<line linenr="052" indent="&#160;&#160;">
+			<text>break</text>
+		</line>
+		<line linenr="053" indent="&#160;" />
+		<line linenr="054" indent="&#160;">
+			<comment>* If normal frontier is empty, fall back to deferred active-sector frontier.</comment>
+		</line>
+		<line linenr="055" indent="&#160;">
+			<var>$frontier.size</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$frontier</var>
+		</line>
+		<line linenr="056" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$frontier.size</var>
+			<text> </text>
+			<text>&lt;=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="057" indent="&#160;&#160;">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$deferredActiveSector</var>
+		</line>
+		<line linenr="058" indent="&#160;&#160;&#160;">
+			<text>break</text>
+		</line>
+		<line linenr="059" indent="&#160;&#160;" />
+		<line linenr="060" indent="&#160;&#160;">
+			<text>append</text>
+			<text> </text>
+			<var>$deferredActiveSector</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$frontier</var>
+		</line>
+		<line linenr="061" indent="&#160;&#160;">
+			<var>$deferredActiveSector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="062" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="063" indent="&#160;" />
+		<line linenr="064" indent="&#160;">
+			<comment>* Pop first sector from frontier.</comment>
+		</line>
+		<line linenr="065" indent="&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$galaxy</var>
+			<var>$frontier</var>
 			<text>[</text>
-			<var>$XS.Iterator1</var>
+			<var>0</var>
 			<text>]</text>
 		</line>
-		<line linenr="034" indent="&#160;">
+		<line linenr="066" indent="&#160;">
+			<text>remove</text>
+			<text> </text>
+			<text>element</text>
+			<text> </text>
+			<text>from</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$frontier</var>
+			<text> </text>
+			<text>at</text>
+			<text> </text>
+			<text>index</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="067" indent="&#160;" />
+		<line linenr="068" indent="&#160;">
+			<comment>* Skip Renegade sector.</comment>
+		</line>
+		<line linenr="069" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -366,12 +639,16 @@
 			<text> </text>
 			<text>==</text>
 			<text> </text>
-			<var>$activeSector</var>
+			<var>$sector.renegade</var>
 		</line>
-		<line linenr="035" indent="&#160;&#160;">
+		<line linenr="070" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="036" indent="&#160;">
+		<line linenr="071" indent="&#160;" />
+		<line linenr="072" indent="&#160;">
+			<comment>* Only compatible races.</comment>
+		</line>
+		<line linenr="073" indent="&#160;">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
@@ -385,10 +662,10 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="037" indent="&#160;&#160;">
-			<text>skip</text>
-			<text> </text>
+		<line linenr="074" indent="&#160;">
 			<text>if</text>
+			<text> </text>
+			<text>not</text>
 			<text> </text>
 			<text>find</text>
 			<text> </text>
@@ -401,10 +678,23 @@
 			<text> </text>
 			<var>$compatibleRaces</var>
 		</line>
-		<line linenr="038" indent="&#160;&#160;">
+		<line linenr="075" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>AddNeighbors</var>
+			<text>:</text>
+		</line>
+		<line linenr="076" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="039" indent="&#160;&#160;">
+		<line linenr="077" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="078" indent="&#160;" />
+		<line linenr="079" indent="&#160;">
+			<comment>* Don't conquer weak factions.</comment>
+		</line>
+		<line linenr="080" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$owner</var>
@@ -413,10 +703,7 @@
 			<text> </text>
 			<var>[Unknown]</var>
 		</line>
-		<line linenr="040" indent="&#160;&#160;">
-			<comment>* We don't want to conquer weak factions.</comment>
-		</line>
-		<line linenr="041" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="081" indent="&#160;&#160;" interruptable="@">
 			<var>$owner.sectors</var>
 			<text> </text>
 			<text>=</text>
@@ -440,7 +727,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="042" indent="&#160;">
+		<line linenr="082" indent="&#160;&#160;">
 			<var>$owner.sectors</var>
 			<text> </text>
 			<text>=</text>
@@ -453,9 +740,7 @@
 			<text> </text>
 			<var>$owner.sectors</var>
 		</line>
-		<line linenr="043" indent="&#160;">
-			<text>do</text>
-			<text> </text>
+		<line linenr="083" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$owner.sectors</var>
@@ -464,14 +749,36 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="044" indent="&#160;">
+		<line linenr="084" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>AddNeighbors</var>
+			<text>:</text>
+		</line>
+		<line linenr="085" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="045" indent="&#160;">
+		<line linenr="086" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="046" indent="&#160;" interruptable="@">
-			<text>START</text>
+		<line linenr="087" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="088" indent="&#160;" />
+		<line linenr="089" indent="&#160;">
+			<comment>* Conquer sector if not already Yaki. Stock its Outpost.</comment>
+		</line>
+		<line linenr="090" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$owner</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>[Yaki]</var>
+		</line>
+		<line linenr="091" indent="&#160;&#160;" interruptable="@">
+			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
 			<text>-&gt;</text>
@@ -492,10 +799,90 @@
 			<text>=</text>
 			<var>[Yaki]</var>
 		</line>
-		<line linenr="047" indent="&#160;">
-			<comment>* Break if we have enough sectors.</comment>
+		<line linenr="092" indent="&#160;&#160;" interruptable="@">
+			<var>$yakiOutpost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetOutpost</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>$sector</var>
+			<text> </text>
+			<text>owner</text>
+			<text>=</text>
+			<var>[Yaki]</var>
 		</line>
-		<line linenr="048" indent="&#160;&#160;">
+		<line linenr="093" indent="&#160;&#160;" interruptable="@">
+			<text>START</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.StockOutpost</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>outpost</text>
+			<text>=</text>
+			<var>$yakiOutpost</var>
+		</line>
+		<line linenr="094" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="095" indent="&#160;" />
+		<line linenr="096" indent="&#160;">
+			<comment>* Add to conquered list if not already present.</comment>
+		</line>
+		<line linenr="097" indent="&#160;">
+			<var>$index</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>index</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<var>$sector</var>
+			<text> </text>
+			<text>in</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$yakiSectors</var>
+			<text> </text>
+			<text>offset</text>
+			<text>=</text>
+			<var>0</var>
+		</line>
+		<line linenr="098" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$index</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="099" indent="&#160;&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$sector</var>
@@ -506,38 +893,18 @@
 			<text> </text>
 			<var>$yakiSectors</var>
 		</line>
-		<line linenr="049" indent="">
-			<var>$yakiSectors.size</var>
+		<line linenr="100" indent="&#160;" />
+		<line linenr="101" indent="&#160;">
+			<text>gosub</text>
 			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$yakiSectors</var>
+			<var>AddNeighbors</var>
+			<text>:</text>
 		</line>
-		<line linenr="050" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$yakiSectors.size</var>
-			<text> </text>
-			<text>&gt;=</text>
-			<text> </text>
-			<var>$yakiNbSectors</var>
-		</line>
-		<line linenr="051" indent="">
-			<text>break</text>
-		</line>
-		<line linenr="052" indent="">
+		<line linenr="102" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="053" indent="" />
-		<line linenr="054" indent="" interruptable="@">
+		<line linenr="103" indent="" />
+		<line linenr="104" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -546,11 +913,11 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="055" indent="" />
-		<line linenr="056" indent="">
+		<line linenr="105" indent="" />
+		<line linenr="106" indent="">
 			<comment>* Add Yaki ships.</comment>
 		</line>
-		<line linenr="057" indent="">
+		<line linenr="107" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -566,7 +933,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="058" indent="" interruptable="@">
+		<line linenr="108" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -584,7 +951,7 @@
 			<text>=</text>
 			<var>[Yaki]</var>
 		</line>
-		<line linenr="059" indent="">
+		<line linenr="109" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -600,11 +967,11 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="060" indent="" />
-		<line linenr="061" indent="">
+		<line linenr="110" indent="" />
+		<line linenr="111" indent="">
 			<comment>* Send message to the player.</comment>
 		</line>
-		<line linenr="062" indent="">
+		<line linenr="112" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -635,7 +1002,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="063" indent="" interruptable="@">
+		<line linenr="113" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -669,11 +1036,171 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="064" indent="" />
-		<line linenr="065" indent="">
+		<line linenr="114" indent="" />
+		<line linenr="115" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$yakiSectors</var>
+		</line>
+		<line linenr="116" indent="" />
+		<line linenr="117" indent="">
+			<var>AddNeighbors</var>
+			<text>:</text>
+		</line>
+		<line linenr="118" indent="&#160;" interruptable="@">
+			<var>$adjacents</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.GetAdjacentSectors</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>$sector</var>
+			<text> </text>
+			<text>randomize</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+			<text> </text>
+		</line>
+		<line linenr="119" indent="&#160;">
+			<var>$XS.Iterator1</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$adjacents</var>
+		</line>
+		<line linenr="120" indent="&#160;&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="121" indent="&#160;&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="122" indent="&#160;&#160;">
+			<var>$adjacent</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$adjacents</var>
+			<text>[</text>
+			<var>$XS.Iterator1</var>
+			<text>]</text>
+		</line>
+		<line linenr="123" indent="&#160;&#160;&#160;">
+			<comment>* Check if adjacent sector is already in the list.</comment>
+		</line>
+		<line linenr="124" indent="&#160;&#160;">
+			<var>$index</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>index</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<var>$adjacent</var>
+			<text> </text>
+			<text>in</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$visited</var>
+			<text> </text>
+			<text>offset</text>
+			<text>=</text>
+			<var>0</var>
+		</line>
+		<line linenr="125" indent="&#160;&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$index</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="126" indent="&#160;&#160;">
+			<text>continue</text>
+		</line>
+		<line linenr="127" indent="&#160;&#160;" />
+		<line linenr="128" indent="&#160;&#160;">
+			<text>append</text>
+			<text> </text>
+			<var>$adjacent</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$visited</var>
+		</line>
+		<line linenr="129" indent="&#160;&#160;&#160;" />
+		<line linenr="130" indent="&#160;&#160;&#160;">
+			<comment>* Defer player active sector until last resort.</comment>
+		</line>
+		<line linenr="131" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$adjacent</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>$activeSector</var>
+		</line>
+		<line linenr="132" indent="&#160;&#160;">
+			<var>$deferredActiveSector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$adjacent</var>
+		</line>
+		<line linenr="133" indent="&#160;&#160;">
+			<text>continue</text>
+		</line>
+		<line linenr="134" indent="&#160;">
+			<text>end</text>
+			<text> </text>
+		</line>
+		<line linenr="135" indent="" />
+		<line linenr="136" indent="">
+			<text>append</text>
+			<text> </text>
+			<var>$adjacent</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$frontier</var>
+		</line>
+		<line linenr="137" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="138" indent="">
+			<text>endsub</text>
 		</line>
 	</sourcetext>
 	<codearray>
@@ -681,25 +1208,35 @@
 			<sval type="string" val="Mayhem.ActivateYakis" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="2" />
+			<sval type="int" val="41" />
 			<sval type="int" val="0" />
-			<sval type="array" size="14">
+			<sval type="array" size="24">
 				<sval type="string" val="OCVplotStage" />
+				<sval type="string" val="sector.renegade" />
+				<sval type="string" val="activeSector" />
+				<sval type="string" val="startingSector" />
+				<sval type="string" val="yakiOutpost" />
 				<sval type="string" val="galaxy" />
 				<sval type="string" val="galaxy.size" />
-				<sval type="string" val="compatibleRaces" />
 				<sval type="string" val="yakiStartingSectors" />
 				<sval type="string" val="yakiNbSectors" />
+				<sval type="string" val="compatibleRaces" />
 				<sval type="string" val="yakiSectors" />
-				<sval type="string" val="activeSector" />
+				<sval type="string" val="frontier" />
+				<sval type="string" val="visited" />
+				<sval type="string" val="deferredActiveSector" />
+				<sval type="string" val="yakiSectors.size" />
+				<sval type="string" val="frontier.size" />
 				<sval type="string" val="sector" />
-				<sval type="string" val="XS.Iterator1" />
 				<sval type="string" val="owner" />
 				<sval type="string" val="owner.sectors" />
-				<sval type="string" val="yakiSectors.size" />
+				<sval type="string" val="index" />
 				<sval type="string" val="t" />
+				<sval type="string" val="adjacents" />
+				<sval type="string" val="adjacent" />
+				<sval type="string" val="XS.Iterator1" />
 			</sval>
-			<sval type="array" size="47">
+			<sval type="array" size="87">
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
 					<sval type="int" val="-2147483647" />
@@ -790,10 +1327,66 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="RenegadeSector" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="703" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="2" />
+				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.GetGalaxySorted" />
+					<sval type="string" val="Mayhem.GetFactionStartingSector" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="19" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.TransferSectorToRace" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="10" />
+					<sval type="int" val="19" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetOutpost" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="10" />
+					<sval type="int" val="19" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.StockOutpost" />
+					<sval type="int" val="-2147483646" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetGalaxy" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -802,39 +1395,24 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="2" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.GetCommonwealth" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="5">
-					<sval type="int" val="135" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="10" />
-					<sval type="int" val="14" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_yakiStartingSectors" />
-					<sval type="int" val="4" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="5" />
+					<sval type="int" val="8" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="7" />
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
 					<sval type="int" val="4" />
@@ -850,53 +1428,176 @@
 					<sval type="int" val="14" />
 					<sval type="int" val="-4" />
 				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.GetCommonwealth" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="135" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="10" />
+					<sval type="int" val="14" />
+				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="128" />
-					<sval type="int" val="6" />
+					<sval type="int" val="10" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="4">
-					<sval type="int" val="703" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="3" />
-					<sval type="int" val="7" />
+					<sval type="int" val="128" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="9" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="128" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602487" />
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="135" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="135" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="135" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610596343" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610603768" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="64" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610602237" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-536860921" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="13" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="143" />
-					<sval type="int" val="9" />
+					<sval type="int" val="112" />
+					<sval type="int" val="64" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="135" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="8" />
+					<sval type="int" val="16" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="136" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606072" />
+					<sval type="int" val="-1610601208" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="16" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="1" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="3" />
@@ -906,32 +1607,36 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="21" />
+					<sval type="int" val="31" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="10" />
+					<sval type="int" val="16" />
+					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1406" />
-					<sval type="int" val="-536863481" />
+					<sval type="int" val="-536858364" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="17" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="71" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="21" />
+					<sval type="int" val="31" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604029" />
+					<sval type="int" val="-1610598653" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="17" />
 					<sval type="int" val="10" />
 					<sval type="int" val="14" />
 					<sval type="int" val="15" />
@@ -944,27 +1649,27 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetOwnedSectors" />
-					<sval type="int" val="11" />
+					<sval type="int" val="18" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="17" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="11" />
+					<sval type="int" val="18" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="18" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604024" />
+					<sval type="int" val="-1610598653" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="18" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -975,56 +1680,101 @@
 					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="71" />
+				</sval>
+				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="21" />
+					<sval type="int" val="31" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597629" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="17" />
+					<sval type="int" val="10" />
+					<sval type="int" val="19" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.TransferSectorToRace" />
-					<sval type="int" val="-2147483646" />
+					<sval type="int" val="-2147483647" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="16" />
 					<sval type="int" val="10" />
 					<sval type="int" val="19" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetOutpost" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="10" />
+					<sval type="int" val="19" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.StockOutpost" />
+					<sval type="int" val="-2147483646" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1083" />
+					<sval type="int" val="19" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610596856" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="135" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="16" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="12" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610602744" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="4" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="-2" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="71" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="40" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="21" />
+					<sval type="int" val="31" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
@@ -1058,13 +1808,13 @@
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="13" />
+					<sval type="int" val="20" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9972" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2232" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="8" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -1082,7 +1832,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="20" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131075" />
@@ -1095,11 +1845,132 @@
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="string" val="AddNeighbors" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.GetAdjacentSectors" />
+					<sval type="int" val="21" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="23" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="21" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610590711" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="23" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="23" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="22" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="21" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="23" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1083" />
+					<sval type="int" val="19" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610592248" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="74" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="135" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610591229" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="74" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="135" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="74" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="23">
+			<sval type="array" size="60">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1134,49 +2005,71 @@
 				<sval type="array" size="3">
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Transfer some sectors to the Yakis." />
+					<sval type="string" val="Transfer some sectors to the Yakis. Add-Ons 1.10.2: Reworked - now picks unknown sectors first, then non-core sectors." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="string" val="1. Find a valid starting point. Conquer it and stock its Outpost." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="16" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="26" />
-					<sval type="int" val="6" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="29" />
-					<sval type="int" val="6" />
+					<sval type="int" val="18" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="30" />
+					<sval type="int" val="18" />
 					<sval type="int" val="1" />
-					<sval type="string" val="We don't want to conquer weak factions." />
+					<sval type="string" val="2. Conquer adjacent commonwealth or unknown sectors using BFS." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="34" />
-					<sval type="int" val="6" />
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="34" />
-					<sval type="int" val="4" />
+					<sval type="int" val="28" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="31" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="32" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Stop if we reached target size." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="35" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="35" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="35" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Break if we have enough sectors." />
+					<sval type="string" val="If normal frontier is empty, fall back to deferred active-sector frontier." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="39" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="40" />
-					<sval type="int" val="4" />
+					<sval type="int" val="39" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="40" />
-					<sval type="int" val="2" />
+					<sval type="int" val="41" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="41" />
@@ -1184,21 +2077,157 @@
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="41" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Pop first sector from frontier." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="43" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="43" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Skip Renegade sector." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="45" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Only compatible races." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="49" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="49" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="49" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="49" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Don't conquer weak factions." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="55" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="55" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="55" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="55" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="55" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Conquer sector if not already Yaki. Stock its Outpost." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="59" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="59" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="59" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add to conquered list if not already present." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="62" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="64" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="64" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="65" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="65" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add Yaki ships." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="44" />
+					<sval type="int" val="68" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="44" />
+					<sval type="int" val="68" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Send message to the player." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="46" />
+					<sval type="int" val="70" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="71" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="77" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Check if adjacent sector is already in the list." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="80" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="80" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="81" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="81" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Defer player active sector until last resort." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="84" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="84" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="84" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="86" />
+					<sval type="int" val="4" />
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
