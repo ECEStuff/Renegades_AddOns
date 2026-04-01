@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.JumpBeacon.Respawn</name>
-	<version>56</version>
+	<version>61</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -268,7 +268,7 @@
 		</line>
 		<line linenr="047" indent="&#160;" />
 		<line linenr="048" indent="&#160;">
-			<comment>* Check if there a jump beacon! If not, the first spawn is guaranteed.</comment>
+			<comment>* Check if there a jump beacon! If there's no beacon, the first spawn is guaranteed.</comment>
 		</line>
 		<line linenr="049" indent="&#160;">
 			<comment>* Add-Ons 1.4.24: Fixed - removed flags. (1.6: Fixed again by setting all other flags to null.)</comment>
@@ -345,112 +345,122 @@
 			<text>!</text>
 			<var>$phanon.firstSpawn</var>
 		</line>
-		<line linenr="053" indent="&#160;&#160;" interruptable="@">
-			<var>$posArray</var>
+		<line linenr="053" indent="&#160;&#160;">
+			<text>gosub</text>
 			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.GetValidPos</call>
-			<text> </text>
+			<var>SpawnBeacon</var>
 			<text>:</text>
-			<text> </text>
-			<text>sector</text>
-			<text>=</text>
-			<var>$sector</var>
-			<text> </text>
-			<text>minDistance</text>
-			<text>=</text>
-			<var>10000</var>
-			<text> </text>
-			<text>posArray</text>
-			<text>=</text>
-			<var>null</var>
-			<text> </text>
-			<text>verticalOnly</text>
-			<text>=</text>
-			<var>[FALSE]</var>
-			<text> </text>
-			<text>refobj</text>
-			<text>=</text>
-			<var>null</var>
 		</line>
-		<line linenr="054" indent="&#160;&#160;" interruptable="@">
-			<var>$beacon</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.BuildShip</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>type</text>
-			<text>=</text>
-			<var>{Neutral Race Jump Beacon}</var>
-			<text> </text>
-			<text>race</text>
-			<text>=</text>
-			<var>[Phanon]</var>
-			<text> </text>
-			<text>posArray</text>
-			<text>=</text>
-			<var>$posArray</var>
-			<text> </text>
-			<text>homebase</text>
-			<text>=</text>
-			<var>null</var>
-			<text> </text>
-			<text>quality</text>
-			<text>=</text>
-			<var>null</var>
-		</line>
-		<line linenr="055" indent="&#160;&#160;">
-			<var>$beacon</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>name</text>
-			<text> </text>
-			<text>to</text>
-			<text> </text>
-			<text>'Phanon Jump Beacon'</text>
-		</line>
-		<line linenr="056" indent="&#160;&#160;">
+		<line linenr="054" indent="&#160;&#160;">
 			<var>$phanon.firstSpawn</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="057" indent="&#160;" />
-		<line linenr="058" indent="&#160;">
-			<comment>* Add-Ons 1.10.2: Used up guaranteed spawn, so now rebuild at other sectors. Chances are reduced on easy/normal to 10%.</comment>
+		<line linenr="055" indent="&#160;&#160;" />
+		<line linenr="056" indent="&#160;&#160;&#160;">
+			<comment>* Tell the player when the first beacon respawns inside Phanon space. </comment>
 		</line>
-		<line linenr="059" indent="&#160;">
-			<text>continue</text>
+		<line linenr="057" indent="&#160;&#160;&#160;">
+			<var>$firstSpawn</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'FirstInsidePhanonBeacon'</text>
 		</line>
-		<line linenr="060" indent="&#160;">
+		<line linenr="058" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$firstSpawn</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="059" indent="&#160;&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Alert: Phanon Outposts are establishing and maintaining a jump network within their territory.'</text>
+		</line>
+		<line linenr="060" indent="&#160;&#160;" interruptable="@">
+			<text>START</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.SendMessage</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>message</text>
+			<text>=</text>
+			<var>$t</var>
+			<text> </text>
+			<text>log</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+			<text> </text>
+			<text>forceDisplay</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="061" indent="&#160;&#160;">
+			<var>$firstSpawn</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="062" indent="&#160;&#160;">
+			<text>set</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'FirstInsidePhanonBeacon'</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>$firstSpawn</var>
+		</line>
+		<line linenr="063" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="061" indent="&#160;&#160;" />
-		<line linenr="062" indent="&#160;&#160;">
+		<line linenr="064" indent="&#160;" />
+		<line linenr="065" indent="&#160;">
+			<comment>* Add-Ons 1.10.2: Used up guaranteed spawn, so now rebuild at other sectors. Chances are reduced on easy/normal to 10%.</comment>
+		</line>
+		<line linenr="066" indent="&#160;">
+			<text>continue</text>
+		</line>
+		<line linenr="067" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="068" indent="&#160;&#160;" />
+		<line linenr="069" indent="&#160;&#160;">
 			<comment>* Spawn additional beacons. Must have no beacon in this sector to spawn additional beacons.</comment>
 		</line>
-		<line linenr="063" indent="&#160;&#160;&#160;">
+		<line linenr="070" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$beacon</var>
@@ -459,7 +469,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="064" indent="&#160;&#160;&#160;">
+		<line linenr="071" indent="&#160;&#160;">
 			<var>$rng</var>
 			<text> </text>
 			<text>=</text>
@@ -476,7 +486,7 @@
 			<text> </text>
 			<var>9</var>
 		</line>
-		<line linenr="065" indent="&#160;&#160;&#160;">
+		<line linenr="072" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rng</var>
@@ -485,110 +495,32 @@
 			<text> </text>
 			<var>$threshold</var>
 		</line>
-		<line linenr="066" indent="&#160;&#160;" interruptable="@">
-			<var>$posArray</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.GetValidPos</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>sector</text>
-			<text>=</text>
-			<var>$sector</var>
-			<text> </text>
-			<text>minDistance</text>
-			<text>=</text>
-			<var>10000</var>
-			<text> </text>
-			<text>posArray</text>
-			<text>=</text>
-			<var>null</var>
-			<text> </text>
-			<text>verticalOnly</text>
-			<text>=</text>
-			<var>[FALSE]</var>
-			<text> </text>
-			<text>refobj</text>
-			<text>=</text>
-			<var>null</var>
-		</line>
-		<line linenr="067" indent="&#160;" interruptable="@">
-			<var>$beacon</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.BuildShip</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>type</text>
-			<text>=</text>
-			<var>{Neutral Race Jump Beacon}</var>
-			<text> </text>
-			<text>race</text>
-			<text>=</text>
-			<var>[Phanon]</var>
-			<text> </text>
-			<text>posArray</text>
-			<text>=</text>
-			<var>$posArray</var>
-			<text> </text>
-			<text>homebase</text>
-			<text>=</text>
-			<var>null</var>
-			<text> </text>
-			<text>quality</text>
-			<text>=</text>
-			<var>null</var>
-		</line>
-		<line linenr="068" indent="">
-			<var>$beacon</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>name</text>
-			<text> </text>
-			<text>to</text>
-			<text> </text>
-			<text>'Phanon Jump Beacon'</text>
-		</line>
-		<line linenr="069" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="070" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="071" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="072" indent="" />
 		<line linenr="073" indent="">
+			<text>gosub</text>
+			<text> </text>
+			<var>SpawnBeacon</var>
+			<text>:</text>
+		</line>
+		<line linenr="074" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="075" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="076" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="077" indent="" />
+		<line linenr="078" indent="">
 			<comment>* Go through ALL commonwealth (including Yaki) sectors.</comment>
 		</line>
-		<line linenr="074" indent="&#160;">
+		<line linenr="079" indent="&#160;">
 			<comment>* For each sector in the array, attempt to spawn a beacon until Phanon is out of attempts.</comment>
 		</line>
-		<line linenr="075" indent="&#160;&#160;">
+		<line linenr="080" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.10.2: Chances increased (2.5 -&gt; 5, 10 -&gt; 20)</comment>
 		</line>
-		<line linenr="076" indent="&#160;&#160;">
+		<line linenr="081" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -597,7 +529,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="077" indent="&#160;">
+		<line linenr="082" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -606,44 +538,44 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="078" indent="&#160;&#160;">
+		<line linenr="083" indent="&#160;&#160;">
 			<comment>* Hard difficulty has a 5% chance.</comment>
 		</line>
-		<line linenr="079" indent="&#160;&#160;">
+		<line linenr="084" indent="&#160;&#160;">
 			<var>$threshold</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="080" indent="&#160;">
+		<line linenr="085" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="081" indent="&#160;">
+		<line linenr="086" indent="&#160;">
 			<comment>* Insane mode has a 20% chance.</comment>
 		</line>
-		<line linenr="082" indent="&#160;">
+		<line linenr="087" indent="&#160;">
 			<var>$threshold</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>4</var>
 		</line>
-		<line linenr="083" indent="&#160;">
+		<line linenr="088" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="084" indent="&#160;" />
-		<line linenr="085" indent="&#160;">
+		<line linenr="089" indent="&#160;" />
+		<line linenr="090" indent="&#160;">
 			<var>$attempts</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="086" indent="&#160;&#160;">
+		<line linenr="091" indent="&#160;&#160;">
 			<comment>* Get a randomized list of sectors.</comment>
 		</line>
-		<line linenr="087" indent="&#160;&#160;" interruptable="@">
+		<line linenr="092" indent="&#160;&#160;" interruptable="@">
 			<var>$galaxy</var>
 			<text> </text>
 			<text>=</text>
@@ -667,7 +599,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="088" indent="&#160;&#160;">
+		<line linenr="093" indent="&#160;&#160;">
 			<var>$XS.Iterator2</var>
 			<text> </text>
 			<text>=</text>
@@ -680,17 +612,17 @@
 			<text> </text>
 			<var>$galaxy</var>
 		</line>
-		<line linenr="089" indent="&#160;&#160;">
+		<line linenr="094" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="090" indent="&#160;&#160;&#160;">
+		<line linenr="095" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="091" indent="&#160;&#160;">
+		<line linenr="096" indent="&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -700,7 +632,7 @@
 			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="092" indent="&#160;&#160;" interruptable="@">
+		<line linenr="097" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -709,11 +641,11 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="093" indent="&#160;&#160;" />
-		<line linenr="094" indent="&#160;&#160;">
+		<line linenr="098" indent="&#160;&#160;" />
+		<line linenr="099" indent="&#160;&#160;">
 			<comment>* Stop if we've reached our attempt budget.</comment>
 		</line>
-		<line linenr="095" indent="&#160;&#160;&#160;">
+		<line linenr="100" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -724,14 +656,14 @@
 			<text> </text>
 			<var>$phanonSectors.size</var>
 		</line>
-		<line linenr="096" indent="&#160;&#160;">
+		<line linenr="101" indent="&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="097" indent="&#160;&#160;" />
-		<line linenr="098" indent="&#160;&#160;">
+		<line linenr="102" indent="&#160;&#160;" />
+		<line linenr="103" indent="&#160;&#160;">
 			<comment>* The only sectors allowed are Argon, Boron, Split, Paranid, Teladi, Terran, and Yaki. If the sector owner isn't any of these, skip to next sector in the list.</comment>
 		</line>
-		<line linenr="099" indent="&#160;&#160;">
+		<line linenr="104" indent="&#160;&#160;">
 			<var>$sector.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -745,7 +677,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="100" indent="&#160;&#160;&#160;">
+		<line linenr="105" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -804,14 +736,14 @@
 			<text> </text>
 			<var>[Yaki]</var>
 		</line>
-		<line linenr="101" indent="&#160;&#160;&#160;">
+		<line linenr="106" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="102" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="103" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="107" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="108" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Check if there a jump beacon! If there's no jump beacon in this sector, try to spawn one!</comment>
 		</line>
-		<line linenr="104" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="109" indent="&#160;&#160;&#160;&#160;">
 			<var>$beacon</var>
 			<text> </text>
 			<text>=</text>
@@ -857,7 +789,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="105" indent="&#160;&#160;&#160;">
+		<line linenr="110" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$beacon</var>
@@ -866,7 +798,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="106" indent="&#160;&#160;&#160;">
+		<line linenr="111" indent="&#160;&#160;&#160;&#160;">
 			<var>$rng</var>
 			<text> </text>
 			<text>=</text>
@@ -883,7 +815,7 @@
 			<text> </text>
 			<var>19</var>
 		</line>
-		<line linenr="107" indent="&#160;&#160;&#160;">
+		<line linenr="112" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rng</var>
@@ -892,7 +824,130 @@
 			<text> </text>
 			<var>$threshold</var>
 		</line>
-		<line linenr="108" indent="&#160;&#160;" interruptable="@">
+		<line linenr="113" indent="&#160;&#160;&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>SpawnBeacon</var>
+			<text>:</text>
+		</line>
+		<line linenr="114" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="115" indent="&#160;&#160;&#160;&#160;&#160;">
+			<comment>* Tell the player when the first beacon respawns outside Phanon space.</comment>
+		</line>
+		<line linenr="116" indent="&#160;&#160;&#160;&#160;">
+			<var>$firstSpawn</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'FirstOutsidePhanonBeacon'</text>
+		</line>
+		<line linenr="117" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$firstSpawn</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="118" indent="&#160;&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Alert: Phanon has begun extending its jump network beyond its territory.'</text>
+		</line>
+		<line linenr="119" indent="&#160;&#160;&#160;" interruptable="@">
+			<text>START</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.SendMessage</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>message</text>
+			<text>=</text>
+			<var>$t</var>
+			<text> </text>
+			<text>log</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+			<text> </text>
+			<text>forceDisplay</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="120" indent="&#160;&#160;">
+			<var>$firstSpawn</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="121" indent="&#160;">
+			<text>set</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'FirstOutsidePhanonBeacon'</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>$firstSpawn</var>
+		</line>
+		<line linenr="122" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="123" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="124" indent="" />
+		<line linenr="125" indent="">
+			<text>inc</text>
+			<text> </text>
+			<var>$attempts</var>
+		</line>
+		<line linenr="126" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="127" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="128" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="129" indent="&#160;" />
+		<line linenr="130" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="131" indent="" />
+		<line linenr="132" indent="">
+			<var>SpawnBeacon</var>
+			<text>:</text>
+		</line>
+		<line linenr="133" indent="" interruptable="@">
 			<var>$posArray</var>
 			<text> </text>
 			<text>=</text>
@@ -928,7 +983,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="109" indent="&#160;" interruptable="@">
+		<line linenr="134" indent="" interruptable="@">
 			<var>$beacon</var>
 			<text> </text>
 			<text>=</text>
@@ -964,7 +1019,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="110" indent="">
+		<line linenr="135" indent="">
 			<var>$beacon</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -976,29 +1031,8 @@
 			<text> </text>
 			<text>'Phanon Jump Beacon'</text>
 		</line>
-		<line linenr="111" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="112" indent="" />
-		<line linenr="113" indent="">
-			<text>inc</text>
-			<text> </text>
-			<var>$attempts</var>
-		</line>
-		<line linenr="114" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="115" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="116" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="117" indent="" />
-		<line linenr="118" indent="">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
+		<line linenr="136" indent="">
+			<text>endsub</text>
 		</line>
 	</sourcetext>
 	<codearray>
@@ -1006,9 +1040,9 @@
 			<sval type="string" val="ZH.JumpBeacon.Respawn" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="56" />
+			<sval type="int" val="61" />
 			<sval type="int" val="0" />
-			<sval type="array" size="16">
+			<sval type="array" size="18">
 				<sval type="string" val="phanonSectors" />
 				<sval type="string" val="phanonSectors.size" />
 				<sval type="string" val="difficulty" />
@@ -1019,14 +1053,16 @@
 				<sval type="string" val="XS.Iterator1" />
 				<sval type="string" val="sector" />
 				<sval type="string" val="beacon" />
-				<sval type="string" val="posArray" />
+				<sval type="string" val="firstSpawn" />
+				<sval type="string" val="t" />
 				<sval type="string" val="rng" />
 				<sval type="string" val="attempts" />
 				<sval type="string" val="galaxy" />
 				<sval type="string" val="XS.Iterator2" />
 				<sval type="string" val="sector.owner" />
+				<sval type="string" val="posArray" />
 			</sval>
-			<sval type="array" size="63">
+			<sval type="array" size="74">
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetOwnedSectors" />
@@ -1162,7 +1198,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603511" />
+					<sval type="int" val="-1610602999" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
@@ -1225,7 +1261,7 @@
 				</sval>
 				<sval type="array" size="22">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610605309" />
+					<sval type="int" val="-1610604285" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
@@ -1247,48 +1283,9 @@
 					<sval type="int" val="65556" />
 					<sval type="int" val="-4" />
 				</sval>
-				<sval type="array" size="16">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.GetValidPos" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="4" />
-					<sval type="int" val="10000" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="16">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.BuildShip" />
-					<sval type="int" val="9" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="5" />
-					<sval type="int" val="9" />
-					<sval type="int" val="459111" />
-					<sval type="int" val="10" />
-					<sval type="int" val="15" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="5">
-					<sval type="int" val="1029" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Phanon Jump Beacon" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="69" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -1299,13 +1296,73 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="FirstInsidePhanonBeacon" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610604541" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Alert: Phanon Outposts are establishing and maintaining a jump network within their territory." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="12">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.SendMessage" />
+					<sval type="int" val="-2147483646" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="157" />
+					<sval type="int" val="5" />
+					<sval type="string" val="FirstInsidePhanonBeacon" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
 					<sval type="int" val="15" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603773" />
+					<sval type="int" val="-1610603261" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
@@ -1320,16 +1377,16 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
-					<sval type="int" val="11" />
+					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603773" />
+					<sval type="int" val="-1610603261" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="12" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 					<sval type="int" val="15" />
@@ -1339,48 +1396,9 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="16">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.GetValidPos" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="4" />
-					<sval type="int" val="10000" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="16">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.BuildShip" />
-					<sval type="int" val="9" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="5" />
-					<sval type="int" val="9" />
-					<sval type="int" val="459111" />
-					<sval type="int" val="10" />
-					<sval type="int" val="15" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="5">
-					<sval type="int" val="1029" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Phanon Jump Beacon" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="69" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
@@ -1388,7 +1406,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610596861" />
+					<sval type="int" val="-1610595325" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -1403,7 +1421,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602493" />
+					<sval type="int" val="-1610601981" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -1427,7 +1445,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="41" />
+					<sval type="int" val="43" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -1440,7 +1458,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -1450,7 +1468,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetGalaxy" />
-					<sval type="int" val="13" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -1461,30 +1479,30 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="14" />
+					<sval type="int" val="15" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="14" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610596855" />
+					<sval type="int" val="-1610595319" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="14" />
+					<sval type="int" val="15" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
 					<sval type="int" val="8" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
@@ -1494,10 +1512,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610599928" />
+					<sval type="int" val="-1610599416" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -1509,26 +1527,26 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="62" />
+					<sval type="int" val="68" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="8" />
-					<sval type="int" val="15" />
+					<sval type="int" val="16" />
 				</sval>
 				<sval type="array" size="85">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610599160" />
+					<sval type="int" val="-1610598648" />
 					<sval type="int" val="27" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="16" />
 					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="16" />
 					<sval type="int" val="10" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -1536,7 +1554,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="16" />
 					<sval type="int" val="10" />
 					<sval type="int" val="3" />
 					<sval type="int" val="15" />
@@ -1544,7 +1562,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="16" />
 					<sval type="int" val="10" />
 					<sval type="int" val="4" />
 					<sval type="int" val="15" />
@@ -1552,7 +1570,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="16" />
 					<sval type="int" val="10" />
 					<sval type="int" val="5" />
 					<sval type="int" val="15" />
@@ -1560,7 +1578,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="16" />
 					<sval type="int" val="10" />
 					<sval type="int" val="18" />
 					<sval type="int" val="15" />
@@ -1568,7 +1586,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="16" />
 					<sval type="int" val="10" />
 					<sval type="int" val="19" />
 					<sval type="int" val="15" />
@@ -1606,7 +1624,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="44" />
+					<sval type="int" val="46" />
 				</sval>
 				<sval type="array" size="18">
 					<sval type="int" val="757" />
@@ -1630,7 +1648,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610597117" />
+					<sval type="int" val="-1610595581" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
@@ -1645,16 +1663,16 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
-					<sval type="int" val="11" />
+					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="20" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610597373" />
+					<sval type="int" val="-1610595837" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="12" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 					<sval type="int" val="15" />
@@ -1664,10 +1682,91 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="-2" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="69" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="FirstOutsidePhanonBeacon" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610595837" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Alert: Phanon has begun extending its jump network beyond its territory." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="12">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.SendMessage" />
+					<sval type="int" val="-2147483646" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="157" />
+					<sval type="int" val="5" />
+					<sval type="string" val="FirstOutsidePhanonBeacon" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="142" />
+					<sval type="int" val="13" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="46" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="string" val="SpawnBeacon" />
+				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.GetValidPos" />
-					<sval type="int" val="10" />
+					<sval type="int" val="17" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
@@ -1694,7 +1793,7 @@
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="17" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -1707,22 +1806,12 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="Phanon Jump Beacon" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="142" />
-					<sval type="int" val="12" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="44" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="64">
+			<sval type="array" size="71">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1861,7 +1950,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="21" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Check if there a jump beacon! If not, the first spawn is guaranteed." />
+					<sval type="string" val="Check if there a jump beacon! If there's no beacon, the first spawn is guaranteed." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="21" />
@@ -1869,146 +1958,176 @@
 					<sval type="string" val="Add-Ons 1.4.24: Fixed - removed flags. (1.6: Fixed again by setting all other flags to null.)" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="26" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="28" />
+					<sval type="int" val="26" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Tell the player when the first beacon respawns inside Phanon space. " />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="32" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="32" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="32" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.10.2: Used up guaranteed spawn, so now rebuild at other sectors. Chances are reduced on easy/normal to 10%." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="29" />
+					<sval type="int" val="33" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="29" />
+					<sval type="int" val="33" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="29" />
+					<sval type="int" val="33" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="29" />
+					<sval type="int" val="33" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Spawn additional beacons. Must have no beacon in this sector to spawn additional beacons." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="37" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="37" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="36" />
+					<sval type="int" val="38" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="36" />
+					<sval type="int" val="38" />
 					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="36" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Go through ALL commonwealth (including Yaki) sectors." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="36" />
-					<sval type="int" val="1" />
-					<sval type="string" val="For each sector in the array, attempt to spawn a beacon until Phanon is out of attempts." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="36" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.10.2: Chances increased (2.5 -&gt; 5, 10 -&gt; 20)" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="38" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Hard difficulty has a 5% chance." />
+					<sval type="string" val="Go through ALL commonwealth (including Yaki) sectors." />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="40" />
-					<sval type="int" val="5" />
+				<sval type="array" size="3">
+					<sval type="int" val="38" />
+					<sval type="int" val="1" />
+					<sval type="string" val="For each sector in the array, attempt to spawn a beacon until Phanon is out of attempts." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="38" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.10.2: Chances increased (2.5 -&gt; 5, 10 -&gt; 20)" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="40" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Insane mode has a 20% chance." />
+					<sval type="string" val="Hard difficulty has a 5% chance." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="41" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="41" />
-					<sval type="int" val="2" />
+					<sval type="int" val="42" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="42" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Get a randomized list of sectors." />
+					<sval type="string" val="Insane mode has a 20% chance." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
+					<sval type="int" val="43" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="43" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="48" />
+					<sval type="int" val="44" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Get a randomized list of sectors." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="50" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="50" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Stop if we've reached our attempt budget." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="50" />
+					<sval type="int" val="52" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="50" />
+					<sval type="int" val="52" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="50" />
+					<sval type="int" val="52" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The only sectors allowed are Argon, Boron, Split, Paranid, Teladi, Terran, and Yaki. If the sector owner isn't any of these, skip to next sector in the list." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="53" />
+					<sval type="int" val="55" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="53" />
+					<sval type="int" val="55" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="53" />
+					<sval type="int" val="55" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Check if there a jump beacon! If there's no jump beacon in this sector, try to spawn one!" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="60" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="60" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Tell the player when the first beacon respawns outside Phanon space." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="66" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="60" />
+					<sval type="int" val="66" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="66" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="61" />
+					<sval type="int" val="67" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="62" />
+					<sval type="int" val="68" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="62" />
+					<sval type="int" val="68" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="62" />
+					<sval type="int" val="68" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="69" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
