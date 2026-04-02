@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Terraforming.Get.Rate</name>
-	<version>3</version>
+	<version>6</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -117,6 +117,7 @@
 			<text> </text>
 			<text>=</text>
 			<text> </text>
+			<text>(</text>
 			<var>$rate</var>
 			<text> </text>
 			<text>*</text>
@@ -126,6 +127,7 @@
 			<text>*</text>
 			<text> </text>
 			<var>10</var>
+			<text>)</text>
 			<text> </text>
 			<text>/</text>
 			<text> </text>
@@ -155,16 +157,86 @@
 		</line>
 		<line linenr="017" indent="" />
 		<line linenr="018" indent="">
-			<comment>* ** DEBUG speed up rate</comment>
+			<comment>* Add-Ons 1.11.1: Clustered sectors give +15% rate.</comment>
 		</line>
 		<line linenr="019" indent="">
+			<var>$sector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$sanctuary</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>sector</text>
+		</line>
+		<line linenr="020" indent="">
+			<var>$owner</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$sector</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owner</text>
+			<text> </text>
+			<text>race</text>
+		</line>
+		<line linenr="021" indent="" interruptable="@">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>ZH.IsInCluster</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>$sector</var>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>$owner</var>
+		</line>
+		<line linenr="022" indent="&#160;">
+			<var>$rate</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$rate</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>115</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="023" indent="">
+			<comment>* ** DEBUG speed up rate</comment>
+		</line>
+		<line linenr="024" indent="">
 			<comment>* $rate = 5001</comment>
 		</line>
-		<line linenr="020" indent="" />
-		<line linenr="021" indent="">
+		<line linenr="025" indent="" />
+		<line linenr="026" indent="">
 			<comment>* Add-Ons 1.1: edge case in case manpower is 0. Set to absolute minimum.</comment>
 		</line>
-		<line linenr="022" indent="">
+		<line linenr="027" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -175,15 +247,15 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="023" indent="&#160;">
+		<line linenr="028" indent="&#160;">
 			<var>$rate</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="024" indent="" />
-		<line linenr="025" indent="">
+		<line linenr="029" indent="" />
+		<line linenr="030" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$rate</var>
@@ -194,17 +266,19 @@
 			<sval type="string" val="ZH.Terraforming.Get.Rate" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="3" />
+			<sval type="int" val="6" />
 			<sval type="int" val="0" />
-			<sval type="array" size="6">
+			<sval type="array" size="8">
 				<sval type="string" val="forNextProject" />
 				<sval type="string" val="sanctuary" />
 				<sval type="string" val="manpower" />
 				<sval type="string" val="projects.s" />
 				<sval type="string" val="rate" />
 				<sval type="string" val="bonus" />
+				<sval type="string" val="sector" />
+				<sval type="string" val="owner" />
 			</sval>
-			<sval type="array" size="14">
+			<sval type="array" size="18">
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="ZH.Terraforming.Get.Manpower" />
@@ -288,7 +362,7 @@
 					<sval type="int" val="2" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="25">
+				<sval type="array" size="27">
 					<sval type="int" val="104" />
 					<sval type="int" val="5" />
 					<sval type="int" val="7" />
@@ -306,12 +380,14 @@
 					<sval type="int" val="100" />
 					<sval type="int" val="15" />
 					<sval type="int" val="14" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
+					<sval type="int" val="16" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="13" />
 					<sval type="int" val="-2" />
 					<sval type="int" val="13" />
 					<sval type="int" val="-4" />
+					<sval type="int" val="17" />
 					<sval type="int" val="14" />
 					<sval type="int" val="-6" />
 				</sval>
@@ -345,9 +421,56 @@
 					<sval type="int" val="11" />
 					<sval type="int" val="-2" />
 				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="703" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="701" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="ZH.IsInCluster" />
+					<sval type="int" val="-1610608888" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="115" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609400" />
+					<sval type="int" val="-1610608376" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -385,7 +508,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="11">
+			<sval type="array" size="12">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -417,24 +540,29 @@
 				<sval type="array" size="3">
 					<sval type="int" val="11" />
 					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.11.1: Clustered sectors give +15% rate." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
 					<sval type="string" val="** DEBUG speed up rate" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="11" />
+					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="string" val="$rate = 5001" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="11" />
+					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="11" />
+					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.1: edge case in case manpower is 0. Set to absolute minimum." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="13" />
+					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
