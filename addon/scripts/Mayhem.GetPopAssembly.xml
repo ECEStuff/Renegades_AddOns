@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GetPopAssembly</name>
-	<version>20</version>
+	<version>26</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -76,18 +76,187 @@
 			<text>=</text>
 			<text>'mayhem_people'</text>
 		</line>
-		<line linenr="011" indent="" />
-		<line linenr="012" indent="">
+		<line linenr="011" indent="">
+			<var>$peopleRestriction</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$outpost</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_peopleRestriction'</text>
+		</line>
+		<line linenr="012" indent="" />
+		<line linenr="013" indent="">
+			<comment>* Add-Ons 1.12.1: Patch pop manipulation exploit by calculating the effective population count (current population + crew cost while building ships) before checking below.</comment>
+		</line>
+		<line linenr="014" indent="">
+			<var>$buildingShip</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$outpost</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_buildingShip'</text>
+		</line>
+		<line linenr="015" indent="">
+			<var>$qty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$outpost</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_parallelTasksShip'</text>
+		</line>
+		<line linenr="016" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$qty</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>101</var>
+		</line>
+		<line linenr="017" indent="&#160;">
+			<var>$qty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="018" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$buildingShip</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$qty</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="019" indent="&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$qty</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="020" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$people</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>$peopleRestriction</var>
+		</line>
+		<line linenr="021" indent="&#160;&#160;&#160;" interruptable="@">
+			<var>$peopleNeeded</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetNeededPeopleInShip</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>shipOrType</text>
+			<text>=</text>
+			<var>$buildingShip</var>
+			<text> </text>
+			<text>IsRecycle</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+			<text> </text>
+			<text>hasAssimilator</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="022" indent="&#160;&#160;&#160;">
+			<var>$people</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$people</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$peopleNeeded</var>
+		</line>
+		<line linenr="023" indent="&#160;&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="024" indent="&#160;&#160;&#160;">
+			<text>break</text>
+		</line>
+		<line linenr="025" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="026" indent="&#160;&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$qty</var>
+		</line>
+		<line linenr="027" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="028" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="029" indent="" />
+		<line linenr="030" indent="">
 			<comment>* Maximum of 5, depending on how much hull plating is in the Outpost. Must have the Droid factory perk. Capped at 200 hull plating for pop calculation.</comment>
 		</line>
-		<line linenr="013" indent="">
+		<line linenr="031" indent="">
 			<var>$pops.assembled</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="014" indent="" interruptable="@">
+		<line linenr="032" indent="" interruptable="@">
 			<var>$hasDroidFactory</var>
 			<text> </text>
 			<text>=</text>
@@ -107,12 +276,12 @@
 			<text>=</text>
 			<text>'Droid factory'</text>
 		</line>
-		<line linenr="015" indent="">
+		<line linenr="033" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$hasDroidFactory</var>
 		</line>
-		<line linenr="016" indent="&#160;">
+		<line linenr="034" indent="&#160;">
 			<var>$hullplating.qty</var>
 			<text> </text>
 			<text>=</text>
@@ -136,7 +305,7 @@
 			<text> </text>
 			<text>bay</text>
 		</line>
-		<line linenr="017" indent="&#160;">
+		<line linenr="035" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -147,15 +316,15 @@
 			<text> </text>
 			<var>200</var>
 		</line>
-		<line linenr="018" indent="&#160;&#160;">
+		<line linenr="036" indent="&#160;&#160;">
 			<var>$hullplating.qty</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>200</var>
 		</line>
-		<line linenr="019" indent="&#160;" />
-		<line linenr="020" indent="&#160;">
+		<line linenr="037" indent="&#160;" />
+		<line linenr="038" indent="&#160;">
 			<var>$pops.assembled</var>
 			<text> </text>
 			<text>=</text>
@@ -166,14 +335,14 @@
 			<text> </text>
 			<var>40</var>
 		</line>
-		<line linenr="021" indent="">
+		<line linenr="039" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="022" indent="" />
-		<line linenr="023" indent="">
+		<line linenr="040" indent="" />
+		<line linenr="041" indent="">
 			<comment>* Player-owned Outposts require joining the OCV.</comment>
 		</line>
-		<line linenr="024" indent="">
+		<line linenr="042" indent="">
 			<var>$OCVplotstage</var>
 			<text> </text>
 			<text>=</text>
@@ -189,7 +358,7 @@
 			<text>=</text>
 			<text>'OCVplotstage'</text>
 		</line>
-		<line linenr="025" indent="">
+		<line linenr="043" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
@@ -221,19 +390,19 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="026" indent="&#160;">
+		<line linenr="044" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="045" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="028" indent="" />
-		<line linenr="029" indent="">
+		<line linenr="046" indent="" />
+		<line linenr="047" indent="">
 			<comment>* Only up to 75% of current maximum population.</comment>
 		</line>
-		<line linenr="030" indent="">
+		<line linenr="048" indent="">
 			<var>$maxPeople</var>
 			<text> </text>
 			<text>=</text>
@@ -252,26 +421,7 @@
 			<text>=</text>
 			<text>'mayhem_sector.manpower'</text>
 		</line>
-		<line linenr="031" indent="">
-			<var>$peopleRestriction</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$outpost</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_peopleRestriction'</text>
-		</line>
-		<line linenr="032" indent="">
+		<line linenr="049" indent="">
 			<var>$threshold.absolute</var>
 			<text> </text>
 			<text>=</text>
@@ -288,7 +438,7 @@
 			<var>4</var>
 			<text>)</text>
 		</line>
-		<line linenr="033" indent="">
+		<line linenr="050" indent="">
 			<var>$threshold.restriction</var>
 			<text> </text>
 			<text>=</text>
@@ -305,8 +455,8 @@
 			<var>4</var>
 			<text>)</text>
 		</line>
-		<line linenr="034" indent="" />
-		<line linenr="035" indent="">
+		<line linenr="051" indent="" />
+		<line linenr="052" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -323,7 +473,7 @@
 			<text> </text>
 			<var>$threshold.restriction</var>
 		</line>
-		<line linenr="036" indent="&#160;">
+		<line linenr="053" indent="&#160;">
 			<var>$pops.assembled</var>
 			<text> </text>
 			<text>=</text>
@@ -334,12 +484,12 @@
 			<text> </text>
 			<var>$people</var>
 		</line>
-		<line linenr="037" indent="" />
-		<line linenr="038" indent="" />
-		<line linenr="039" indent="">
+		<line linenr="054" indent="" />
+		<line linenr="055" indent="" />
+		<line linenr="056" indent="">
 			<comment>* Absolute maximum.</comment>
 		</line>
-		<line linenr="040" indent="">
+		<line linenr="057" indent="">
 			<var>$maxAssembly</var>
 			<text> </text>
 			<text>=</text>
@@ -350,7 +500,7 @@
 			<text> </text>
 			<var>$people</var>
 		</line>
-		<line linenr="041" indent="">
+		<line linenr="058" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -361,14 +511,14 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="042" indent="&#160;">
+		<line linenr="059" indent="&#160;">
 			<var>$maxAssembly</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="043" indent="">
+		<line linenr="060" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -379,18 +529,18 @@
 			<text> </text>
 			<var>$maxAssembly</var>
 		</line>
-		<line linenr="044" indent="&#160;">
+		<line linenr="061" indent="&#160;">
 			<var>$pops.assembled</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$maxAssembly</var>
 		</line>
-		<line linenr="045" indent="" />
-		<line linenr="046" indent="">
+		<line linenr="062" indent="" />
+		<line linenr="063" indent="">
 			<comment>* Final safety clamp. Never negative.</comment>
 		</line>
-		<line linenr="047" indent="">
+		<line linenr="064" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -401,16 +551,16 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="048" indent="&#160;">
+		<line linenr="065" indent="&#160;">
 			<var>$pops.assembled</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="049" indent="" />
-		<line linenr="050" indent="" />
-		<line linenr="051" indent="">
+		<line linenr="066" indent="" />
+		<line linenr="067" indent="" />
+		<line linenr="068" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$pops.assembled</var>
@@ -421,24 +571,27 @@
 			<sval type="string" val="Mayhem.GetPopAssembly" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="20" />
+			<sval type="int" val="26" />
 			<sval type="int" val="0" />
-			<sval type="array" size="13">
+			<sval type="array" size="16">
 				<sval type="string" val="outpost" />
 				<sval type="string" val="sector" />
 				<sval type="string" val="outpost.owner" />
 				<sval type="string" val="people" />
+				<sval type="string" val="peopleRestriction" />
+				<sval type="string" val="buildingShip" />
+				<sval type="string" val="qty" />
+				<sval type="string" val="peopleNeeded" />
 				<sval type="string" val="pops.assembled" />
 				<sval type="string" val="hasDroidFactory" />
 				<sval type="string" val="hullplating.qty" />
 				<sval type="string" val="OCVplotstage" />
 				<sval type="string" val="maxPeople" />
-				<sval type="string" val="peopleRestriction" />
 				<sval type="string" val="threshold.absolute" />
 				<sval type="string" val="threshold.restriction" />
 				<sval type="string" val="maxAssembly" />
 			</sval>
-			<sval type="array" size="27">
+			<sval type="array" size="40">
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
 					<sval type="int" val="131074" />
@@ -459,9 +612,153 @@
 					<sval type="string" val="mayhem_people" />
 					<sval type="int" val="3" />
 				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_peopleRestriction" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_buildingShip" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_parallelTasksShip" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610680" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="4" />
+					<sval type="int" val="101" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
+					<sval type="int" val="6" />
+					<sval type="int" val="1" />
 					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608381" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-3" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608375" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609149" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="12">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetNeededPeopleInShip" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="15" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="17" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -471,7 +768,7 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsPerkUnlocked" />
-					<sval type="int" val="5" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -480,10 +777,10 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610173" />
+					<sval type="int" val="-1610606589" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -491,16 +788,16 @@
 					<sval type="int" val="618" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="6" />
+					<sval type="int" val="10" />
 					<sval type="int" val="9" />
 					<sval type="int" val="983063" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610424" />
+					<sval type="int" val="-1610606840" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="10" />
 					<sval type="int" val="4" />
 					<sval type="int" val="200" />
 					<sval type="int" val="15" />
@@ -512,7 +809,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="6" />
+					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="200" />
@@ -521,10 +818,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="10" />
 					<sval type="int" val="4" />
 					<sval type="int" val="40" />
 					<sval type="int" val="15" />
@@ -538,18 +835,18 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="OCVplotstage" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="48">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609405" />
+					<sval type="int" val="-1610605821" />
 					<sval type="int" val="14" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="9" />
 					<sval type="int" val="15" />
 					<sval type="int" val="65556" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
 					<sval type="int" val="5" />
 					<sval type="string" val="playerJoinedOCV" />
 					<sval type="int" val="15" />
@@ -565,7 +862,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -601,24 +898,16 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_sector.manpower" />
-					<sval type="int" val="8" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="156" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_peopleRestriction" />
-					<sval type="int" val="9" />
+					<sval type="int" val="12" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="10" />
+					<sval type="int" val="13" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="12" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 					<sval type="int" val="15" />
@@ -636,12 +925,12 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="11" />
+					<sval type="int" val="14" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 					<sval type="int" val="15" />
@@ -659,16 +948,16 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607864" />
+					<sval type="int" val="-1610604536" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="14" />
 					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 					<sval type="int" val="7" />
@@ -682,25 +971,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="15" />
-					<sval type="int" val="12" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="12" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="12" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 					<sval type="int" val="15" />
@@ -712,10 +986,25 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607096" />
+					<sval type="int" val="15" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
 					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610603768" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -727,7 +1016,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="12" />
+					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -736,12 +1025,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606584" />
+					<sval type="int" val="-1610603256" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="15" />
 					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 					<sval type="int" val="3" />
@@ -751,19 +1040,19 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606072" />
+					<sval type="int" val="-1610602744" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -775,7 +1064,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -785,7 +1074,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 				</sval>
 			</sval>
 			<sval type="array" size="1">
@@ -794,7 +1083,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="24">
+			<sval type="array" size="31">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -831,76 +1120,105 @@
 					<sval type="string" val="************************************************" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Maximum of 5, depending on how much hull plating is in the Outpost. Must have the Droid factory perk. Capped at 200 hull plating for pop calculation." />
+					<sval type="string" val="Add-Ons 1.12.1: Patch pop manipulation exploit by calculating the effective population count (current population + crew cost while building ships) before checking below." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="9" />
-					<sval type="int" val="2" />
+					<sval type="int" val="14" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="10" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Player-owned Outposts require joining the OCV." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="13" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="13" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="13" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Only up to 75% of current maximum population." />
+					<sval type="int" val="17" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Maximum of 5, depending on how much hull plating is in the Outpost. Must have the Droid factory perk. Capped at 200 hull plating for pop calculation." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="23" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="24" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="19" />
+					<sval type="int" val="24" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Player-owned Outposts require joining the OCV." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="27" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Only up to 75% of current maximum population." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="30" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="32" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="32" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="32" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Absolute maximum." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="24" />
+					<sval type="int" val="37" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="24" />
+					<sval type="int" val="37" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Final safety clamp. Never negative." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="26" />
+					<sval type="int" val="39" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="26" />
+					<sval type="int" val="39" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
