@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GetNaturalGrowth</name>
-	<version>50</version>
+	<version>54</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -77,10 +77,10 @@
 		</line>
 		<line linenr="006" indent="" />
 		<line linenr="007" indent="">
-			<comment>* Add-Ons 1.12.1: Patch exploit where player could manipulate pop growth to get +20 pops. Check the max pop ever reached.</comment>
+			<comment>* Add-Ons 1.12.1: Patch exploit where player could manipulate pop growth to get a lot of pops. Check the max pop ever reached.</comment>
 		</line>
 		<line linenr="008" indent="">
-			<comment>* Initialize in case it's null (for existing games). Otherwise it's 0, set by Mayhem.InitializeOutpost.</comment>
+			<comment>* Initialize in case it's null (for existing games). Otherwise it's 0, initially set by Mayhem.InitializeOutpost; or it'll have a value set by Mayhem.Task.Station.Outpost.</comment>
 		</line>
 		<line linenr="009" indent="">
 			<var>$maxPopEver</var>
@@ -444,10 +444,10 @@
 			<comment>* -------------------------</comment>
 		</line>
 		<line linenr="051" indent="">
-			<comment>* Normal empire. So growth rate limitation is dynamic.</comment>
+			<comment>* Normal empire. Growth rate limitation is dynamic.</comment>
 		</line>
 		<line linenr="052" indent="">
-			<comment>* Add-Ons 1.12.1: Check the max pop reached for the initial growth rate.</comment>
+			<comment>* Add-Ons 1.12.1: Check the max pop reached for the initial growth rate. Also changed threshold (30 -&gt; 40) and bootstrap growth (20 -&gt; 40)</comment>
 		</line>
 		<line linenr="053" indent="">
 			<text>if</text>
@@ -456,13 +456,13 @@
 			<text> </text>
 			<text>&lt;</text>
 			<text> </text>
-			<var>30</var>
+			<var>40</var>
 		</line>
 		<line linenr="054" indent="&#160;">
-			<comment>* ZH 2.0 - flat initial growth rate to always get beyond first 30 people very quickly</comment>
+			<comment>* ZH 2.0 - flat initial growth rate to always get beyond first 40 people very quickly</comment>
 		</line>
 		<line linenr="055" indent="&#160;">
-			<comment>* Add-Ons 1.8: If the natural pop growth limit is less than 20, set amount to 20.</comment>
+			<comment>* Add-Ons 1.8: If the natural pop growth limit is less than 20, set amount to 20. (1.12.1: changed to 40; 1 boosted cycle brings them to 40)</comment>
 		</line>
 		<line linenr="056" indent="&#160;">
 			<text>do</text>
@@ -473,14 +473,14 @@
 			<text> </text>
 			<text>&lt;</text>
 			<text> </text>
-			<var>20</var>
+			<var>40</var>
 		</line>
 		<line linenr="057" indent="&#160;&#160;">
 			<var>$naturalGrowth</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>20</var>
+			<var>40</var>
 		</line>
 		<line linenr="058" indent="">
 			<text>else</text>
@@ -807,7 +807,7 @@
 			<sval type="string" val="Mayhem.GetNaturalGrowth" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="50" />
+			<sval type="int" val="54" />
 			<sval type="int" val="0" />
 			<sval type="array" size="16">
 				<sval type="string" val="outpost" />
@@ -1172,7 +1172,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
 					<sval type="int" val="4" />
-					<sval type="int" val="30" />
+					<sval type="int" val="40" />
 					<sval type="int" val="15" />
 					<sval type="int" val="3" />
 					<sval type="int" val="3" />
@@ -1187,7 +1187,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="6" />
 					<sval type="int" val="4" />
-					<sval type="int" val="20" />
+					<sval type="int" val="40" />
 					<sval type="int" val="15" />
 					<sval type="int" val="3" />
 					<sval type="int" val="3" />
@@ -1200,7 +1200,7 @@
 					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
-					<sval type="int" val="20" />
+					<sval type="int" val="40" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -1527,12 +1527,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.12.1: Patch exploit where player could manipulate pop growth to get +20 pops. Check the max pop ever reached." />
+					<sval type="string" val="Add-Ons 1.12.1: Patch exploit where player could manipulate pop growth to get a lot of pops. Check the max pop ever reached." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Initialize in case it's null (for existing games). Otherwise it's 0, set by Mayhem.InitializeOutpost." />
+					<sval type="string" val="Initialize in case it's null (for existing games). Otherwise it's 0, initially set by Mayhem.InitializeOutpost; or it'll have a value set by Mayhem.Task.Station.Outpost." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="8" />
@@ -1623,22 +1623,22 @@
 				<sval type="array" size="3">
 					<sval type="int" val="27" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Normal empire. So growth rate limitation is dynamic." />
+					<sval type="string" val="Normal empire. Growth rate limitation is dynamic." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="27" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.12.1: Check the max pop reached for the initial growth rate." />
+					<sval type="string" val="Add-Ons 1.12.1: Check the max pop reached for the initial growth rate. Also changed threshold (30 -&gt; 40) and bootstrap growth (20 -&gt; 40)" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="28" />
 					<sval type="int" val="1" />
-					<sval type="string" val="ZH 2.0 - flat initial growth rate to always get beyond first 30 people very quickly" />
+					<sval type="string" val="ZH 2.0 - flat initial growth rate to always get beyond first 40 people very quickly" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="28" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.8: If the natural pop growth limit is less than 20, set amount to 20." />
+					<sval type="string" val="Add-Ons 1.8: If the natural pop growth limit is less than 20, set amount to 20. (1.12.1: changed to 40; 1 boosted cycle brings them to 40)" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="31" />
