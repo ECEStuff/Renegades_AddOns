@@ -3,13 +3,13 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.DropReward</name>
-	<version>6</version>
+	<version>8</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
 		<argument index="1" name="value" type="Var/Number" desc="" />
 		<argument index="2" name="ware" type="Var/Ware" desc="" />
-		<argument index="3" name="ship" type="Var/Ship" desc="" />
+		<argument index="3" name="shipOrObject" type="Var" desc="Ship or object." />
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
@@ -19,7 +19,7 @@
 			<comment>* SCRIPT NAME: Mayhem.DropReward</comment>
 		</line>
 		<line linenr="003" indent="">
-			<comment>* DESCRIPTION: Spawns a crate at the $ship's position. The crate consists of $ware worth approximately as much as $value. Returns the quantity in the crate.</comment>
+			<comment>* DESCRIPTION: Spawns a crate at the $shipOrObject's position. The crate consists of $ware worth approximately as much as $value. Returns the quantity in the crate.</comment>
 		</line>
 		<line linenr="004" indent="">
 			<comment>* Arguments: $value, $ware, $ship</comment>
@@ -114,55 +114,63 @@
 		</line>
 		<line linenr="017" indent="" />
 		<line linenr="018" indent="">
-			<comment>* Ship location, in case it is docked.</comment>
+			<comment>* Get the object's location. If it is a ship, check if it's docked. </comment>
 		</line>
 		<line linenr="019" indent="">
-			<text>if</text>
+			<var>$isDocked</var>
 			<text> </text>
-			<var>$ship</var>
+			<text>=</text>
+			<text> </text>
+			<var>$shipOrObject</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>is</text>
 			<text> </text>
 			<text>docked</text>
 		</line>
-		<line linenr="020" indent="&#160;">
+		<line linenr="020" indent="">
+			<var>$isShip</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$shipOrObject</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>class</text>
+			<text> </text>
+			<var>[Ship]</var>
+		</line>
+		<line linenr="021" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$isDocked</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$isShip</var>
+		</line>
+		<line linenr="022" indent="&#160;">
 			<var>$dockedAt</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$ship</var>
+			<var>$shipOrObject</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>get</text>
 			<text> </text>
 			<text>environment</text>
 		</line>
-		<line linenr="021" indent="&#160;">
-			<var>$posArray</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$dockedAt</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>position</text>
-			<text> </text>
-			<text>as</text>
-			<text> </text>
-			<text>array</text>
-		</line>
-		<line linenr="022" indent="">
-			<text>else</text>
-		</line>
 		<line linenr="023" indent="&#160;">
 			<var>$posArray</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$ship</var>
+			<var>$dockedAt</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>get</text>
@@ -174,22 +182,41 @@
 			<text>array</text>
 		</line>
 		<line linenr="024" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="025" indent="&#160;">
+			<var>$posArray</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$shipOrObject</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>position</text>
+			<text> </text>
+			<text>as</text>
+			<text> </text>
+			<text>array</text>
+		</line>
+		<line linenr="026" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="025" indent="" />
-		<line linenr="026" indent="">
+		<line linenr="027" indent="" />
+		<line linenr="028" indent="">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$ship</var>
+			<var>$shipOrObject</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>get</text>
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="029" indent="">
 			<var>$x</var>
 			<text> </text>
 			<text>=</text>
@@ -199,7 +226,7 @@
 			<var>0</var>
 			<text>]</text>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="030" indent="">
 			<var>$y</var>
 			<text> </text>
 			<text>=</text>
@@ -209,7 +236,7 @@
 			<var>1</var>
 			<text>]</text>
 		</line>
-		<line linenr="029" indent="">
+		<line linenr="031" indent="">
 			<var>$z</var>
 			<text> </text>
 			<text>=</text>
@@ -219,7 +246,7 @@
 			<var>2</var>
 			<text>]</text>
 		</line>
-		<line linenr="030" indent="">
+		<line linenr="032" indent="">
 			<text>=</text>
 			<text> </text>
 			<text>create</text>
@@ -261,8 +288,8 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="031" indent="" />
-		<line linenr="032" indent="">
+		<line linenr="033" indent="" />
+		<line linenr="034" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$qty</var>
@@ -273,16 +300,18 @@
 			<sval type="string" val="Mayhem.DropReward" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="6" />
+			<sval type="int" val="8" />
 			<sval type="int" val="0" />
-			<sval type="array" size="13">
+			<sval type="array" size="15">
 				<sval type="string" val="value" />
 				<sval type="string" val="ware" />
-				<sval type="string" val="ship" />
+				<sval type="string" val="shipOrObject" />
 				<sval type="string" val="price" />
 				<sval type="string" val="qty" />
 				<sval type="string" val="maintype" />
 				<sval type="string" val="subtype" />
+				<sval type="string" val="isDocked" />
+				<sval type="string" val="isShip" />
 				<sval type="string" val="dockedAt" />
 				<sval type="string" val="posArray" />
 				<sval type="string" val="sector" />
@@ -290,7 +319,7 @@
 				<sval type="string" val="y" />
 				<sval type="string" val="z" />
 			</sval>
-			<sval type="array" size="17">
+			<sval type="array" size="19">
 				<sval type="array" size="4">
 					<sval type="int" val="629" />
 					<sval type="int" val="3" />
@@ -346,57 +375,80 @@
 					<sval type="int" val="745" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
-					<sval type="int" val="-1610610173" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="705" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="8" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2004" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609661" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="702" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="795" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="795" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
-					<sval type="int" val="8" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
-					<sval type="int" val="9" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="129" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="129" />
 					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
 					<sval type="int" val="12" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 				</sval>
@@ -410,13 +462,13 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
 				</sval>
@@ -436,8 +488,8 @@
 					<sval type="string" val="" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
-					<sval type="string" val="" />
+					<sval type="int" val="0" />
+					<sval type="string" val="Ship or object." />
 				</sval>
 			</sval>
 			<sval type="array" size="16">
@@ -454,7 +506,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="DESCRIPTION: Spawns a crate at the $ship's position. The crate consists of $ware worth approximately as much as $value. Returns the quantity in the crate." />
+					<sval type="string" val="DESCRIPTION: Spawns a crate at the $shipOrObject's position. The crate consists of $ware worth approximately as much as $value. Returns the quantity in the crate." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -497,22 +549,22 @@
 				<sval type="array" size="3">
 					<sval type="int" val="6" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Ship location, in case it is docked." />
+					<sval type="string" val="Get the object's location. If it is a ship, check if it's docked. " />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="16" />
+					<sval type="int" val="18" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
