@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Signal.RestrictedJump</name>
-	<version>5</version>
+	<version>7</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -12,10 +12,13 @@
 	<sourcetext>
 		<line linenr="001" indent="" />
 		<line linenr="002" indent="">
+			<comment>* Returns null if signal is not handled by the player's ship when it docks. </comment>
+		</line>
+		<line linenr="003" indent="">
 			<comment>* It's possible for the player to dock when nearby a station by hitting shift-D. That script forces him to undock if he's not allowed due to Mayhem new restrictions system.</comment>
 		</line>
-		<line linenr="003" indent="" />
-		<line linenr="004" indent="">
+		<line linenr="004" indent="" />
+		<line linenr="005" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -26,13 +29,13 @@
 			<text> </text>
 			<var>[PLAYERSHIP]</var>
 		</line>
-		<line linenr="005" indent="&#160;">
+		<line linenr="006" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="006" indent="" />
-		<line linenr="007" indent="">
+		<line linenr="007" indent="" />
+		<line linenr="008" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -48,13 +51,13 @@
 			<text> </text>
 			<var>[Station]</var>
 		</line>
-		<line linenr="008" indent="&#160;">
+		<line linenr="009" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="009" indent="" />
-		<line linenr="010" indent="" interruptable="@">
+		<line linenr="010" indent="" />
+		<line linenr="011" indent="" interruptable="@">
 			<var>$class</var>
 			<text> </text>
 			<text>=</text>
@@ -74,7 +77,7 @@
 			<text>=</text>
 			<var>[PLAYERSHIP]</var>
 		</line>
-		<line linenr="011" indent="" interruptable="@">
+		<line linenr="012" indent="" interruptable="@">
 			<var>$dockeds</var>
 			<text> </text>
 			<text>=</text>
@@ -98,7 +101,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="012" indent="" interruptable="@">
+		<line linenr="013" indent="" interruptable="@">
 			<var>$dockable</var>
 			<text> </text>
 			<text>=</text>
@@ -122,8 +125,8 @@
 			<text>=</text>
 			<var>[PLAYERSHIP]</var>
 		</line>
-		<line linenr="013" indent="" />
-		<line linenr="014" indent="">
+		<line linenr="014" indent="" />
+		<line linenr="015" indent="">
 			<var>$docked</var>
 			<text> </text>
 			<text>=</text>
@@ -140,14 +143,17 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="015" indent="" />
-		<line linenr="016" indent="">
+		<line linenr="016" indent="" />
+		<line linenr="017" indent="">
 			<comment>* Add-Ons 1.5.6: Fixed a bug where docking restriction applied even if &quot;ignore docking restrictions&quot; player cheat is enabled (set to non-zero).</comment>
 		</line>
-		<line linenr="017" indent="">
+		<line linenr="018" indent="">
 			<comment>* Now checks if the variable is 0. If the cheat is set to 0 (docking restrictions enabled), then force the player's ship to undock.</comment>
 		</line>
-		<line linenr="018" indent="">
+		<line linenr="019" indent="">
+			<comment>* Add-Ons 1.13: Cannot dock at NPC station if player has permanent war with its owner.</comment>
+		</line>
+		<line linenr="020" indent="">
 			<var>$ignoreRestriction</var>
 			<text> </text>
 			<text>=</text>
@@ -163,9 +169,45 @@
 			<text>=</text>
 			<text>'mayhem_ignoreDockingRestrictions'</text>
 		</line>
-		<line linenr="019" indent="">
+		<line linenr="021" indent="">
+			<var>$station.owner</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owner</text>
+			<text> </text>
+			<text>race</text>
+		</line>
+		<line linenr="022" indent="" interruptable="@">
+			<var>$hasPermaWar</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.HasPermanentWar</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>raceOrObject</text>
+			<text>=</text>
+			<var>$station.owner</var>
+		</line>
+		<line linenr="023" indent="" />
+		<line linenr="024" indent="">
 			<text>if</text>
 			<text> </text>
+			<text>(</text>
 			<var>$docked</var>
 			<text> </text>
 			<text>&gt;</text>
@@ -176,8 +218,13 @@
 			<text> </text>
 			<text>!</text>
 			<var>$ignoreRestriction</var>
+			<text>)</text>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$hasPermaWar</var>
 		</line>
-		<line linenr="020" indent="&#160;">
+		<line linenr="025" indent="&#160;">
 			<var>$task</var>
 			<text> </text>
 			<text>=</text>
@@ -198,7 +245,7 @@
 			<text>=</text>
 			<var>100</var>
 		</line>
-		<line linenr="021" indent="&#160;">
+		<line linenr="026" indent="&#160;">
 			<var>[PLAYERSHIP]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -241,14 +288,39 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="022" indent="&#160;">
+		<line linenr="027" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$hasPermaWar</var>
+		</line>
+		<line linenr="028" indent="&#160;&#160;">
+			<comment>* Due to permanent war.</comment>
+		</line>
+		<line linenr="029" indent="&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Docking denied: cannot dock at a station owned by a permanent enemy.'</text>
+		</line>
+		<line linenr="030" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="031" indent="&#160;&#160;">
+			<comment>* Due to not having enough docking space or attempting to dock at a restricted station such as an NPC Outpost.</comment>
+		</line>
+		<line linenr="032" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'Docking denied: restrictions in order.'</text>
 		</line>
-		<line linenr="023" indent="&#160;" interruptable="@">
+		<line linenr="033" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="034" indent="&#160;" />
+		<line linenr="035" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -278,7 +350,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="024" indent="&#160;" interruptable="@">
+		<line linenr="036" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<text>speak</text>
@@ -298,11 +370,11 @@
 			<text>=</text>
 			<var>10</var>
 		</line>
-		<line linenr="025" indent="">
+		<line linenr="037" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="026" indent="" />
-		<line linenr="027" indent="">
+		<line linenr="038" indent="" />
+		<line linenr="039" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -313,19 +385,21 @@
 			<sval type="string" val="Mayhem.Signal.RestrictedJump" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="5" />
+			<sval type="int" val="7" />
 			<sval type="int" val="0" />
-			<sval type="array" size="8">
+			<sval type="array" size="10">
 				<sval type="string" val="station" />
 				<sval type="string" val="class" />
 				<sval type="string" val="dockeds" />
 				<sval type="string" val="dockable" />
 				<sval type="string" val="docked" />
 				<sval type="string" val="ignoreRestriction" />
+				<sval type="string" val="station.owner" />
+				<sval type="string" val="hasPermaWar" />
 				<sval type="string" val="task" />
 				<sval type="string" val="t" />
 			</sval>
-			<sval type="array" size="16">
+			<sval type="array" size="21">
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
 					<sval type="int" val="-536870393" />
@@ -407,10 +481,26 @@
 					<sval type="string" val="mayhem_ignoreDockingRestrictions" />
 					<sval type="int" val="5" />
 				</sval>
-				<sval type="array" size="22">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610608893" />
+				<sval type="array" size="4">
+					<sval type="int" val="701" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
 					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.HasPermanentWar" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="30">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607613" />
+					<sval type="int" val="8" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
@@ -423,19 +513,27 @@
 					<sval type="int" val="65556" />
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
-					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="16" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="2" />
 					<sval type="int" val="-2" />
 					<sval type="int" val="9" />
 					<sval type="int" val="65556" />
 					<sval type="int" val="-4" />
+					<sval type="int" val="17" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-7" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1462" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="3" />
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
 				</sval>
@@ -445,7 +543,7 @@
 					<sval type="int" val="3" />
 					<sval type="string" val="!move.undock" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
 					<sval type="int" val="0" />
@@ -461,7 +559,29 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
+					<sval type="int" val="-1610608381" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Docking denied: cannot dock at a station owned by a permanent enemy." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="18" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Docking denied: restrictions in order." />
@@ -476,7 +596,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="4" />
 					<sval type="int" val="21" />
 					<sval type="int" val="0" />
@@ -506,10 +626,15 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="11">
+			<sval type="array" size="19">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Returns null if signal is not handled by the player's ship when it docks. " />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -546,12 +671,43 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Now checks if the variable is 0. If the cheat is set to 0 (docking restrictions enabled), then force the player's ship to undock." />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.13: Cannot dock at NPC station if player has permanent war with its owner." />
+				</sval>
 				<sval type="array" size="2">
+					<sval type="int" val="11" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
 					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Due to permanent war." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="17" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Due to not having enough docking space or attempting to dock at a restricted station such as an NPC Outpost." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="18" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="18" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="20" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="20" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>

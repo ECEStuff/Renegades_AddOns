@@ -1,0 +1,864 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>Mayhem.CanDock</name>
+	<version>12</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments>
+		<argument index="1" name="ship" type="Var/Ship" desc="" />
+		<argument index="2" name="station" type="Var/Station" desc="" />
+	</arguments>
+	<sourcetext>
+		<line linenr="001" indent="" />
+		<line linenr="002" indent="">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="003" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="004" indent="" />
+		<line linenr="005" indent="">
+			<var>$dockedat</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>environment</text>
+		</line>
+		<line linenr="006" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$dockedat</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>$station</var>
+		</line>
+		<line linenr="007" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="">
+			<var>$ship.owner</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owner</text>
+			<text> </text>
+			<text>race</text>
+		</line>
+		<line linenr="010" indent="">
+			<var>$station.owner</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owner</text>
+			<text> </text>
+			<text>race</text>
+		</line>
+		<line linenr="011" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$ship.owner</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Player]</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$station.owner</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>[Player]</var>
+		</line>
+		<line linenr="012" indent="&#160;">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>known</text>
+		</line>
+		<line linenr="013" indent="&#160;&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="014" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="015" indent="" />
+		<line linenr="016" indent="" interruptable="@">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.CanDock</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>ship</text>
+			<text>=</text>
+			<var>$ship</var>
+			<text> </text>
+			<text>dock</text>
+			<text>=</text>
+			<var>$station</var>
+		</line>
+		<line linenr="017" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="018" indent="" />
+		<line linenr="019" indent="" />
+		<line linenr="020" indent="" interruptable="@">
+			<var>$isTrader</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsTrader</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>ship</text>
+			<text>=</text>
+			<var>$ship</var>
+		</line>
+		<line linenr="021" indent="" />
+		<line linenr="022" indent="">
+			<comment>* Blacklist.</comment>
+		</line>
+		<line linenr="023" indent="">
+			<comment>* do if [NULL]-&gt; call script 'Mayhem.Blacklist.Get' : race=$ship.owner item=$station</comment>
+		</line>
+		<line linenr="024" indent="">
+			<comment>* return [FALSE]</comment>
+		</line>
+		<line linenr="025" indent="" />
+		<line linenr="026" indent="" />
+		<line linenr="027" indent="">
+			<comment>* If restriction is at 0, that means we have no chance of docking. However, if the ports are currently taken, we would go, and wait around the station for clearance in !move.movetostation.move.</comment>
+		</line>
+		<line linenr="028" indent="">
+			<text>if</text>
+			<text> </text>
+			<text>!</text>
+			<var>$isTrader</var>
+		</line>
+		<line linenr="029" indent="&#160;" interruptable="@">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetRestriction</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>station</text>
+			<text>=</text>
+			<var>$station</var>
+			<text> </text>
+			<text>ship</text>
+			<text>=</text>
+			<var>$ship</var>
+		</line>
+		<line linenr="030" indent="&#160;&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="031" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="032" indent="" />
+		<line linenr="033" indent="">
+			<comment>* We want the player, and only the player, to be able to dock to Pirate bases.</comment>
+		</line>
+		<line linenr="034" indent="">
+			<comment>* Pirate bases are already set to hostile for OCV playthroughs in Mayhem.Task.Station.PirateBase.</comment>
+		</line>
+		<line linenr="035" indent="" interruptable="@">
+			<var>$isPirateBase</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsPirateBase</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>stationOrType</text>
+			<text>=</text>
+			<var>$station</var>
+		</line>
+		<line linenr="036" indent="">
+			<text>if</text>
+			<text> </text>
+			<text>!</text>
+			<var>$isPirateBase</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<text>(</text>
+			<var>$isPirateBase</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$ship.owner</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>[Player]</var>
+			<text>)</text>
+		</line>
+		<line linenr="037" indent="&#160;">
+			<var>$station.owner</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owner</text>
+			<text> </text>
+			<text>race</text>
+		</line>
+		<line linenr="038" indent="&#160;" interruptable="@">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsHostileTo</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>raceOrObject1</text>
+			<text>=</text>
+			<var>$station.owner</var>
+			<text> </text>
+			<text>raceOrObject2</text>
+			<text>=</text>
+			<var>$ship.owner</var>
+		</line>
+		<line linenr="039" indent="&#160;&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="040" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="041" indent="" />
+		<line linenr="042" indent="">
+			<comment>* Add-Ons 1.13: Cannot dock at the owner's station if the player has a permanent war. </comment>
+		</line>
+		<line linenr="043" indent="">
+			<comment>* This case is a catch-all in case the player happens to temporarily gain neutral or positive relations (essentially a ceasefire) with that faction while in permanent war.</comment>
+		</line>
+		<line linenr="044" indent="">
+			<comment>* Reputation is eventually reset to rank -5 in ZH.Monitor.</comment>
+		</line>
+		<line linenr="045" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$ship.owner</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Player]</var>
+		</line>
+		<line linenr="046" indent="&#160;">
+			<var>$station.owner</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owner</text>
+			<text> </text>
+			<text>race</text>
+		</line>
+		<line linenr="047" indent="&#160;" interruptable="@">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.HasPermanentWar</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>raceOrObject</text>
+			<text>=</text>
+			<var>$station.owner</var>
+		</line>
+		<line linenr="048" indent="&#160;&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="049" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="050" indent="" />
+		<line linenr="051" indent="" />
+		<line linenr="052" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$isTrader</var>
+		</line>
+		<line linenr="053" indent="&#160;" interruptable="@">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsOpenToTrader</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>station</text>
+			<text>=</text>
+			<var>$station</var>
+			<text> </text>
+			<text>trader</text>
+			<text>=</text>
+			<var>$ship</var>
+		</line>
+		<line linenr="054" indent="&#160;&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="055" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="056" indent="" />
+		<line linenr="057" indent="" />
+		<line linenr="058" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="Mayhem.CanDock" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="12" />
+			<sval type="int" val="0" />
+			<sval type="array" size="7">
+				<sval type="string" val="ship" />
+				<sval type="string" val="station" />
+				<sval type="string" val="dockedat" />
+				<sval type="string" val="ship.owner" />
+				<sval type="string" val="station.owner" />
+				<sval type="string" val="isTrader" />
+				<sval type="string" val="isPirateBase" />
+			</sval>
+			<sval type="array" size="29">
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-536870393" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="702" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611448" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="701" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="701" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610173" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="1061" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-536868345" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.CanDock" />
+					<sval type="int" val="-536867833" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsTrader" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608637" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="2" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetRestriction" />
+					<sval type="int" val="-536866809" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsPirateBase" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="30">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607357" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-5" />
+					<sval type="int" val="17" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="701" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsHostileTo" />
+					<sval type="int" val="-1610607352" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606333" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="701" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.HasPermanentWar" />
+					<sval type="int" val="-1610606328" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605565" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsOpenToTrader" />
+					<sval type="int" val="-536863737" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
+			</sval>
+			<sval type="array" size="2">
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="string" val="" />
+				</sval>
+			</sval>
+			<sval type="array" size="29">
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="2" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Blacklist." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="string" val="do if [NULL]-&gt; call script 'Mayhem.Blacklist.Get' : race=$ship.owner item=$station" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="string" val="return [FALSE]" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="string" val="If restriction is at 0, that means we have no chance of docking. However, if the ports are currently taken, we would go, and wait around the station for clearance in !move.movetostation.move." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="16" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="16" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="16" />
+					<sval type="int" val="1" />
+					<sval type="string" val="We want the player, and only the player, to be able to dock to Pirate bases." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="16" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Pirate bases are already set to hostile for OCV playthroughs in Mayhem.Task.Station.PirateBase." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="21" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.13: Cannot dock at the owner's station if the player has a permanent war. " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="21" />
+					<sval type="int" val="1" />
+					<sval type="string" val="This case is a catch-all in case the player happens to temporarily gain neutral or positive relations (essentially a ceasefire) with that faction while in permanent war." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="21" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Reputation is eventually reset to rank -5 in ZH.Monitor." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="25" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="25" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="25" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
+					<sval type="int" val="2" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>
