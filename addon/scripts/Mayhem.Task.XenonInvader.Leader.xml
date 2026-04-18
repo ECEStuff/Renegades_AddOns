@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Task.XenonInvader.Leader</name>
-	<version>19</version>
+	<version>20</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -981,16 +981,38 @@
 			<text>=</text>
 			<var>$scannerRange</var>
 		</line>
-		<line linenr="109" indent="&#160;&#160;">
-			<comment>* do if !$target</comment>
-		</line>
+		<line linenr="109" indent="&#160;&#160;" />
 		<line linenr="110" indent="&#160;&#160;">
-			<comment>* $target = [THIS]-&gt; find nearest enemy station: max.dist=$scannerRange</comment>
+			<comment>* Add-Ons 1.13: Teleporter may be the attack target, so need to guard against TOCTOU here.</comment>
 		</line>
-		<line linenr="111" indent="&#160;&#160;&#160;">
+		<line linenr="111" indent="&#160;&#160;">
+			<comment>* If teleportation is in progress, check the destination ship rather than the temporary teleporter.</comment>
+		</line>
+		<line linenr="112" indent="&#160;&#160;" interruptable="@">
+			<var>$target</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.CheckTeleporterTarget</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>intendedTarget</text>
+			<text>=</text>
+			<var>$target</var>
+		</line>
+		<line linenr="113" indent="&#160;&#160;" />
+		<line linenr="114" indent="&#160;&#160;&#160;">
 			<comment>* ZH 1.9 - Terraformer ships do not attack Xenon type ships</comment>
 		</line>
-		<line linenr="112" indent="&#160;&#160;">
+		<line linenr="115" indent="&#160;&#160;">
 			<var>$maker</var>
 			<text> </text>
 			<text>=</text>
@@ -1004,7 +1026,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="113" indent="&#160;&#160;&#160;">
+		<line linenr="116" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1031,14 +1053,14 @@
 			<text> </text>
 			<var>[Phanon]</var>
 		</line>
-		<line linenr="114" indent="&#160;&#160;&#160;">
+		<line linenr="117" indent="&#160;&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="115" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="118" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$target</var>
@@ -1046,10 +1068,10 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="116" indent="&#160;&#160;&#160;">
+		<line linenr="119" indent="&#160;&#160;&#160;">
 			<comment>* ZH 2.0 - Terraformers dont attack anything if sector is protected by Phanon</comment>
 		</line>
-		<line linenr="117" indent="&#160;&#160;">
+		<line linenr="120" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[SECTOR]</var>
@@ -1066,20 +1088,20 @@
 			<text>=</text>
 			<text>'xenonProtection'</text>
 		</line>
-		<line linenr="118" indent="&#160;&#160;">
+		<line linenr="121" indent="&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="119" indent="&#160;&#160;&#160;">
+		<line linenr="122" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="120" indent="&#160;&#160;&#160;">
+		<line linenr="123" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="121" indent="&#160;&#160;">
+		<line linenr="124" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$target</var>
@@ -1087,7 +1109,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="122" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="125" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -1117,7 +1139,7 @@
 			<text>=</text>
 			<var>240</var>
 		</line>
-		<line linenr="123" indent="&#160;&#160;&#160;">
+		<line linenr="126" indent="&#160;&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -1125,13 +1147,13 @@
 			<var>FindAnotherTarget</var>
 			<text>:</text>
 		</line>
-		<line linenr="124" indent="&#160;&#160;&#160;">
+		<line linenr="127" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="125" indent="&#160;&#160;&#160;">
+		<line linenr="128" indent="&#160;&#160;&#160;">
 			<comment>* either no nearest target at all or a Xenon ship type target</comment>
 		</line>
-		<line linenr="126" indent="&#160;&#160;&#160;">
+		<line linenr="129" indent="&#160;&#160;&#160;">
 			<var>$ships</var>
 			<text> </text>
 			<text>=</text>
@@ -1153,7 +1175,7 @@
 			<text>/</text>
 			<text>station</text>
 		</line>
-		<line linenr="127" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="130" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$ships</var>
 			<text> </text>
 			<text>=</text>
@@ -1177,7 +1199,7 @@
 			<text>=</text>
 			<var>$ships</var>
 		</line>
-		<line linenr="128" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="131" indent="&#160;&#160;&#160;&#160;">
 			<var>$ships</var>
 			<text> </text>
 			<text>=</text>
@@ -1188,7 +1210,7 @@
 			<text> </text>
 			<var>$ships</var>
 		</line>
-		<line linenr="129" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="132" indent="&#160;&#160;&#160;&#160;">
 			<var>$XS.Iterator2</var>
 			<text> </text>
 			<text>=</text>
@@ -1201,17 +1223,17 @@
 			<text> </text>
 			<var>$ships</var>
 		</line>
-		<line linenr="130" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="133" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="131" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="134" indent="&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="132" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="135" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -1221,7 +1243,7 @@
 			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="133" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="136" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1230,10 +1252,10 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="134" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="137" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* ZH 2.0 - Terraformers dont attack anything if sector is protected by Phanon</comment>
 		</line>
-		<line linenr="135" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="138" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1252,10 +1274,10 @@
 			<text>=</text>
 			<text>'xenonProtection'</text>
 		</line>
-		<line linenr="136" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="139" indent="&#160;&#160;&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="137" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="140" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -1279,10 +1301,10 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="138" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="141" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="139" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="142" indent="&#160;&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -1292,13 +1314,13 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="140" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="143" indent="&#160;&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="141" indent="&#160;&#160;&#160;">
+		<line linenr="144" indent="&#160;&#160;&#160;">
 			<comment>* ZH 1.9 - Terraformer ships do not attack Xenon type ships</comment>
 		</line>
-		<line linenr="142" indent="&#160;&#160;&#160;">
+		<line linenr="145" indent="&#160;&#160;&#160;">
 			<var>$maker</var>
 			<text> </text>
 			<text>=</text>
@@ -1312,7 +1334,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="143" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="146" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1339,23 +1361,23 @@
 			<text> </text>
 			<var>[Phanon]</var>
 		</line>
-		<line linenr="144" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="147" indent="&#160;&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="145" indent="&#160;&#160;&#160;">
+		<line linenr="148" indent="&#160;&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$ship</var>
 		</line>
-		<line linenr="146" indent="&#160;&#160;">
+		<line linenr="149" indent="&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="147" indent="&#160;&#160;">
+		<line linenr="150" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="148" indent="&#160;&#160;">
+		<line linenr="151" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$target</var>
@@ -1363,7 +1385,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="149" indent="&#160;&#160;" interruptable="@">
+		<line linenr="152" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -1393,7 +1415,7 @@
 			<text>=</text>
 			<var>240</var>
 		</line>
-		<line linenr="150" indent="&#160;&#160;">
+		<line linenr="153" indent="&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -1401,26 +1423,26 @@
 			<var>FindAnotherTarget</var>
 			<text>:</text>
 		</line>
-		<line linenr="151" indent="&#160;&#160;&#160;">
+		<line linenr="154" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="152" indent="&#160;&#160;">
+		<line linenr="155" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="153" indent="&#160;&#160;">
+		<line linenr="156" indent="&#160;&#160;">
 			<comment>* 3/ Attack distant ships.</comment>
 		</line>
-		<line linenr="154" indent="&#160;&#160;&#160;">
+		<line linenr="157" indent="&#160;&#160;&#160;">
 			<var>$maxJumps</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="155" indent="&#160;&#160;">
+		<line linenr="158" indent="&#160;&#160;">
 			<comment>* ZH 2.0 - randomly increasing search range to make Xenon patrols less predictable</comment>
 		</line>
-		<line linenr="156" indent="&#160;&#160;">
+		<line linenr="159" indent="&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -1437,15 +1459,15 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="157" indent="&#160;&#160;">
+		<line linenr="160" indent="&#160;&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$maxJumps</var>
 		</line>
-		<line linenr="158" indent="&#160;&#160;">
+		<line linenr="161" indent="&#160;&#160;">
 			<comment>* in a Phanon protected sector we always increase the search range further in order to better get out of that general area</comment>
 		</line>
-		<line linenr="159" indent="&#160;&#160;">
+		<line linenr="162" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[SECTOR]</var>
@@ -1462,19 +1484,19 @@
 			<text>=</text>
 			<text>'xenonProtection'</text>
 		</line>
-		<line linenr="160" indent="&#160;&#160;">
+		<line linenr="163" indent="&#160;&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$maxJumps</var>
 		</line>
-		<line linenr="161" indent="&#160;&#160;">
+		<line linenr="164" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="162" indent="&#160;&#160;">
+		<line linenr="165" indent="&#160;&#160;">
 			<var>SearchAgainSmall</var>
 			<text>:</text>
 		</line>
-		<line linenr="163" indent="&#160;&#160;" interruptable="@">
+		<line linenr="166" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1491,7 +1513,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="164" indent="&#160;&#160;&#160;">
+		<line linenr="167" indent="&#160;&#160;&#160;">
 			<var>$sectors</var>
 			<text> </text>
 			<text>=</text>
@@ -1520,21 +1542,21 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="165" indent="&#160;&#160;&#160;">
+		<line linenr="168" indent="&#160;&#160;&#160;">
 			<var>$d</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="166" indent="&#160;&#160;&#160;">
+		<line linenr="169" indent="&#160;&#160;&#160;">
 			<var>$distantSector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="167" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="170" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$sectors</var>
 			<text> </text>
 			<text>=</text>
@@ -1554,14 +1576,14 @@
 			<text>=</text>
 			<var>$sectors</var>
 		</line>
-		<line linenr="168" indent="&#160;&#160;&#160;">
+		<line linenr="171" indent="&#160;&#160;&#160;">
 			<var>$hostiles</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="169" indent="&#160;&#160;&#160;">
+		<line linenr="172" indent="&#160;&#160;&#160;">
 			<var>$XS.Iterator3</var>
 			<text> </text>
 			<text>=</text>
@@ -1574,17 +1596,17 @@
 			<text> </text>
 			<var>$sectors</var>
 		</line>
-		<line linenr="170" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="173" indent="&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator3</var>
 		</line>
-		<line linenr="171" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="174" indent="&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator3</var>
 		</line>
-		<line linenr="172" indent="&#160;&#160;&#160;">
+		<line linenr="175" indent="&#160;&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -1594,7 +1616,7 @@
 			<var>$XS.Iterator3</var>
 			<text>]</text>
 		</line>
-		<line linenr="173" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="176" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1603,10 +1625,10 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="174" indent="&#160;&#160;&#160;">
+		<line linenr="177" indent="&#160;&#160;&#160;">
 			<comment>* ZH 2.0 - don't search in protected sectors</comment>
 		</line>
-		<line linenr="175" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="178" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1625,10 +1647,10 @@
 			<text>=</text>
 			<text>'xenonProtection'</text>
 		</line>
-		<line linenr="176" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="179" indent="&#160;&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="177" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="180" indent="&#160;&#160;&#160;&#160;">
 			<var>$distance</var>
 			<text> </text>
 			<text>=</text>
@@ -1649,7 +1671,7 @@
 			<text> </text>
 			<var>$sector</var>
 		</line>
-		<line linenr="178" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="181" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$distance</var>
@@ -1658,24 +1680,24 @@
 			<text> </text>
 			<var>$d</var>
 		</line>
-		<line linenr="179" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="182" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$d</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$distance</var>
 		</line>
-		<line linenr="180" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="183" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$distantSector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$sector</var>
 		</line>
-		<line linenr="181" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="184" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="182" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="185" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$hostiles</var>
 			<text> </text>
 			<text>=</text>
@@ -1719,12 +1741,12 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="183" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="186" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$hostiles</var>
 		</line>
-		<line linenr="184" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="187" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
@@ -1744,7 +1766,7 @@
 			<text>=</text>
 			<var>$hostiles</var>
 		</line>
-		<line linenr="185" indent="&#160;&#160;&#160;">
+		<line linenr="188" indent="&#160;&#160;&#160;">
 			<var>$target.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -1758,7 +1780,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="186" indent="&#160;&#160;">
+		<line linenr="189" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
@@ -1772,7 +1794,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="187" indent="&#160;&#160;" interruptable="@">
+		<line linenr="190" indent="&#160;&#160;" interruptable="@">
 			<var>$s</var>
 			<text> </text>
 			<text>=</text>
@@ -1796,7 +1818,7 @@
 			<text>=</text>
 			<text>'r'</text>
 		</line>
-		<line linenr="188" indent="&#160;&#160;">
+		<line linenr="191" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -1823,7 +1845,7 @@
 			<text> </text>
 			<text>'.'</text>
 		</line>
-		<line linenr="189" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="192" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1849,17 +1871,17 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="190" indent="&#160;&#160;&#160;">
+		<line linenr="193" indent="&#160;&#160;&#160;">
 			<var>$warningShown</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="191" indent="&#160;&#160;">
+		<line linenr="194" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="192" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="195" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -1889,7 +1911,7 @@
 			<text>=</text>
 			<var>120</var>
 		</line>
-		<line linenr="193" indent="&#160;&#160;">
+		<line linenr="196" indent="&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -1897,16 +1919,16 @@
 			<var>Restart</var>
 			<text>:</text>
 		</line>
-		<line linenr="194" indent="&#160;&#160;&#160;">
+		<line linenr="197" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="195" indent="&#160;&#160;">
+		<line linenr="198" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="196" indent="&#160;&#160;">
+		<line linenr="199" indent="&#160;&#160;">
 			<comment>* ZH 2.0 increased max range from 2 jumps to 6 jumps</comment>
 		</line>
-		<line linenr="197" indent="&#160;">
+		<line linenr="200" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
@@ -1920,12 +1942,12 @@
 			<text> </text>
 			<var>7</var>
 		</line>
-		<line linenr="198" indent="&#160;&#160;">
+		<line linenr="201" indent="&#160;&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$maxJumps</var>
 		</line>
-		<line linenr="199" indent="&#160;&#160;">
+		<line linenr="202" indent="&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -1933,14 +1955,14 @@
 			<var>SearchAgainSmall</var>
 			<text>:</text>
 		</line>
-		<line linenr="200" indent="&#160;&#160;">
+		<line linenr="203" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$distantSector</var>
 		</line>
-		<line linenr="201" indent="&#160;&#160;" interruptable="@">
+		<line linenr="204" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -1962,10 +1984,10 @@
 			<text>=</text>
 			<var>600</var>
 		</line>
-		<line linenr="202" indent="&#160;&#160;">
+		<line linenr="205" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="203" indent="&#160;&#160;" interruptable="@">
+		<line linenr="206" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -1987,37 +2009,37 @@
 			<text>=</text>
 			<var>600</var>
 		</line>
-		<line linenr="204" indent="&#160;&#160;">
+		<line linenr="207" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="205" indent="&#160;&#160;">
+		<line linenr="208" indent="&#160;&#160;">
 			<var>$warningShown</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="206" indent="&#160;&#160;&#160;">
+		<line linenr="209" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="207" indent="&#160;&#160;&#160;">
+		<line linenr="210" indent="&#160;&#160;&#160;">
 			<comment>* Big invasions focus on factories, then Outposts.</comment>
 		</line>
-		<line linenr="208" indent="&#160;&#160;&#160;">
+		<line linenr="211" indent="&#160;&#160;&#160;">
 			<comment>* When Xenons destroy all stations, the sector becomes [Unknown]. See !station.signal.killed.</comment>
 		</line>
-		<line linenr="209" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="212" indent="&#160;&#160;&#160;&#160;">
 			<var>$maxJumps</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="210" indent="&#160;&#160;&#160;">
+		<line linenr="213" indent="&#160;&#160;&#160;">
 			<var>SearchAgainBig</var>
 			<text>:</text>
 		</line>
-		<line linenr="211" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="214" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -2034,7 +2056,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="212" indent="&#160;&#160;">
+		<line linenr="215" indent="&#160;&#160;">
 			<var>$flag</var>
 			<text> </text>
 			<text>=</text>
@@ -2045,10 +2067,10 @@
 			<text> </text>
 			<var>[Find.Enemy]</var>
 		</line>
-		<line linenr="213" indent="&#160;&#160;">
+		<line linenr="216" indent="&#160;&#160;">
 			<comment>* ZH 2.0 - dont search in sectors protected by Phanon</comment>
 		</line>
-		<line linenr="214" indent="&#160;&#160;">
+		<line linenr="217" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
@@ -2067,7 +2089,7 @@
 			<text>=</text>
 			<text>'xenonProtection'</text>
 		</line>
-		<line linenr="215" indent="&#160;&#160;&#160;">
+		<line linenr="218" indent="&#160;&#160;&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -2092,7 +2114,7 @@
 			<text>=</text>
 			<var>[Huge Ship]</var>
 		</line>
-		<line linenr="216" indent="&#160;&#160;">
+		<line linenr="219" indent="&#160;&#160;">
 			<var>$maker</var>
 			<text> </text>
 			<text>=</text>
@@ -2106,7 +2128,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="217" indent="&#160;&#160;&#160;">
+		<line linenr="220" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2133,14 +2155,14 @@
 			<text> </text>
 			<var>[Phanon]</var>
 		</line>
-		<line linenr="218" indent="&#160;&#160;&#160;">
+		<line linenr="221" indent="&#160;&#160;&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="219" indent="&#160;&#160;&#160;">
+		<line linenr="222" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2150,7 +2172,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="220" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="223" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2180,10 +2202,10 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="221" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="224" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="222" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="225" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
@@ -2229,7 +2251,7 @@
 			<text>=</text>
 			<var>$maxJumps</var>
 		</line>
-		<line linenr="223" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="226" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -2239,7 +2261,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="224" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="227" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
@@ -2285,7 +2307,7 @@
 			<text>=</text>
 			<var>$maxJumps</var>
 		</line>
-		<line linenr="225" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="228" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$station</var>
@@ -2293,10 +2315,10 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="226" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="229" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* ZH 2.0 - dont search in sectors protected by Phanon</comment>
 		</line>
-		<line linenr="227" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="230" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$sector.station</var>
 			<text> </text>
 			<text>=</text>
@@ -2308,7 +2330,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="228" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="231" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
@@ -2327,7 +2349,7 @@
 			<text>=</text>
 			<text>'xenonProtection'</text>
 		</line>
-		<line linenr="229" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="232" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$station.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -2341,7 +2363,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="230" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="233" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
@@ -2355,10 +2377,10 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="231" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="234" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* ** Zero Hour: chance to go back to the OCV Maelstrom before each player station kill</comment>
 		</line>
-		<line linenr="232" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="235" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -2367,7 +2389,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="233" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="236" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -2376,10 +2398,10 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="234" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="237" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* easy - 10%</comment>
 		</line>
-		<line linenr="235" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="238" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$rng</var>
 			<text> </text>
 			<text>=</text>
@@ -2396,13 +2418,13 @@
 			<text> </text>
 			<var>9</var>
 		</line>
-		<line linenr="236" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="239" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="237" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="240" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* normal - 2%</comment>
 		</line>
-		<line linenr="238" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="241" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$rng</var>
 			<text> </text>
 			<text>=</text>
@@ -2419,17 +2441,17 @@
 			<text> </text>
 			<var>49</var>
 		</line>
-		<line linenr="239" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="242" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="240" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="243" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
 			<text> </text>
 			<var>$rng</var>
 		</line>
-		<line linenr="241" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="244" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$XenonSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -2453,7 +2475,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="242" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="245" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -2473,7 +2495,7 @@
 			<text>=</text>
 			<var>$XenonSectors</var>
 		</line>
-		<line linenr="243" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="246" indent="&#160;&#160;&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2511,7 +2533,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="244" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="247" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2533,7 +2555,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="245" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="248" indent="&#160;&#160;&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2541,13 +2563,13 @@
 			<var>SearchAgainBig</var>
 			<text>:</text>
 		</line>
-		<line linenr="246" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="249" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="247" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="250" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="248" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="251" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$s</var>
 			<text> </text>
 			<text>=</text>
@@ -2571,7 +2593,7 @@
 			<text>=</text>
 			<text>'r'</text>
 		</line>
-		<line linenr="249" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="252" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -2590,7 +2612,7 @@
 			<text> </text>
 			<text>'.'</text>
 		</line>
-		<line linenr="250" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="253" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -2616,20 +2638,20 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="251" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="254" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$warningShown</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="252" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="255" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="253" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="256" indent="&#160;&#160;&#160;&#160;">
 			<comment>* ZH 1.6: additional 1% chance to leave also when targeting non-player stations.</comment>
 		</line>
-		<line linenr="254" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="257" indent="&#160;&#160;&#160;&#160;">
 			<var>$rng</var>
 			<text> </text>
 			<text>=</text>
@@ -2646,14 +2668,14 @@
 			<text> </text>
 			<var>99</var>
 		</line>
-		<line linenr="255" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="258" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
 			<text> </text>
 			<var>$rng</var>
 		</line>
-		<line linenr="256" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="259" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$XenonSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -2677,7 +2699,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="257" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="260" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -2697,7 +2719,7 @@
 			<text>=</text>
 			<var>$XenonSectors</var>
 		</line>
-		<line linenr="258" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="261" indent="&#160;&#160;&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2735,7 +2757,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="259" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="262" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2757,7 +2779,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="260" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="263" indent="&#160;&#160;&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2765,10 +2787,10 @@
 			<var>SearchAgainBig</var>
 			<text>:</text>
 		</line>
-		<line linenr="261" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="264" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="262" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="265" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2798,17 +2820,17 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="263" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="266" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* 3.15: Slow them down a little. Zero Hour: randomized and t-file customizable</comment>
 		</line>
-		<line linenr="264" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="267" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$TerraformerWaiting</var>
 		</line>
-		<line linenr="265" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="268" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2830,13 +2852,13 @@
 			<text>=</text>
 			<var>$timeout</var>
 		</line>
-		<line linenr="266" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="269" indent="&#160;&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="267" indent="&#160;&#160;&#160;">
+		<line linenr="270" indent="&#160;&#160;&#160;">
 			<comment>* ZH 2.0 - we found a station in a Phanon protected sector. Should search much further now.</comment>
 		</line>
-		<line linenr="268" indent="&#160;&#160;">
+		<line linenr="271" indent="&#160;&#160;">
 			<var>$maxJumps</var>
 			<text> </text>
 			<text>=</text>
@@ -2847,14 +2869,14 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="269" indent="&#160;&#160;&#160;">
+		<line linenr="272" indent="&#160;&#160;&#160;">
 			<var>$warningShown</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="270" indent="&#160;&#160;&#160;">
+		<line linenr="273" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$maxJumps</var>
@@ -2863,7 +2885,7 @@
 			<text> </text>
 			<var>12</var>
 		</line>
-		<line linenr="271" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="274" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2885,7 +2907,7 @@
 			<text>=</text>
 			<var>600</var>
 		</line>
-		<line linenr="272" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="275" indent="&#160;&#160;&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2893,10 +2915,10 @@
 			<var>Restart</var>
 			<text>:</text>
 		</line>
-		<line linenr="273" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="276" indent="&#160;&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="274" indent="&#160;&#160;&#160;">
+		<line linenr="277" indent="&#160;&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2904,28 +2926,28 @@
 			<var>SearchAgainBig</var>
 			<text>:</text>
 		</line>
-		<line linenr="275" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="278" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="276" indent="&#160;&#160;&#160;">
+		<line linenr="279" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="277" indent="&#160;&#160;">
+		<line linenr="280" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="278" indent="&#160;">
+		<line linenr="281" indent="&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$maxJumps</var>
 		</line>
-		<line linenr="279" indent="&#160;">
+		<line linenr="282" indent="&#160;">
 			<var>$warningShown</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="280" indent="">
+		<line linenr="283" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$maxJumps</var>
@@ -2934,7 +2956,7 @@
 			<text> </text>
 			<var>4</var>
 		</line>
-		<line linenr="281" indent="" interruptable="@">
+		<line linenr="284" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2956,7 +2978,7 @@
 			<text>=</text>
 			<var>600</var>
 		</line>
-		<line linenr="282" indent="">
+		<line linenr="285" indent="">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2964,10 +2986,10 @@
 			<var>Restart</var>
 			<text>:</text>
 		</line>
-		<line linenr="283" indent="">
+		<line linenr="286" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="284" indent="">
+		<line linenr="287" indent="">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2975,21 +2997,21 @@
 			<var>SearchAgainBig</var>
 			<text>:</text>
 		</line>
-		<line linenr="285" indent="">
+		<line linenr="288" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="286" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="287" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="288" indent="" />
 		<line linenr="289" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="290" indent="" />
-		<line linenr="291" indent="">
+		<line linenr="290" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="291" indent="" />
+		<line linenr="292" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="293" indent="" />
+		<line linenr="294" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -3000,7 +3022,7 @@
 			<sval type="string" val="Mayhem.Task.XenonInvader.Leader" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="19" />
+			<sval type="int" val="20" />
 			<sval type="int" val="0" />
 			<sval type="array" size="43">
 				<sval type="string" val="scannerRange" />
@@ -3047,7 +3069,7 @@
 				<sval type="string" val="station.owner" />
 				<sval type="string" val="XenonSectors" />
 			</sval>
-			<sval type="array" size="216">
+			<sval type="array" size="217">
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.GetScannerRange" />
@@ -3153,7 +3175,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-1610557687" />
+					<sval type="int" val="-1610557431" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="101" />
@@ -3214,7 +3236,7 @@
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610573309" />
+					<sval type="int" val="-1610573053" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -3772,6 +3794,16 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.CheckTeleporterTarget" />
+					<sval type="int" val="22" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1350" />
 					<sval type="int" val="131074" />
@@ -3780,7 +3812,7 @@
 				</sval>
 				<sval type="array" size="37">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610592504" />
+					<sval type="int" val="-1610592248" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="23" />
@@ -3830,7 +3862,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="22" />
-					<sval type="int" val="-1610591741" />
+					<sval type="int" val="-1610591485" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
@@ -3838,7 +3870,7 @@
 					<sval type="int" val="6" />
 					<sval type="int" val="5" />
 					<sval type="string" val="xenonProtection" />
-					<sval type="int" val="-1610591741" />
+					<sval type="int" val="-1610591485" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -3853,7 +3885,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="22" />
-					<sval type="int" val="-1610590717" />
+					<sval type="int" val="-1610590461" />
 				</sval>
 				<sval type="array" size="14">
 					<sval type="int" val="102" />
@@ -3877,7 +3909,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="109" />
+					<sval type="int" val="110" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1008" />
@@ -3911,7 +3943,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610585591" />
+					<sval type="int" val="-1610585335" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="26" />
@@ -3942,16 +3974,16 @@
 					<sval type="int" val="6" />
 					<sval type="int" val="5" />
 					<sval type="string" val="xenonProtection" />
-					<sval type="int" val="-1610588152" />
+					<sval type="int" val="-1610587896" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="106" />
+					<sval type="int" val="107" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsHostileTo" />
-					<sval type="int" val="-536845817" />
+					<sval type="int" val="-536845561" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -3962,17 +3994,17 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="90" />
+					<sval type="int" val="91" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="25" />
-					<sval type="int" val="-536845305" />
+					<sval type="int" val="-536845049" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="90" />
+					<sval type="int" val="91" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1350" />
@@ -3982,7 +4014,7 @@
 				</sval>
 				<sval type="array" size="37">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610586360" />
+					<sval type="int" val="-1610586104" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="23" />
@@ -4021,7 +4053,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="90" />
+					<sval type="int" val="91" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -4034,17 +4066,17 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="106" />
+					<sval type="int" val="107" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="90" />
+					<sval type="int" val="91" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="22" />
-					<sval type="int" val="-1610584829" />
+					<sval type="int" val="-1610584573" />
 				</sval>
 				<sval type="array" size="14">
 					<sval type="int" val="102" />
@@ -4077,7 +4109,7 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
-					<sval type="int" val="-536842233" />
+					<sval type="int" val="-536841977" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 				</sval>
@@ -4091,7 +4123,7 @@
 					<sval type="int" val="6" />
 					<sval type="int" val="5" />
 					<sval type="string" val="xenonProtection" />
-					<sval type="int" val="-1610583549" />
+					<sval type="int" val="-1610583293" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="142" />
@@ -4164,7 +4196,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610575863" />
+					<sval type="int" val="-1610575607" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="33" />
@@ -4195,11 +4227,11 @@
 					<sval type="int" val="32" />
 					<sval type="int" val="5" />
 					<sval type="string" val="xenonProtection" />
-					<sval type="int" val="-1610579960" />
+					<sval type="int" val="-1610579704" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="122" />
+					<sval type="int" val="123" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="711" />
@@ -4211,7 +4243,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610578941" />
+					<sval type="int" val="-1610578685" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="34" />
@@ -4266,7 +4298,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610576125" />
+					<sval type="int" val="-1610575869" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="31" />
@@ -4291,7 +4323,7 @@
 				</sval>
 				<sval type="array" size="22">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610576637" />
+					<sval type="int" val="-1610576381" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -4409,11 +4441,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="122" />
+					<sval type="int" val="123" />
 				</sval>
 				<sval type="array" size="22">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610574845" />
+					<sval type="int" val="-1610574589" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="31" />
@@ -4441,15 +4473,15 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="114" />
+					<sval type="int" val="115" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="152" />
+					<sval type="int" val="153" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610574075" />
+					<sval type="int" val="-1610573819" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="30" />
@@ -4470,7 +4502,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="152" />
+					<sval type="int" val="153" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
@@ -4495,7 +4527,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="214" />
+					<sval type="int" val="215" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -4539,7 +4571,7 @@
 					<sval type="int" val="6" />
 					<sval type="int" val="5" />
 					<sval type="string" val="xenonProtection" />
-					<sval type="int" val="-536828668" />
+					<sval type="int" val="-536828412" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1328" />
@@ -4557,7 +4589,7 @@
 				</sval>
 				<sval type="array" size="37">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610571000" />
+					<sval type="int" val="-1610570744" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="23" />
@@ -4607,7 +4639,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="25" />
-					<sval type="int" val="-1610570488" />
+					<sval type="int" val="-1610570232" />
 				</sval>
 				<sval type="array" size="14">
 					<sval type="int" val="102" />
@@ -4647,7 +4679,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="39" />
-					<sval type="int" val="-536827897" />
+					<sval type="int" val="-536827641" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="709" />
@@ -4671,7 +4703,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="39" />
-					<sval type="int" val="-1610559741" />
+					<sval type="int" val="-1610559485" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
@@ -4685,7 +4717,7 @@
 					<sval type="int" val="40" />
 					<sval type="int" val="5" />
 					<sval type="string" val="xenonProtection" />
-					<sval type="int" val="-536819964" />
+					<sval type="int" val="-536819708" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
@@ -4695,7 +4727,7 @@
 				</sval>
 				<sval type="array" size="22">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610564605" />
+					<sval type="int" val="-1610564349" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -4719,7 +4751,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610565629" />
+					<sval type="int" val="-1610565373" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -4734,7 +4766,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610567421" />
+					<sval type="int" val="-1610567165" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -4755,7 +4787,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="178" />
+					<sval type="int" val="179" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
@@ -4765,7 +4797,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536823804" />
+					<sval type="int" val="-536823548" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="16" />
@@ -4825,7 +4857,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="155" />
+					<sval type="int" val="156" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
@@ -4897,7 +4929,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536820988" />
+					<sval type="int" val="-536820732" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="16" />
@@ -4957,7 +4989,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="155" />
+					<sval type="int" val="156" />
 				</sval>
 				<sval type="array" size="14">
 					<sval type="int" val="102" />
@@ -4977,7 +5009,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610562040" />
+					<sval type="int" val="-1610561784" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -4998,7 +5030,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="206" />
+					<sval type="int" val="207" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -5026,7 +5058,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610560253" />
+					<sval type="int" val="-1610559997" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="27" />
@@ -5057,15 +5089,15 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="206" />
+					<sval type="int" val="207" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="155" />
+					<sval type="int" val="156" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="214" />
+					<sval type="int" val="215" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="142" />
@@ -5082,7 +5114,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610558205" />
+					<sval type="int" val="-1610557949" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="27" />
@@ -5113,11 +5145,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="214" />
+					<sval type="int" val="215" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="155" />
+					<sval type="int" val="156" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
@@ -5130,7 +5162,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="103">
+			<sval type="array" size="105">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -5316,270 +5348,278 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="2/ Attack nearby ships, or stations. 3.15: Ships only." />
 				</sval>
-				<sval type="array" size="3">
+				<sval type="array" size="2">
 					<sval type="int" val="76" />
-					<sval type="int" val="1" />
-					<sval type="string" val="do if !$target" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="76" />
 					<sval type="int" val="1" />
-					<sval type="string" val="$target = [THIS]-&gt; find nearest enemy station: max.dist=$scannerRange" />
+					<sval type="string" val="Add-Ons 1.13: Teleporter may be the attack target, so need to guard against TOCTOU here." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="76" />
+					<sval type="int" val="1" />
+					<sval type="string" val="If teleportation is in progress, check the destination ship rather than the temporary teleporter." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="77" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="77" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 1.9 - Terraformer ships do not attack Xenon type ships" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="80" />
+					<sval type="int" val="81" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 - Terraformers dont attack anything if sector is protected by Phanon" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="82" />
+					<sval type="int" val="83" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="82" />
+					<sval type="int" val="83" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="86" />
+					<sval type="int" val="87" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="86" />
+					<sval type="int" val="87" />
 					<sval type="int" val="1" />
 					<sval type="string" val="either no nearest target at all or a Xenon ship type target" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="94" />
+					<sval type="int" val="95" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 - Terraformers dont attack anything if sector is protected by Phanon" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="96" />
+					<sval type="int" val="97" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="98" />
+					<sval type="int" val="99" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="100" />
+					<sval type="int" val="101" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="100" />
+					<sval type="int" val="101" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 1.9 - Terraformer ships do not attack Xenon type ships" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="103" />
+					<sval type="int" val="104" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="105" />
+					<sval type="int" val="106" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="106" />
+					<sval type="int" val="107" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="109" />
+					<sval type="int" val="110" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="109" />
+					<sval type="int" val="110" />
 					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="109" />
-					<sval type="int" val="1" />
-					<sval type="string" val="3/ Attack distant ships." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="110" />
 					<sval type="int" val="1" />
+					<sval type="string" val="3/ Attack distant ships." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="111" />
+					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 - randomly increasing search range to make Xenon patrols less predictable" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="112" />
+					<sval type="int" val="113" />
 					<sval type="int" val="1" />
 					<sval type="string" val="in a Phanon protected sector we always increase the search range further in order to better get out of that general area" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="114" />
+					<sval type="int" val="115" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="126" />
+					<sval type="int" val="127" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 - don't search in protected sectors" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="128" />
+					<sval type="int" val="129" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="132" />
+					<sval type="int" val="133" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="141" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="143" />
+					<sval type="int" val="142" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="144" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="145" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="144" />
+					<sval type="int" val="145" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 increased max range from 2 jumps to 6 jumps" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="151" />
+					<sval type="int" val="152" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="152" />
+					<sval type="int" val="153" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="154" />
+					<sval type="int" val="155" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="154" />
+					<sval type="int" val="155" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Big invasions focus on factories, then Outposts." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="154" />
+					<sval type="int" val="155" />
 					<sval type="int" val="1" />
 					<sval type="string" val="When Xenons destroy all stations, the sector becomes [Unknown]. See !station.signal.killed." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="158" />
+					<sval type="int" val="159" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 - dont search in sectors protected by Phanon" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="165" />
+					<sval type="int" val="166" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="169" />
+					<sval type="int" val="170" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 - dont search in sectors protected by Phanon" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="173" />
+					<sval type="int" val="174" />
 					<sval type="int" val="1" />
 					<sval type="string" val="** Zero Hour: chance to go back to the OCV Maelstrom before each player station kill" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="175" />
+					<sval type="int" val="176" />
 					<sval type="int" val="1" />
 					<sval type="string" val="easy - 10%" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="177" />
+					<sval type="int" val="178" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="177" />
+					<sval type="int" val="178" />
 					<sval type="int" val="1" />
 					<sval type="string" val="normal - 2%" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="178" />
+					<sval type="int" val="179" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="184" />
+					<sval type="int" val="185" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="184" />
+					<sval type="int" val="185" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="188" />
+					<sval type="int" val="189" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="188" />
+					<sval type="int" val="189" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 1.6: additional 1% chance to leave also when targeting non-player stations." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="195" />
+					<sval type="int" val="196" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="196" />
+					<sval type="int" val="197" />
 					<sval type="int" val="1" />
 					<sval type="string" val="3.15: Slow them down a little. Zero Hour: randomized and t-file customizable" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="199" />
+					<sval type="int" val="200" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="199" />
+					<sval type="int" val="200" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 - we found a station in a Phanon protected sector. Should search much further now." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="205" />
+					<sval type="int" val="206" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="206" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="206" />
+					<sval type="int" val="207" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="207" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="208" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="213" />
+					<sval type="int" val="214" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="214" />
+					<sval type="int" val="215" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="214" />
+					<sval type="int" val="215" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="214" />
+					<sval type="int" val="215" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="214" />
+					<sval type="int" val="215" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="215" />
+					<sval type="int" val="216" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="215" />
+					<sval type="int" val="216" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
