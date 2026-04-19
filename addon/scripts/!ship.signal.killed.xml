@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>!ship.signal.killed</name>
-	<version>134</version>
+	<version>137</version>
 	<engineversion>50</engineversion>
 	<description>Synchron signal. killed</description>
 	<arguments>
@@ -5284,7 +5284,7 @@
 		<line linenr="509" indent="&#160;">
 			<comment>* we can try to simulate them bailing.  They are destroyed for all intents and purposes above, but they leave an empty ship.</comment>
 		</line>
-		<line linenr="510" indent="&#160;&#160;">
+		<line linenr="510" indent="&#160;">
 			<var>$dropLoot</var>
 			<text> </text>
 			<text>=</text>
@@ -5292,20 +5292,20 @@
 			<var>[TRUE]</var>
 		</line>
 		<line linenr="511" indent="&#160;&#160;" />
-		<line linenr="512" indent="&#160;&#160;&#160;" />
-		<line linenr="513" indent="&#160;&#160;">
+		<line linenr="512" indent="&#160;&#160;" />
+		<line linenr="513" indent="&#160;&#160;&#160;">
 			<comment>* Mordan8</comment>
 		</line>
-		<line linenr="514" indent="&#160;&#160;&#160;">
+		<line linenr="514" indent="&#160;&#160;">
 			<comment>* To prevent savescumming, for 'most' ships I could find, I set a bail chance when they are created. </comment>
 		</line>
-		<line linenr="515" indent="&#160;&#160;">
+		<line linenr="515" indent="&#160;&#160;&#160;">
 			<comment>* This call will return that boolean if it's present, otherwise it will calculate it on the fly.</comment>
 		</line>
-		<line linenr="516" indent="&#160;&#160;&#160;">
+		<line linenr="516" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.9.3: Only for big ships (M6, TM, M8, and military capships). Fighters bail only when fleeing. TS, TP, and TL cannot bail at all.</comment>
 		</line>
-		<line linenr="517" indent="&#160;&#160;" interruptable="@">
+		<line linenr="517" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$WillBail</var>
 			<text> </text>
 			<text>=</text>
@@ -5341,7 +5341,7 @@
 			<text> </text>
 			<var>[Big Ship]</var>
 		</line>
-		<line linenr="519" indent="&#160;&#160;&#160;">
+		<line linenr="519" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$WillBail</var>
@@ -5353,7 +5353,10 @@
 		<line linenr="520" indent="&#160;&#160;&#160;">
 			<comment>* give it a bit of hull back, because technically, it's dead at this point.</comment>
 		</line>
-		<line linenr="521" indent="&#160;&#160;">
+		<line linenr="521" indent="&#160;&#160;&#160;">
+			<comment>* Add-Ons 1.13.1: This results in 4% being shown. Fix underflow via ceiling math.</comment>
+		</line>
+		<line linenr="522" indent="&#160;&#160;">
 			<var>$hull.max</var>
 			<text> </text>
 			<text>=</text>
@@ -5367,18 +5370,28 @@
 			<text> </text>
 			<text>hull</text>
 		</line>
-		<line linenr="522" indent="&#160;">
+		<line linenr="523" indent="&#160;">
 			<var>$hullfragment</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
+			<text>(</text>
 			<var>$hull.max</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>5</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>99</var>
+			<text>)</text>
 			<text> </text>
 			<text>/</text>
 			<text> </text>
-			<var>20</var>
+			<var>100</var>
 		</line>
-		<line linenr="523" indent="&#160;">
+		<line linenr="524" indent="&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -5390,33 +5403,33 @@
 			<text> </text>
 			<var>$hullfragment</var>
 		</line>
-		<line linenr="524" indent="&#160;" />
 		<line linenr="525" indent="&#160;" />
-		<line linenr="526" indent="&#160;">
+		<line linenr="526" indent="&#160;" />
+		<line linenr="527" indent="&#160;">
 			<comment>* Mordan9 - give a little message just to point out that a capital ship bailed.</comment>
 		</line>
-		<line linenr="527" indent="&#160;">
+		<line linenr="528" indent="&#160;">
 			<comment>* Only do this if the player has a satellite in the sector.</comment>
 		</line>
-		<line linenr="528" indent="&#160;">
+		<line linenr="529" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>IsPlayerSatellite</var>
 			<text>:</text>
 		</line>
-		<line linenr="529" indent="">
+		<line linenr="530" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$hasSatelliteInSystem</var>
 		</line>
-		<line linenr="530" indent="">
+		<line linenr="531" indent="">
 			<var>$shipClass</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="531" indent="">
+		<line linenr="532" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -5430,14 +5443,14 @@
 			<text> </text>
 			<var>[M7]</var>
 		</line>
-		<line linenr="532" indent="">
+		<line linenr="533" indent="">
 			<var>$shipClass</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'Frigate'</text>
 		</line>
-		<line linenr="533" indent="&#160;">
+		<line linenr="534" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -5453,14 +5466,14 @@
 			<text> </text>
 			<var>[M1]</var>
 		</line>
-		<line linenr="534" indent="">
+		<line linenr="535" indent="">
 			<var>$shipClass</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'Carrier'</text>
 		</line>
-		<line linenr="535" indent="">
+		<line linenr="536" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -5476,22 +5489,22 @@
 			<text> </text>
 			<var>[M2]</var>
 		</line>
-		<line linenr="536" indent="">
+		<line linenr="537" indent="">
 			<var>$shipClass</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'Destroyer'</text>
 		</line>
-		<line linenr="537" indent="">
+		<line linenr="538" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="538" indent="">
+		<line linenr="539" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$shipClass</var>
 		</line>
-		<line linenr="539" indent="&#160;">
+		<line linenr="540" indent="&#160;">
 			<var>$info</var>
 			<text> </text>
 			<text>=</text>
@@ -5518,7 +5531,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="540" indent="&#160;" interruptable="@">
+		<line linenr="541" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -5548,16 +5561,16 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="541" indent="&#160;">
+		<line linenr="542" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="542" indent="&#160;&#160;">
+		<line linenr="543" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="543" indent="&#160;&#160;" />
-		<line linenr="544" indent="&#160;&#160;&#160;" />
+		<line linenr="544" indent="&#160;&#160;" />
 		<line linenr="545" indent="&#160;&#160;&#160;" />
-		<line linenr="546" indent="&#160;&#160;" interruptable="@">
+		<line linenr="546" indent="&#160;&#160;&#160;" />
+		<line linenr="547" indent="&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -5583,27 +5596,27 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="547" indent="&#160;">
+		<line linenr="548" indent="&#160;">
 			<comment>* write to log file 1 append=[TRUE] printf: fmt='%s Bailed !', [THIS], null, null, null, null</comment>
 		</line>
-		<line linenr="548" indent="">
+		<line linenr="549" indent="">
 			<var>$dropLoot</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="549" indent="">
+		<line linenr="550" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="550" indent="" />
 		<line linenr="551" indent="" />
-		<line linenr="552" indent="">
+		<line linenr="552" indent="" />
+		<line linenr="553" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$dropLoot</var>
 		</line>
-		<line linenr="553" indent="" interruptable="@">
+		<line linenr="554" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -5621,28 +5634,28 @@
 			<text>=</text>
 			<var>$killer</var>
 		</line>
-		<line linenr="554" indent="">
+		<line linenr="555" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="555" indent="" />
-		<line linenr="556" indent="">
+		<line linenr="556" indent="" />
+		<line linenr="557" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="557" indent="" />
-		<line linenr="558" indent="">
+		<line linenr="558" indent="" />
+		<line linenr="559" indent="">
 			<var>IsPlayerSatellite</var>
 			<text>:</text>
 		</line>
-		<line linenr="559" indent="">
+		<line linenr="560" indent="">
 			<var>$hasSatelliteInSystem</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="560" indent="">
+		<line linenr="561" indent="">
 			<var>$sats</var>
 			<text> </text>
 			<text>=</text>
@@ -5666,7 +5679,7 @@
 			<text>=</text>
 			<var>{Neutral Race Advanced Satellite}</var>
 		</line>
-		<line linenr="561" indent="">
+		<line linenr="562" indent="">
 			<var>$satiterator</var>
 			<text> </text>
 			<text>=</text>
@@ -5679,17 +5692,17 @@
 			<text> </text>
 			<var>$sats</var>
 		</line>
-		<line linenr="562" indent="">
+		<line linenr="563" indent="">
 			<text>while</text>
 			<text> </text>
 			<var>$satiterator</var>
 		</line>
-		<line linenr="563" indent="">
+		<line linenr="564" indent="">
 			<text>dec</text>
 			<text> </text>
 			<var>$satiterator</var>
 		</line>
-		<line linenr="564" indent="">
+		<line linenr="565" indent="">
 			<var>$sat</var>
 			<text> </text>
 			<text>=</text>
@@ -5699,7 +5712,7 @@
 			<var>$satiterator</var>
 			<text>]</text>
 		</line>
-		<line linenr="565" indent="">
+		<line linenr="566" indent="">
 			<var>$satsystem</var>
 			<text> </text>
 			<text>=</text>
@@ -5711,7 +5724,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="566" indent="">
+		<line linenr="567" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$satsystem</var>
@@ -5720,26 +5733,25 @@
 			<text> </text>
 			<var>[SECTOR]</var>
 		</line>
-		<line linenr="567" indent="">
+		<line linenr="568" indent="">
 			<var>$hasSatelliteInSystem</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="568" indent="">
-			<text>endsub</text>
-		</line>
 		<line linenr="569" indent="">
-			<text>end</text>
+			<text>endsub</text>
 		</line>
 		<line linenr="570" indent="">
 			<text>end</text>
 		</line>
 		<line linenr="571" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="572" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="572" indent="" />
 		<line linenr="573" indent="" />
 		<line linenr="574" indent="" />
 		<line linenr="575" indent="" />
@@ -5747,13 +5759,14 @@
 		<line linenr="577" indent="" />
 		<line linenr="578" indent="" />
 		<line linenr="579" indent="" />
+		<line linenr="580" indent="" />
 	</sourcetext>
 	<codearray>
 		<sval type="array" size="10">
 			<sval type="string" val="!ship.signal.killed" />
 			<sval type="int" val="50" />
 			<sval type="string" val="Synchron signal. killed" />
-			<sval type="int" val="134" />
+			<sval type="int" val="137" />
 			<sval type="int" val="0" />
 			<sval type="array" size="76">
 				<sval type="string" val="killer" />
@@ -9578,20 +9591,34 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="67" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="27">
 					<sval type="int" val="104" />
 					<sval type="int" val="68" />
-					<sval type="int" val="3" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="67" />
 					<sval type="int" val="4" />
-					<sval type="int" val="20" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="99" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
 					<sval type="int" val="15" />
 					<sval type="int" val="14" />
-					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="16" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="14" />
+					<sval type="int" val="13" />
 					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-6" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="1047" />
@@ -9884,7 +9911,7 @@
 					<sval type="string" val="cmdpar2" />
 				</sval>
 			</sval>
-			<sval type="array" size="238">
+			<sval type="array" size="239">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -10815,6 +10842,11 @@
 					<sval type="int" val="329" />
 					<sval type="int" val="1" />
 					<sval type="string" val="give it a bit of hull back, because technically, it's dead at this point." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="329" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.13.1: This results in 4% being shown. Fix underflow via ceiling math." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="332" />
