@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.BoronHullRegeneration</name>
-	<version>11</version>
+	<version>13</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -12,7 +12,7 @@
 			<comment>* called by ZH.Monitor every 30 minutes. </comment>
 		</line>
 		<line linenr="002" indent="">
-			<comment>* Regenerates 10% hull on all Boron made ships. 5% for Pirate ships.</comment>
+			<comment>* Regenerates 10% hull on all Boron made ships owned by Boron, Pirates, and Player. 5% for Pirate ships.</comment>
 		</line>
 		<line linenr="003" indent="" />
 		<line linenr="004" indent="">
@@ -241,11 +241,11 @@
 			<comment>* Repair 5% per 30min, unless the ship is a Boron-made ship (possible because Pirates can claim ships).</comment>
 		</line>
 		<line linenr="030" indent="&#160;">
-			<var>$repairDivisor</var>
+			<var>$repairMultiplier</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>20</var>
+			<var>5</var>
 		</line>
 		<line linenr="031" indent="&#160;&#160;">
 			<text>do</text>
@@ -259,7 +259,7 @@
 			<var>[Boron]</var>
 		</line>
 		<line linenr="032" indent="&#160;&#160;">
-			<var>$repairDivisor</var>
+			<var>$repairMultiplier</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -289,7 +289,7 @@
 			<text>continue</text>
 		</line>
 		<line linenr="038" indent="&#160;">
-			<var>$repairDivisor</var>
+			<var>$repairMultiplier</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -303,7 +303,7 @@
 			<comment>* At this point, only eligible ships get repairs.</comment>
 		</line>
 		<line linenr="042" indent="&#160;">
-			<comment>* Add-Ons 1.13.2: Fixed a typo!</comment>
+			<comment>* Add-Ons 1.13.2: Fixed a typo bug and underflow.</comment>
 		</line>
 		<line linenr="043" indent="&#160;&#160;">
 			<var>$maxHull</var>
@@ -350,11 +350,21 @@
 			<text>+</text>
 			<text> </text>
 			<text>(</text>
+			<text>(</text>
 			<var>$maxHull</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$repairMultiplier</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>99</var>
+			<text>)</text>
 			<text> </text>
 			<text>/</text>
 			<text> </text>
-			<var>$repairDivisor</var>
+			<var>100</var>
 			<text>)</text>
 		</line>
 		<line linenr="047" indent="&#160;&#160;&#160;">
@@ -414,7 +424,7 @@
 			<sval type="string" val="ZH.BoronHullRegeneration" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="11" />
+			<sval type="int" val="13" />
 			<sval type="int" val="0" />
 			<sval type="array" size="10">
 				<sval type="string" val="ships" />
@@ -424,7 +434,7 @@
 				<sval type="string" val="XS.Iterator1" />
 				<sval type="string" val="owner" />
 				<sval type="string" val="maker" />
-				<sval type="string" val="repairDivisor" />
+				<sval type="string" val="repairMultiplier" />
 				<sval type="string" val="maxHull" />
 				<sval type="string" val="hull" />
 			</sval>
@@ -544,7 +554,7 @@
 					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
-					<sval type="int" val="20" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -631,10 +641,10 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="21">
+				<sval type="array" size="35">
 					<sval type="int" val="104" />
 					<sval type="int" val="9" />
-					<sval type="int" val="5" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
@@ -642,16 +652,30 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
 					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="99" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
 					<sval type="int" val="14" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
-					<sval type="int" val="7" />
+					<sval type="int" val="13" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="11" />
 					<sval type="int" val="16" />
+					<sval type="int" val="16" />
 					<sval type="int" val="-2" />
-					<sval type="int" val="14" />
+					<sval type="int" val="13" />
 					<sval type="int" val="-3" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-5" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-7" />
 					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="13">
@@ -707,7 +731,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Regenerates 10% hull on all Boron made ships. 5% for Pirate ships." />
+					<sval type="string" val="Regenerates 10% hull on all Boron made ships owned by Boron, Pirates, and Player. 5% for Pirate ships." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
@@ -801,7 +825,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="22" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.13.2: Fixed a typo!" />
+					<sval type="string" val="Add-Ons 1.13.2: Fixed a typo bug and underflow." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="29" />
