@@ -3,13 +3,13 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Calculate.Scaling</name>
-	<version>15</version>
+	<version>19</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
 	<sourcetext>
 		<line linenr="001" indent="">
-			<comment>*************************************************</comment>
+			<comment>* ************************************************</comment>
 		</line>
 		<line linenr="002" indent="">
 			<comment>* SCRIPT NAME: ZH.Calculate.Scaling</comment>
@@ -18,20 +18,20 @@
 			<comment>* DESCRIPTION: Calculates a percentage to scale main factions' and OCV fleets. Used by Mayhem.Squadron.GetGlobalNeeds and Mayhem.Monitor.OCV.</comment>
 		</line>
 		<line linenr="004" indent="">
-			<comment>* The percentage is based on the player's supply consumption. If within consumption, scaling is 100%. if above, scaling caps at 400%.</comment>
+			<comment>* The percentage is based on the player's supply consumption. If within consumption, scaling is 100%. if above, scaling caps based on galaxy size.</comment>
 		</line>
 		<line linenr="005" indent="">
 			<comment>* It steps up in 25% increments if (player's supply consumption - current scaling) &gt;= 25. Otherwise steps up by the difference.</comment>
 		</line>
 		<line linenr="006" indent="">
-			<comment>* Steps down in 10% increments if (current scaling - player's supply consumption) &gt;= 10. Otherwise steps down by the difference.</comment>
+			<comment>* Steps down in 25% increments if (current scaling - player's supply consumption) &gt;= 25. Otherwise steps down by the difference.</comment>
 		</line>
 		<line linenr="007" indent="" />
 		<line linenr="008" indent="">
 			<comment>* AUTHOR:           DATE: 4 February 2026</comment>
 		</line>
 		<line linenr="009" indent="">
-			<comment>*************************************************</comment>
+			<comment>* ************************************************</comment>
 		</line>
 		<line linenr="010" indent="">
 			<var>$npcScaleFactor</var>
@@ -79,7 +79,6 @@
 		</line>
 		<line linenr="015" indent="">
 			<text>end</text>
-			<text> </text>
 		</line>
 		<line linenr="016" indent="" />
 		<line linenr="017" indent="" interruptable="@">
@@ -133,10 +132,10 @@
 			<var>$totalSupply</var>
 		</line>
 		<line linenr="021" indent="&#160;">
-			<comment>* Default if not over cap.</comment>
+			<comment>* Default if not over cap. Add-Ons 1.14: Decay scaling gradually to prevent overextension toggling exploits.</comment>
 		</line>
 		<line linenr="022" indent="&#160;">
-			<var>$npcScaleFactor</var>
+			<var>$targetScaleFactor</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -149,7 +148,7 @@
 			<comment>* Over cap. Does nothing if player's supply factor equals NPC scale factor.</comment>
 		</line>
 		<line linenr="025" indent="&#160;">
-			<var>$supply.factor</var>
+			<var>$targetScaleFactor</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -165,56 +164,63 @@
 			<text> </text>
 			<var>$totalSupply</var>
 		</line>
-		<line linenr="026" indent="&#160;">
+		<line linenr="026" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="027" indent="" />
+		<line linenr="028" indent="">
 			<text>if</text>
 			<text> </text>
-			<var>$supply.factor</var>
+			<var>$targetScaleFactor</var>
 			<text> </text>
 			<text>&gt;</text>
 			<text> </text>
 			<var>$npcScaleFactor</var>
 		</line>
-		<line linenr="027" indent="&#160;&#160;">
+		<line linenr="029" indent="&#160;">
+			<comment>* Ramp up.</comment>
+		</line>
+		<line linenr="030" indent="&#160;">
 			<comment>* Player's supply factor is greater than NPC scale factor. Get the difference between supply factor and NPC scaling.</comment>
 		</line>
-		<line linenr="028" indent="&#160;&#160;">
+		<line linenr="031" indent="&#160;">
 			<var>$difference</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$supply.factor</var>
+			<var>$targetScaleFactor</var>
 			<text> </text>
 			<text>-</text>
 			<text> </text>
 			<var>$npcScaleFactor</var>
 		</line>
-		<line linenr="029" indent="&#160;&#160;">
+		<line linenr="032" indent="&#160;">
 			<var>$step</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>25</var>
 		</line>
-		<line linenr="030" indent="&#160;&#160;">
+		<line linenr="033" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difference</var>
 			<text> </text>
 			<text>&lt;</text>
 			<text> </text>
-			<var>25</var>
+			<var>$step</var>
 		</line>
-		<line linenr="031" indent="&#160;&#160;&#160;">
+		<line linenr="034" indent="&#160;&#160;">
 			<var>$step</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$difference</var>
 		</line>
-		<line linenr="032" indent="&#160;&#160;">
+		<line linenr="035" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="033" indent="&#160;&#160;">
+		<line linenr="036" indent="&#160;">
 			<var>$npcScaleFactor</var>
 			<text> </text>
 			<text>=</text>
@@ -225,22 +231,25 @@
 			<text> </text>
 			<var>$step</var>
 		</line>
-		<line linenr="034" indent="&#160;&#160;" />
-		<line linenr="035" indent="&#160;">
+		<line linenr="037" indent="&#160;" />
+		<line linenr="038" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
-			<var>$supply.factor</var>
+			<var>$targetScaleFactor</var>
 			<text> </text>
 			<text>&lt;</text>
 			<text> </text>
 			<var>$npcScaleFactor</var>
 		</line>
-		<line linenr="036" indent="&#160;&#160;">
+		<line linenr="039" indent="&#160;">
+			<comment>* Decay down.</comment>
+		</line>
+		<line linenr="040" indent="&#160;">
 			<comment>* Player's supply factor is less than NPC scale factor. Get the difference between current scaling and supply factor.</comment>
 		</line>
-		<line linenr="037" indent="&#160;&#160;">
+		<line linenr="041" indent="&#160;">
 			<var>$difference</var>
 			<text> </text>
 			<text>=</text>
@@ -249,35 +258,35 @@
 			<text> </text>
 			<text>-</text>
 			<text> </text>
-			<var>$supply.factor</var>
+			<var>$targetScaleFactor</var>
 		</line>
-		<line linenr="038" indent="&#160;&#160;">
+		<line linenr="042" indent="&#160;">
 			<var>$step</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>10</var>
+			<var>25</var>
 		</line>
-		<line linenr="039" indent="&#160;&#160;">
+		<line linenr="043" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difference</var>
 			<text> </text>
 			<text>&lt;</text>
 			<text> </text>
-			<var>10</var>
+			<var>$step</var>
 		</line>
-		<line linenr="040" indent="&#160;&#160;&#160;">
+		<line linenr="044" indent="&#160;&#160;">
 			<var>$step</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$difference</var>
 		</line>
-		<line linenr="041" indent="&#160;&#160;">
+		<line linenr="045" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="042" indent="&#160;&#160;">
+		<line linenr="046" indent="&#160;">
 			<var>$npcScaleFactor</var>
 			<text> </text>
 			<text>=</text>
@@ -288,55 +297,149 @@
 			<text> </text>
 			<var>$step</var>
 		</line>
-		<line linenr="043" indent="&#160;">
+		<line linenr="047" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="044" indent="&#160;" />
-		<line linenr="045" indent="&#160;">
-			<comment>* Clamp. Always between 100 - 400%.</comment>
+		<line linenr="048" indent="" />
+		<line linenr="049" indent="">
+			<comment>* Clamp. Add-Ons 1.14: Always at least 100%; upper cap now depends on galaxy size.</comment>
 		</line>
-		<line linenr="046" indent="&#160;">
+		<line linenr="050" indent="">
+			<comment>* Base lower clamp</comment>
+		</line>
+		<line linenr="051" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="052" indent="&#160;">
+			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="053" indent="" />
+		<line linenr="054" indent="" interruptable="@">
+			<var>$galaxy</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetGalaxy</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>known</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+			<text> </text>
+			<text>randomize</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="055" indent="">
+			<var>$galaxy.size</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$galaxy</var>
+		</line>
+		<line linenr="056" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$galaxy.size</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>144</var>
+		</line>
+		<line linenr="057" indent="&#160;">
+			<comment>* Large galaxy: 145+ sectors</comment>
+		</line>
+		<line linenr="058" indent="&#160;">
+			<var>$npcScaleFactor.cap</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>200</var>
+		</line>
+		<line linenr="059" indent="">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$galaxy.size</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>85</var>
+		</line>
+		<line linenr="060" indent="&#160;">
+			<comment>* Medium galaxy: 86-144 sectors</comment>
+		</line>
+		<line linenr="061" indent="&#160;">
+			<var>$npcScaleFactor.cap</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>300</var>
+		</line>
+		<line linenr="062" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="063" indent="&#160;">
+			<comment>* Small galaxy: &lt;= 85 sectors</comment>
+		</line>
+		<line linenr="064" indent="&#160;">
+			<var>$npcScaleFactor.cap</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>400</var>
+		</line>
+		<line linenr="065" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="066" indent="" />
+		<line linenr="067" indent="">
+			<text>do</text>
+			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$npcScaleFactor</var>
 			<text> </text>
 			<text>&gt;</text>
 			<text> </text>
-			<var>400</var>
+			<var>$npcScaleFactor.cap</var>
 		</line>
-		<line linenr="047" indent="&#160;&#160;">
+		<line linenr="068" indent="&#160;">
 			<var>$npcScaleFactor</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>400</var>
+			<var>$npcScaleFactor.cap</var>
 		</line>
-		<line linenr="048" indent="&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$npcScaleFactor</var>
-			<text> </text>
-			<text>&lt;</text>
-			<text> </text>
-			<var>100</var>
-		</line>
-		<line linenr="049" indent="&#160;&#160;">
-			<var>$npcScaleFactor</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>100</var>
-		</line>
-		<line linenr="050" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="051" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="052" indent="" />
-		<line linenr="053" indent="">
+		<line linenr="069" indent="" />
+		<line linenr="070" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -352,7 +455,7 @@
 			<text>=</text>
 			<var>$npcScaleFactor</var>
 		</line>
-		<line linenr="054" indent="">
+		<line linenr="071" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -363,17 +466,20 @@
 			<sval type="string" val="ZH.Calculate.Scaling" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="15" />
+			<sval type="int" val="19" />
 			<sval type="int" val="0" />
-			<sval type="array" size="6">
+			<sval type="array" size="9">
 				<sval type="string" val="npcScaleFactor" />
 				<sval type="string" val="currentSupply" />
 				<sval type="string" val="totalSupply" />
-				<sval type="string" val="supply.factor" />
+				<sval type="string" val="targetScaleFactor" />
 				<sval type="string" val="difference" />
 				<sval type="string" val="step" />
+				<sval type="string" val="galaxy" />
+				<sval type="string" val="galaxy.size" />
+				<sval type="string" val="npcScaleFactor.cap" />
 			</sval>
-			<sval type="array" size="29">
+			<sval type="array" size="37">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -453,7 +559,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="0" />
+					<sval type="int" val="3" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
@@ -462,7 +568,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="27" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
@@ -532,8 +638,8 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
-					<sval type="int" val="4" />
-					<sval type="int" val="25" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
 					<sval type="int" val="15" />
 					<sval type="int" val="3" />
 					<sval type="int" val="3" />
@@ -604,7 +710,7 @@
 					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
-					<sval type="int" val="10" />
+					<sval type="int" val="25" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -614,8 +720,8 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
-					<sval type="int" val="4" />
-					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
 					<sval type="int" val="15" />
 					<sval type="int" val="3" />
 					<sval type="int" val="3" />
@@ -649,12 +755,54 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606333" />
+					<sval type="int" val="-1610606584" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="4" />
-					<sval type="int" val="400" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetGalaxy" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605309" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="4" />
+					<sval type="int" val="144" />
 					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 					<sval type="int" val="3" />
@@ -664,38 +812,75 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="0" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
-					<sval type="int" val="400" />
+					<sval type="int" val="200" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="27" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610605819" />
+					<sval type="int" val="-1610604539" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="4" />
+					<sval type="int" val="85" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="300" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="33" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="400" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610603768" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="4" />
-					<sval type="int" val="100" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
 					<sval type="int" val="15" />
-					<sval type="int" val="3" />
+					<sval type="int" val="2" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="3" />
+					<sval type="int" val="2" />
 					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="100" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -713,7 +898,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="28">
+			<sval type="array" size="38">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -732,7 +917,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="The percentage is based on the player's supply consumption. If within consumption, scaling is 100%. if above, scaling caps at 400%." />
+					<sval type="string" val="The percentage is based on the player's supply consumption. If within consumption, scaling is 100%. if above, scaling caps based on galaxy size." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -742,7 +927,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Steps down in 10% increments if (current scaling - player's supply consumption) &gt;= 10. Otherwise steps down by the difference." />
+					<sval type="string" val="Steps down in 25% increments if (current scaling - player's supply consumption) &gt;= 25. Otherwise steps down by the difference." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
@@ -782,7 +967,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="6" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Default if not over cap." />
+					<sval type="string" val="Default if not over cap. Add-Ons 1.14: Decay scaling gradually to prevent overextension toggling exploits." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="8" />
@@ -792,6 +977,19 @@
 					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Over cap. Does nothing if player's supply factor equals NPC scale factor." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Ramp up." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="10" />
@@ -805,6 +1003,11 @@
 				<sval type="array" size="2">
 					<sval type="int" val="15" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Decay down." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="17" />
@@ -826,18 +1029,46 @@
 				<sval type="array" size="3">
 					<sval type="int" val="22" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Clamp. Always between 100 - 400%." />
+					<sval type="string" val="Clamp. Add-Ons 1.14: Always at least 100%; upper cap now depends on galaxy size." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="22" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Base lower clamp" />
 				</sval>
 				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
 					<sval type="int" val="27" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Large galaxy: 145+ sectors" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="30" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Medium galaxy: 86-144 sectors" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="32" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="32" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Small galaxy: &lt;= 85 sectors" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="33" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="27" />
-					<sval type="int" val="4" />
+					<sval type="int" val="33" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="27" />
+					<sval type="int" val="35" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
