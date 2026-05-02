@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.EquipShip.Safety</name>
-	<version>24</version>
+	<version>26</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -11,13 +11,16 @@
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
-			<comment>* this script runs after a ship bails in Mayhem.Task.Claimeable or ZH.Sig.Captured.</comment>
+			<comment>* This script runs after a ship bails in Mayhem.Task.Claimeable. </comment>
 		</line>
-		<line linenr="002" indent="" />
-		<line linenr="003" indent="">
+		<line linenr="002" indent="">
+			<comment>* Rule: only the final claim/ownership-resolution path may call EquipShip.Safety.</comment>
+		</line>
+		<line linenr="003" indent="" />
+		<line linenr="004" indent="">
 			<comment>* i suspect the vanilla bail cmd sometimes removes equipment but this seems to run with a delay, hence this additional wait.</comment>
 		</line>
-		<line linenr="004" indent="" interruptable="@">
+		<line linenr="005" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -26,18 +29,18 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="005" indent="">
+		<line linenr="006" indent="">
 			<var>$debug</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="006" indent="" />
-		<line linenr="007" indent="">
+		<line linenr="007" indent="" />
+		<line linenr="008" indent="">
 			<comment>* Add-Ons 1.14: Replaced with shield getter. DRY - Don't Repeat Yourself!</comment>
 		</line>
-		<line linenr="008" indent="" interruptable="@">
+		<line linenr="009" indent="" interruptable="@">
 			<var>$installed</var>
 			<text> </text>
 			<text>=</text>
@@ -57,16 +60,16 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="009" indent="" />
-		<line linenr="010" indent="">
+		<line linenr="010" indent="" />
+		<line linenr="011" indent="">
 			<comment>* DEBUG</comment>
 		</line>
-		<line linenr="011" indent="">
+		<line linenr="012" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$debug</var>
 		</line>
-		<line linenr="012" indent="&#160;">
+		<line linenr="013" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -85,7 +88,7 @@
 			<text> </text>
 			<var>$installed</var>
 		</line>
-		<line linenr="013" indent="&#160;">
+		<line linenr="014" indent="&#160;">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -96,23 +99,23 @@
 			<text> </text>
 			<var>$t</var>
 		</line>
-		<line linenr="014" indent="">
+		<line linenr="015" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="015" indent="">
+		<line linenr="016" indent="">
 			<comment>* END DEBUG</comment>
 		</line>
-		<line linenr="016" indent="" />
-		<line linenr="017" indent="">
+		<line linenr="017" indent="" />
+		<line linenr="018" indent="">
 			<comment>* Add-Ons 1.2: no laser safety. Bailing now reduces the number of retained lasers. This is to encourage the player to use salvaged lasers or use laser crafting. See Mayhem.CopyShip</comment>
 		</line>
-		<line linenr="018" indent="">
+		<line linenr="019" indent="">
 			<comment>* Ships retain 100% of lasers on easy. On normal, hard, and insane, vanilla bailing might rarely remove lasers but will retain 75%/50%/25% of lasers for the most part.</comment>
 		</line>
-		<line linenr="019" indent="">
+		<line linenr="020" indent="">
 			<comment>* Add-Ons 1.14: Cleanup! DRY.</comment>
 		</line>
-		<line linenr="020" indent="" interruptable="@">
+		<line linenr="021" indent="" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -128,7 +131,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="021" indent="">
+		<line linenr="022" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -139,7 +142,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="022" indent="&#160;" interruptable="@">
+		<line linenr="023" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -157,11 +160,11 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="023" indent="" />
-		<line linenr="024" indent="">
+		<line linenr="024" indent="" />
+		<line linenr="025" indent="">
 			<comment>* vanilla bailing sometimes ejects laser or shield containers. In ZH 2.0 we no longer want that - note that Mayhem.Task.Worker.Looter also does this periodically but some sectors are blacklisted for them</comment>
 		</line>
-		<line linenr="025" indent="">
+		<line linenr="026" indent="">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -173,14 +176,14 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="026" indent="">
+		<line linenr="027" indent="">
 			<var>$flags</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[Find.Multiple]</var>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="028" indent="">
 			<var>$flyingWares</var>
 			<text> </text>
 			<text>=</text>
@@ -224,7 +227,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="029" indent="">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -237,17 +240,17 @@
 			<text> </text>
 			<var>$flyingWares</var>
 		</line>
-		<line linenr="029" indent="&#160;">
+		<line linenr="030" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="030" indent="&#160;">
+		<line linenr="031" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="031" indent="&#160;">
+		<line linenr="032" indent="&#160;">
 			<var>$flyingWare</var>
 			<text> </text>
 			<text>=</text>
@@ -257,7 +260,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="032" indent="&#160;" interruptable="@">
+		<line linenr="033" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -266,7 +269,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="033" indent="&#160;">
+		<line linenr="034" indent="&#160;">
 			<var>$ware</var>
 			<text> </text>
 			<text>=</text>
@@ -286,7 +289,7 @@
 			<text> </text>
 			<text>object</text>
 		</line>
-		<line linenr="034" indent="&#160;&#160;">
+		<line linenr="035" indent="&#160;&#160;">
 			<var>$maintype</var>
 			<text> </text>
 			<text>=</text>
@@ -301,10 +304,10 @@
 			<text> </text>
 			<var>$ware</var>
 		</line>
-		<line linenr="035" indent="">
+		<line linenr="036" indent="">
 			<comment>* Mordan8 - lasers are back.</comment>
 		</line>
-		<line linenr="036" indent="">
+		<line linenr="037" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -315,7 +318,7 @@
 			<text> </text>
 			<var>[SSTYPE_SHIELD]</var>
 		</line>
-		<line linenr="037" indent="">
+		<line linenr="038" indent="">
 			<var>$flyingWare</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -330,12 +333,12 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="038" indent="">
+		<line linenr="039" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="039" indent="" />
 		<line linenr="040" indent="" />
-		<line linenr="041" indent="">
+		<line linenr="041" indent="" />
+		<line linenr="042" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -346,7 +349,7 @@
 			<sval type="string" val="ZH.EquipShip.Safety" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="24" />
+			<sval type="int" val="26" />
 			<sval type="int" val="0" />
 			<sval type="array" size="12">
 				<sval type="string" val="ship" />
@@ -580,11 +583,16 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="19">
+			<sval type="array" size="20">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="this script runs after a ship bails in Mayhem.Task.Claimeable or ZH.Sig.Captured." />
+					<sval type="string" val="This script runs after a ship bails in Mayhem.Task.Claimeable. " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Rule: only the final claim/ownership-resolution path may call EquipShip.Safety." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
