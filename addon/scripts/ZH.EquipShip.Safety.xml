@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.EquipShip.Safety</name>
-	<version>26</version>
+	<version>29</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -38,9 +38,37 @@
 		</line>
 		<line linenr="007" indent="" />
 		<line linenr="008" indent="">
-			<comment>* Add-Ons 1.14: Replaced with shield getter. DRY - Don't Repeat Yourself!</comment>
+			<comment>* Add-Ons 1.14: Replaced with shield getter. DRY - Don't Repeat Yourself! On hard and insane, the ship retains up to 75% and 50% of shields respectively, so full equip only on easy/normal.</comment>
 		</line>
 		<line linenr="009" indent="" interruptable="@">
+			<var>$difficulty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetDifficulty</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="010" indent="" />
+		<line linenr="011" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>&lt;=</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="012" indent="&#160;" interruptable="@">
 			<var>$installed</var>
 			<text> </text>
 			<text>=</text>
@@ -60,16 +88,16 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="010" indent="" />
-		<line linenr="011" indent="">
+		<line linenr="013" indent="" />
+		<line linenr="014" indent="">
 			<comment>* DEBUG</comment>
 		</line>
-		<line linenr="012" indent="">
+		<line linenr="015" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$debug</var>
 		</line>
-		<line linenr="013" indent="&#160;">
+		<line linenr="016" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -88,7 +116,7 @@
 			<text> </text>
 			<var>$installed</var>
 		</line>
-		<line linenr="014" indent="&#160;">
+		<line linenr="017" indent="&#160;">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -99,39 +127,23 @@
 			<text> </text>
 			<var>$t</var>
 		</line>
-		<line linenr="015" indent="">
+		<line linenr="018" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="016" indent="">
+		<line linenr="019" indent="">
 			<comment>* END DEBUG</comment>
 		</line>
-		<line linenr="017" indent="" />
-		<line linenr="018" indent="">
+		<line linenr="020" indent="" />
+		<line linenr="021" indent="">
 			<comment>* Add-Ons 1.2: no laser safety. Bailing now reduces the number of retained lasers. This is to encourage the player to use salvaged lasers or use laser crafting. See Mayhem.CopyShip</comment>
 		</line>
-		<line linenr="019" indent="">
-			<comment>* Ships retain 100% of lasers on easy. On normal, hard, and insane, vanilla bailing might rarely remove lasers but will retain 75%/50%/25% of lasers for the most part.</comment>
+		<line linenr="022" indent="">
+			<comment>* Ships retain 100% of lasers on easy. On normal, hard, and insane, vanilla bailing rarely removes lasers but will retain up to 75%/50%/25% of lasers for the most part.</comment>
 		</line>
-		<line linenr="020" indent="">
+		<line linenr="023" indent="">
 			<comment>* Add-Ons 1.14: Cleanup! DRY.</comment>
 		</line>
-		<line linenr="021" indent="" interruptable="@">
-			<var>$difficulty</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.GetDifficulty</call>
-			<text> </text>
-			<text>:</text>
-		</line>
-		<line linenr="022" indent="">
+		<line linenr="024" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -142,7 +154,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="023" indent="&#160;" interruptable="@">
+		<line linenr="025" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -160,11 +172,19 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="024" indent="" />
-		<line linenr="025" indent="">
+		<line linenr="026" indent="" />
+		<line linenr="027" indent="">
 			<comment>* vanilla bailing sometimes ejects laser or shield containers. In ZH 2.0 we no longer want that - note that Mayhem.Task.Worker.Looter also does this periodically but some sectors are blacklisted for them</comment>
 		</line>
-		<line linenr="026" indent="">
+		<line linenr="028" indent="">
+			<comment>* Add-Ons 1.14: Removed. Shields are back as wares.</comment>
+		</line>
+		<line linenr="029" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="030" indent="&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -176,14 +196,14 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="031" indent="&#160;">
 			<var>$flags</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[Find.Multiple]</var>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="032" indent="&#160;">
 			<var>$flyingWares</var>
 			<text> </text>
 			<text>=</text>
@@ -227,7 +247,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="029" indent="">
+		<line linenr="033" indent="&#160;">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -240,17 +260,17 @@
 			<text> </text>
 			<var>$flyingWares</var>
 		</line>
-		<line linenr="030" indent="&#160;">
+		<line linenr="034" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="031" indent="&#160;">
+		<line linenr="035" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="032" indent="&#160;">
+		<line linenr="036" indent="&#160;&#160;">
 			<var>$flyingWare</var>
 			<text> </text>
 			<text>=</text>
@@ -260,7 +280,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="033" indent="&#160;" interruptable="@">
+		<line linenr="037" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -269,7 +289,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="034" indent="&#160;">
+		<line linenr="038" indent="&#160;&#160;">
 			<var>$ware</var>
 			<text> </text>
 			<text>=</text>
@@ -289,7 +309,7 @@
 			<text> </text>
 			<text>object</text>
 		</line>
-		<line linenr="035" indent="&#160;&#160;">
+		<line linenr="039" indent="&#160;&#160;&#160;">
 			<var>$maintype</var>
 			<text> </text>
 			<text>=</text>
@@ -304,10 +324,10 @@
 			<text> </text>
 			<var>$ware</var>
 		</line>
-		<line linenr="036" indent="">
+		<line linenr="040" indent="&#160;">
 			<comment>* Mordan8 - lasers are back.</comment>
 		</line>
-		<line linenr="037" indent="">
+		<line linenr="041" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -318,7 +338,7 @@
 			<text> </text>
 			<var>[SSTYPE_SHIELD]</var>
 		</line>
-		<line linenr="038" indent="">
+		<line linenr="042" indent="">
 			<var>$flyingWare</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -333,12 +353,15 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="039" indent="">
+		<line linenr="043" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="040" indent="" />
-		<line linenr="041" indent="" />
-		<line linenr="042" indent="">
+		<line linenr="044" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="045" indent="" />
+		<line linenr="046" indent="" />
+		<line linenr="047" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -349,14 +372,14 @@
 			<sval type="string" val="ZH.EquipShip.Safety" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="26" />
+			<sval type="int" val="29" />
 			<sval type="int" val="0" />
 			<sval type="array" size="12">
 				<sval type="string" val="ship" />
 				<sval type="string" val="debug" />
+				<sval type="string" val="difficulty" />
 				<sval type="string" val="installed" />
 				<sval type="string" val="t" />
-				<sval type="string" val="difficulty" />
 				<sval type="string" val="sector" />
 				<sval type="string" val="flags" />
 				<sval type="string" val="flyingWares" />
@@ -365,7 +388,7 @@
 				<sval type="string" val="ware" />
 				<sval type="string" val="maintype" />
 			</sval>
-			<sval type="array" size="23">
+			<sval type="array" size="25">
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
 					<sval type="int" val="-2147483647" />
@@ -381,10 +404,33 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetDifficulty" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611448" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-2" />
+				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.EquipShip.Shields" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -393,7 +439,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610611197" />
+					<sval type="int" val="-1610610685" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -402,7 +448,7 @@
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="7" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Ship: " />
@@ -415,7 +461,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="7" />
@@ -430,22 +476,14 @@
 				<sval type="array" size="3">
 					<sval type="int" val="400" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.GetDifficulty" />
 					<sval type="int" val="4" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610424" />
+					<sval type="int" val="-1610610168" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="2" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -464,6 +502,15 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606589" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
@@ -508,7 +555,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607095" />
+					<sval type="int" val="-1610606583" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
@@ -547,7 +594,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607352" />
+					<sval type="int" val="-1610606840" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="11" />
@@ -569,7 +616,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -583,7 +630,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="20">
+			<sval type="array" size="23">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -610,69 +657,82 @@
 				<sval type="array" size="3">
 					<sval type="int" val="2" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.14: Replaced with shield getter. DRY - Don't Repeat Yourself!" />
+					<sval type="string" val="Add-Ons 1.14: Replaced with shield getter. DRY - Don't Repeat Yourself! On hard and insane, the ship retains up to 75% and 50% of shields respectively, so full equip only on easy/normal." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="3" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="string" val="DEBUG" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="string" val="END DEBUG" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.2: no laser safety. Bailing now reduces the number of retained lasers. This is to encourage the player to use salvaged lasers or use laser crafting. See Mayhem.CopyShip" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Ships retain 100% of lasers on easy. On normal, hard, and insane, vanilla bailing might rarely remove lasers but will retain 75%/50%/25% of lasers for the most part." />
+					<sval type="string" val="Ships retain 100% of lasers on easy. On normal, hard, and insane, vanilla bailing rarely removes lasers but will retain up to 75%/50%/25% of lasers for the most part." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.14: Cleanup! DRY." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="string" val="vanilla bailing sometimes ejects laser or shield containers. In ZH 2.0 we no longer want that - note that Mayhem.Task.Worker.Looter also does this periodically but some sectors are blacklisted for them" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="19" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.14: Removed. Shields are back as wares." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="21" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan8 - lasers are back." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="22" />
+					<sval type="int" val="24" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="22" />
+					<sval type="int" val="24" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="22" />
+					<sval type="int" val="24" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
