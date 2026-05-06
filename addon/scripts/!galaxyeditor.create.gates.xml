@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>!galaxyeditor.create.gates</name>
-	<version>26</version>
+	<version>28</version>
 	<engineversion>50</engineversion>
 	<description>Connect two sectors with gates</description>
 	<arguments>
@@ -975,84 +975,78 @@
 			<comment>* Destination gate </comment>
 		</line>
 		<line linenr="106" indent="">
-			<var>$secradius.to</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$secto</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>object</text>
-		</line>
-		<line linenr="107" indent="">
-			<var>$secradius.to.neg</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>-</text>
-			<var>$secradius.to</var>
-		</line>
-		<line linenr="108" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$forWormhole</var>
+		</line>
+		<line linenr="107" indent="&#160;">
+			<comment>* Get a random position.</comment>
+		</line>
+		<line linenr="108" indent="&#160;" interruptable="@">
+			<var>$wormhole.posArray</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.GetValidPos</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>$secto</var>
+			<text> </text>
+			<text>minDistance</text>
+			<text>=</text>
+			<var>10000</var>
+			<text> </text>
+			<text>posArray</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>verticalOnly</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+			<text> </text>
+			<text>refobj</text>
+			<text>=</text>
+			<var>null</var>
 		</line>
 		<line linenr="109" indent="&#160;">
 			<var>$posx.to</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>random</text>
-			<text> </text>
-			<text>value</text>
-			<text> </text>
-			<text>between</text>
-			<text> </text>
-			<var>$secradius.to.neg</var>
-			<text> </text>
-			<text>and</text>
-			<text> </text>
-			<var>$secradius.to</var>
+			<var>$wormhole.posArray</var>
+			<text>[</text>
+			<var>0</var>
+			<text>]</text>
 		</line>
 		<line linenr="110" indent="&#160;">
 			<var>$posy</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>random</text>
-			<text> </text>
-			<text>value</text>
-			<text> </text>
-			<text>between</text>
-			<text> </text>
-			<var>-6000</var>
-			<text> </text>
-			<text>and</text>
-			<text> </text>
-			<var>6000</var>
+			<var>$wormhole.posArray</var>
+			<text>[</text>
+			<var>1</var>
+			<text>]</text>
 		</line>
 		<line linenr="111" indent="&#160;">
 			<var>$posz.to</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>random</text>
-			<text> </text>
-			<text>value</text>
-			<text> </text>
-			<text>between</text>
-			<text> </text>
-			<var>$secradius.to.neg</var>
-			<text> </text>
-			<text>and</text>
-			<text> </text>
-			<var>$secradius.to</var>
+			<var>$wormhole.posArray</var>
+			<text>[</text>
+			<var>2</var>
+			<text>]</text>
 		</line>
 		<line linenr="112" indent="&#160;">
 			<var>$gate</var>
@@ -1107,14 +1101,38 @@
 			<comment>* Give some flavor.</comment>
 		</line>
 		<line linenr="115" indent="&#160;">
+			<var>$secradius.to</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$secto</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>object</text>
+		</line>
+		<line linenr="116" indent="&#160;">
+			<var>$secradius.to.neg</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>-</text>
+			<var>$secradius.to</var>
+		</line>
+		<line linenr="117" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$isVert</var>
 		</line>
-		<line linenr="116" indent="&#160;&#160;">
+		<line linenr="118" indent="&#160;&#160;">
 			<comment>* Vertical was handled.</comment>
 		</line>
-		<line linenr="117" indent="&#160;&#160;">
+		<line linenr="119" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$posz.from</var>
@@ -1123,10 +1141,10 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="118" indent="&#160;&#160;&#160;">
+		<line linenr="120" indent="&#160;&#160;&#160;">
 			<comment>* Source is facing south, so assign destination to face north side.</comment>
 		</line>
-		<line linenr="119" indent="&#160;&#160;&#160;">
+		<line linenr="121" indent="&#160;&#160;&#160;">
 			<var>$posz.to</var>
 			<text> </text>
 			<text>=</text>
@@ -1143,13 +1161,13 @@
 			<text> </text>
 			<var>$secradius.to</var>
 		</line>
-		<line linenr="120" indent="&#160;&#160;">
+		<line linenr="122" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="121" indent="&#160;&#160;&#160;">
+		<line linenr="123" indent="&#160;&#160;&#160;">
 			<comment>* Source is facing north, so assign destination to face south side.</comment>
 		</line>
-		<line linenr="122" indent="&#160;&#160;&#160;">
+		<line linenr="124" indent="&#160;&#160;&#160;">
 			<var>$posz.to</var>
 			<text> </text>
 			<text>=</text>
@@ -1166,16 +1184,16 @@
 			<text> </text>
 			<var>-30000</var>
 		</line>
-		<line linenr="123" indent="&#160;&#160;">
+		<line linenr="125" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="124" indent="&#160;">
+		<line linenr="126" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="125" indent="&#160;&#160;">
+		<line linenr="127" indent="&#160;&#160;">
 			<comment>* Horizontal was handled.</comment>
 		</line>
-		<line linenr="126" indent="&#160;&#160;">
+		<line linenr="128" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$posx.from</var>
@@ -1184,10 +1202,10 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="127" indent="&#160;&#160;&#160;">
+		<line linenr="129" indent="&#160;&#160;&#160;">
 			<comment>* Source is facing west, so assign destination to face east side.</comment>
 		</line>
-		<line linenr="128" indent="&#160;&#160;&#160;">
+		<line linenr="130" indent="&#160;&#160;&#160;">
 			<var>$posx.to</var>
 			<text> </text>
 			<text>=</text>
@@ -1204,13 +1222,13 @@
 			<text> </text>
 			<var>$secradius.to</var>
 		</line>
-		<line linenr="129" indent="&#160;&#160;">
+		<line linenr="131" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="130" indent="&#160;&#160;&#160;">
+		<line linenr="132" indent="&#160;&#160;&#160;">
 			<comment>* Source is facing east, so assign destination to face west side.</comment>
 		</line>
-		<line linenr="131" indent="&#160;&#160;&#160;">
+		<line linenr="133" indent="&#160;&#160;&#160;">
 			<var>$posx.to</var>
 			<text> </text>
 			<text>=</text>
@@ -1227,14 +1245,14 @@
 			<text> </text>
 			<var>-30000</var>
 		</line>
-		<line linenr="132" indent="&#160;&#160;">
+		<line linenr="134" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="133" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="134" indent="&#160;" />
 		<line linenr="135" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="136" indent="&#160;" />
+		<line linenr="137" indent="&#160;">
 			<var>$posy</var>
 			<text> </text>
 			<text>=</text>
@@ -1251,7 +1269,7 @@
 			<text> </text>
 			<var>6000</var>
 		</line>
-		<line linenr="136" indent="&#160;">
+		<line linenr="138" indent="&#160;">
 			<var>$gate</var>
 			<text> </text>
 			<text>=</text>
@@ -1297,11 +1315,11 @@
 			<text>=</text>
 			<var>$posz.to</var>
 		</line>
-		<line linenr="137" indent="">
+		<line linenr="139" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="138" indent="" />
-		<line linenr="139" indent="">
+		<line linenr="140" indent="" />
+		<line linenr="141" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1317,7 +1335,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="140" indent="&#160;">
+		<line linenr="142" indent="&#160;">
 			<var>$gate</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -1331,41 +1349,41 @@
 			<text> </text>
 			<var>46</var>
 		</line>
-		<line linenr="141" indent="" />
-		<line linenr="142" indent="">
+		<line linenr="143" indent="" />
+		<line linenr="144" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="143" indent="" />
-		<line linenr="144" indent="">
+		<line linenr="145" indent="" />
+		<line linenr="146" indent="">
 			<var>abort</var>
 			<text>:</text>
 		</line>
-		<line linenr="145" indent="">
+		<line linenr="147" indent="">
 			<comment>* Abort with fail sample</comment>
 		</line>
-		<line linenr="146" indent="">
+		<line linenr="148" indent="">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>956</var>
 		</line>
-		<line linenr="147" indent="">
+		<line linenr="149" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="148" indent="" />
-		<line linenr="149" indent="" />
+		<line linenr="150" indent="" />
+		<line linenr="151" indent="" />
 	</sourcetext>
 	<codearray>
 		<sval type="array" size="10">
 			<sval type="string" val="!galaxyeditor.create.gates" />
 			<sval type="int" val="50" />
 			<sval type="string" val="Connect two sectors with gates" />
-			<sval type="int" val="26" />
+			<sval type="int" val="28" />
 			<sval type="int" val="0" />
 			<sval type="array" size="27">
 				<sval type="string" val="secfrom" />
@@ -1391,12 +1409,12 @@
 				<sval type="string" val="wormhole.posArray" />
 				<sval type="string" val="posy" />
 				<sval type="string" val="gate" />
-				<sval type="string" val="secradius.to" />
-				<sval type="string" val="secradius.to.neg" />
 				<sval type="string" val="posx.to" />
 				<sval type="string" val="posz.to" />
+				<sval type="string" val="secradius.to" />
+				<sval type="string" val="secradius.to.neg" />
 			</sval>
-			<sval type="array" size="94">
+			<sval type="array" size="95">
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
 					<sval type="int" val="-536870393" />
@@ -1426,7 +1444,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="91" />
+					<sval type="int" val="92" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="110" />
@@ -1886,7 +1904,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="91" />
+					<sval type="int" val="92" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="811" />
@@ -1917,7 +1935,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="91" />
+					<sval type="int" val="92" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="811" />
@@ -1948,7 +1966,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="91" />
+					<sval type="int" val="92" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -2101,56 +2119,56 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="46" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="780" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="23" />
-				</sval>
-				<sval type="array" size="10">
-					<sval type="int" val="104" />
-					<sval type="int" val="24" />
-					<sval type="int" val="2" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="23" />
-					<sval type="int" val="15" />
-					<sval type="int" val="65555" />
-					<sval type="int" val="2" />
-					<sval type="int" val="65555" />
-					<sval type="int" val="-1" />
-				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610593277" />
+					<sval type="int" val="-1610593533" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="110" />
-					<sval type="int" val="25" />
+				<sval type="array" size="16">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.GetValidPos" />
+					<sval type="int" val="20" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="24" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="23" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10000" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="6">
-					<sval type="int" val="110" />
+					<sval type="int" val="129" />
+					<sval type="int" val="23" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="20" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
 					<sval type="int" val="21" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="20" />
 					<sval type="int" val="4" />
-					<sval type="int" val="-6000" />
-					<sval type="int" val="4" />
-					<sval type="int" val="6001" />
+					<sval type="int" val="1" />
 				</sval>
 				<sval type="array" size="6">
-					<sval type="int" val="110" />
-					<sval type="int" val="26" />
-					<sval type="int" val="131074" />
+					<sval type="int" val="129" />
 					<sval type="int" val="24" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="23" />
+					<sval type="int" val="20" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="20">
 					<sval type="int" val="748" />
@@ -2160,11 +2178,11 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="25" />
+					<sval type="int" val="23" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="21" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
+					<sval type="int" val="24" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="14" />
 					<sval type="int" val="131074" />
@@ -2176,11 +2194,29 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="88" />
+					<sval type="int" val="89" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="780" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="25" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="104" />
+					<sval type="int" val="26" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="25" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65555" />
+					<sval type="int" val="2" />
+					<sval type="int" val="65555" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610591741" />
+					<sval type="int" val="-1610591485" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="16" />
@@ -2189,7 +2225,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610592253" />
+					<sval type="int" val="-1610591997" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -2204,31 +2240,31 @@
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="110" />
-					<sval type="int" val="26" />
+					<sval type="int" val="24" />
 					<sval type="int" val="4" />
 					<sval type="int" val="30000" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="23" />
+					<sval type="int" val="25" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="81" />
+					<sval type="int" val="82" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="110" />
-					<sval type="int" val="26" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="24" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="26" />
 					<sval type="int" val="4" />
 					<sval type="int" val="-29999" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="86" />
+					<sval type="int" val="87" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610590973" />
+					<sval type="int" val="-1610590717" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -2243,21 +2279,21 @@
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="110" />
-					<sval type="int" val="25" />
+					<sval type="int" val="23" />
 					<sval type="int" val="4" />
 					<sval type="int" val="30000" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="23" />
+					<sval type="int" val="25" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="86" />
+					<sval type="int" val="87" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="110" />
-					<sval type="int" val="25" />
+					<sval type="int" val="23" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="24" />
+					<sval type="int" val="26" />
 					<sval type="int" val="4" />
 					<sval type="int" val="-29999" />
 				</sval>
@@ -2277,11 +2313,11 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="25" />
+					<sval type="int" val="23" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="21" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
+					<sval type="int" val="24" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="14" />
 					<sval type="int" val="131074" />
@@ -2295,7 +2331,7 @@
 					<sval type="int" val="761" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="22" />
-					<sval type="int" val="-1610589688" />
+					<sval type="int" val="-1610589432" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="1899" />
@@ -2338,7 +2374,7 @@
 					<sval type="string" val="Only from Outpost perk." />
 				</sval>
 			</sval>
-			<sval type="array" size="64">
+			<sval type="array" size="65">
 				<sval type="array" size="2">
 					<sval type="int" val="2" />
 					<sval type="int" val="2" />
@@ -2526,100 +2562,105 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Destination gate " />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="69" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Get a random position." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="76" />
+					<sval type="int" val="75" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="76" />
+					<sval type="int" val="75" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Give some flavor." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="77" />
+					<sval type="int" val="78" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Vertical was handled." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="78" />
+					<sval type="int" val="79" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Source is facing south, so assign destination to face north side." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="80" />
+					<sval type="int" val="81" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="80" />
+					<sval type="int" val="81" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Source is facing north, so assign destination to face south side." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="81" />
+					<sval type="int" val="82" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="82" />
+					<sval type="int" val="83" />
 					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="82" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Horizontal was handled." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="83" />
 					<sval type="int" val="1" />
+					<sval type="string" val="Horizontal was handled." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="84" />
+					<sval type="int" val="1" />
 					<sval type="string" val="Source is facing west, so assign destination to face east side." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="85" />
+					<sval type="int" val="86" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="85" />
+					<sval type="int" val="86" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Source is facing east, so assign destination to face west side." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="86" />
+					<sval type="int" val="87" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="86" />
+					<sval type="int" val="87" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="86" />
+					<sval type="int" val="87" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="88" />
+					<sval type="int" val="89" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="88" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="90" />
+					<sval type="int" val="89" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="91" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
+				<sval type="array" size="2">
 					<sval type="int" val="92" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="93" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Abort with fail sample" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="94" />
+					<sval type="int" val="95" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="94" />
+					<sval type="int" val="95" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
