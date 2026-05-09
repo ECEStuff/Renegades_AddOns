@@ -84,5 +84,6 @@ If you're installing from Renegades 5.4 or are patching Add-Ons:
     - If ZMap is included within Renegades (default setup), no additional action is required.
 
 # Versioning Policy
+- Major versions (e.g. X.0) change persistent world behavior and introduce new mechanics, requiring a new game.
 - Minor versions (e.g. 1.X) may change persistent world behavior and can require a new game in specific cases.
 - Patch Versions (e.g. 1.5.X) are safe to update mid-save.
