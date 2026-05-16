@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.StockOutpost</name>
-	<version>5</version>
+	<version>10</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -17,7 +17,7 @@
 			<comment>* SCRIPT NAME: Mayhem.StockOutpost.xml</comment>
 		</line>
 		<line linenr="003" indent="">
-			<comment>* DESCRIPTION: Stocks the designated Outpost with crafting wares. Used by PhanonCreation, Mayhem.ActivateYakis, Mayhem.FirstConquestPlayer, and ZH.SyntheticDawnCompletion.</comment>
+			<comment>* DESCRIPTION: Stocks the designated Outpost with crafting wares. Used by PhanonCreation, Mayhem.ActivateYakis, Mayhem.FirstConquestPlayer (only on origin galaxy and only on hard+ difficulties), and ZH.SyntheticDawnCompletion.</comment>
 		</line>
 		<line linenr="004" indent="">
 			<comment>* </comment>
@@ -37,18 +37,7 @@
 			<text>exists</text>
 		</line>
 		<line linenr="008" indent="&#160;">
-			<var>$wares</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<text>alloc</text>
-			<text>:</text>
-			<text> </text>
-			<text>size</text>
-			<text>=</text>
-			<var>0</var>
+			<comment>* All the crafting wares are needed. When Phanon or Yaki take over factories, they lose their storage, so they'll need to be restarted. Having intermediate wares at the ready helps jumpstart these factories.</comment>
 		</line>
 		<line linenr="009" indent="&#160;" interruptable="@">
 			<var>$craftingWares</var>
@@ -68,45 +57,9 @@
 			<text> </text>
 			<text>all</text>
 			<text>=</text>
-			<var>[FALSE]</var>
+			<var>[TRUE]</var>
 		</line>
 		<line linenr="010" indent="&#160;">
-			<var>$products</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$craftingWares</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'products'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="011" indent="&#160;">
-			<var>$wares</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>join</text>
-			<text> </text>
-			<text>arrays</text>
-			<text>:</text>
-			<text> </text>
-			<text>first</text>
-			<text>=</text>
-			<var>$wares</var>
-			<text>,</text>
-			<text> </text>
-			<text>second</text>
-			<text>=</text>
-			<var>$products</var>
-		</line>
-		<line linenr="012" indent="&#160;">
 			<var>$outpost.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -120,8 +73,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="013" indent="&#160;" />
-		<line linenr="014" indent="&#160;">
+		<line linenr="011" indent="&#160;">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -132,29 +84,32 @@
 			<text> </text>
 			<text>array</text>
 			<text> </text>
-			<var>$wares</var>
+			<var>$craftingWares</var>
 		</line>
-		<line linenr="015" indent="&#160;&#160;">
+		<line linenr="012" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="016" indent="&#160;&#160;">
+		<line linenr="013" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="017" indent="&#160;&#160;">
+		<line linenr="014" indent="&#160;&#160;">
 			<var>$ware</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$wares</var>
+			<var>$craftingWares</var>
 			<text>[</text>
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="018" indent="&#160;&#160;">
+		<line linenr="015" indent="&#160;&#160;">
+			<comment>* Randomization value: 150k to 170k (previously 156,781 to 161,813). The range is wider, but the average is slightly higher (159.3k -&gt; 160k) to give each Outpost some distinction.</comment>
+		</line>
+		<line linenr="016" indent="&#160;&#160;">
 			<var>$refValue</var>
 			<text> </text>
 			<text>=</text>
@@ -165,17 +120,20 @@
 			<text> </text>
 			<text>between</text>
 			<text> </text>
-			<var>156781</var>
+			<var>150000</var>
 			<text> </text>
 			<text>and</text>
 			<text> </text>
-			<var>161813</var>
+			<var>170000</var>
 		</line>
-		<line linenr="019" indent="&#160;&#160;&#160;" />
+		<line linenr="017" indent="&#160;&#160;" />
+		<line linenr="018" indent="&#160;&#160;&#160;">
+			<comment>* Add-Ons 2.0: Yaki get 1.5x to compensate for universal disdain. 2x gave A LOT!</comment>
+		</line>
+		<line linenr="019" indent="&#160;&#160;">
+			<comment>* This amount is still less than what factions normally start with, but Yaki have more clustered territory (unlike most factions that have remote sectors) and generally start later. </comment>
+		</line>
 		<line linenr="020" indent="&#160;&#160;">
-			<comment>* Add-Ons 2.0: Yaki get 1.5x to compensate for universal disdain.</comment>
-		</line>
-		<line linenr="021" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -186,7 +144,7 @@
 			<text> </text>
 			<var>[Yaki]</var>
 		</line>
-		<line linenr="022" indent="&#160;&#160;">
+		<line linenr="021" indent="&#160;&#160;">
 			<var>$refValue</var>
 			<text> </text>
 			<text>=</text>
@@ -203,8 +161,8 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="023" indent="&#160;&#160;" />
-		<line linenr="024" indent="&#160;&#160;&#160;">
+		<line linenr="022" indent="&#160;&#160;" />
+		<line linenr="023" indent="&#160;&#160;&#160;">
 			<var>$ware.price</var>
 			<text> </text>
 			<text>=</text>
@@ -221,7 +179,7 @@
 			<text> </text>
 			<var>$ware</var>
 		</line>
-		<line linenr="025" indent="&#160;&#160;">
+		<line linenr="024" indent="&#160;&#160;">
 			<var>$ware.q</var>
 			<text> </text>
 			<text>=</text>
@@ -232,21 +190,21 @@
 			<text> </text>
 			<var>$ware.price</var>
 		</line>
-		<line linenr="026" indent="&#160;&#160;">
+		<line linenr="025" indent="&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$ware.q</var>
 		</line>
-		<line linenr="027" indent="&#160;">
+		<line linenr="026" indent="&#160;">
 			<var>$ware.q</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="027" indent="">
 			<var>$outpost</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -265,7 +223,7 @@
 			<text> </text>
 			<var>$ware</var>
 		</line>
-		<line linenr="029" indent="">
+		<line linenr="028" indent="">
 			<text>=</text>
 			<text> </text>
 			<var>$outpost</var>
@@ -281,15 +239,15 @@
 			<text> </text>
 			<var>$ware</var>
 		</line>
+		<line linenr="029" indent="">
+			<text>end</text>
+		</line>
 		<line linenr="030" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="031" indent="">
-			<text>end</text>
-		</line>
+		<line linenr="031" indent="" />
 		<line linenr="032" indent="" />
-		<line linenr="033" indent="" />
-		<line linenr="034" indent="">
+		<line linenr="033" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -300,13 +258,11 @@
 			<sval type="string" val="Mayhem.StockOutpost" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="5" />
+			<sval type="int" val="10" />
 			<sval type="int" val="0" />
-			<sval type="array" size="10">
+			<sval type="array" size="8">
 				<sval type="string" val="outpost" />
-				<sval type="string" val="wares" />
 				<sval type="string" val="craftingWares" />
-				<sval type="string" val="products" />
 				<sval type="string" val="outpost.owner" />
 				<sval type="string" val="ware" />
 				<sval type="string" val="XS.Iterator1" />
@@ -314,92 +270,70 @@
 				<sval type="string" val="ware.price" />
 				<sval type="string" val="ware.q" />
 			</sval>
-			<sval type="array" size="21">
+			<sval type="array" size="18">
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610607613" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="128" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
+					<sval type="int" val="-1610608381" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetCraftingWares" />
-					<sval type="int" val="2" />
+					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="5" />
-					<sval type="string" val="products" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1850" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="4" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="6" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607607" />
+					<sval type="int" val="-1610608375" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="6" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="5" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="110" />
-					<sval type="int" val="7" />
+					<sval type="int" val="5" />
 					<sval type="int" val="4" />
-					<sval type="int" val="156781" />
+					<sval type="int" val="150000" />
 					<sval type="int" val="4" />
-					<sval type="int" val="161814" />
+					<sval type="int" val="170001" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609400" />
+					<sval type="int" val="-1610610168" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="2" />
 					<sval type="int" val="10" />
 					<sval type="int" val="19" />
 					<sval type="int" val="15" />
@@ -411,10 +345,10 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="7" />
+					<sval type="int" val="5" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="5" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 					<sval type="int" val="15" />
@@ -434,18 +368,18 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="629" />
-					<sval type="int" val="8" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="9" />
+					<sval type="int" val="7" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="6" />
 					<sval type="int" val="15" />
 					<sval type="int" val="14" />
 					<sval type="int" val="3" />
@@ -455,16 +389,16 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536866553" />
+					<sval type="int" val="-536867321" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="9" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
@@ -476,7 +410,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="646" />
@@ -484,13 +418,13 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-2147483647" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="7" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -504,7 +438,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="14">
+			<sval type="array" size="16">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -518,7 +452,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="DESCRIPTION: Stocks the designated Outpost with crafting wares. Used by PhanonCreation, Mayhem.ActivateYakis, Mayhem.FirstConquestPlayer, and ZH.SyntheticDawnCompletion." />
+					<sval type="string" val="DESCRIPTION: Stocks the designated Outpost with crafting wares. Used by PhanonCreation, Mayhem.ActivateYakis, Mayhem.FirstConquestPlayer (only on origin galaxy and only on hard+ difficulties), and ZH.SyntheticDawnCompletion." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -535,37 +469,48 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="************************************************" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="6" />
-					<sval type="int" val="2" />
+				<sval type="array" size="3">
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="string" val="All the crafting wares are needed. When Phanon or Yaki take over factories, they lose their storage, so they'll need to be restarted. Having intermediate wares at the ready helps jumpstart these factories." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Randomization value: 150k to 170k (previously 156,781 to 161,813). The range is wider, but the average is slightly higher (159.3k -&gt; 160k) to give each Outpost some distinction." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="11" />
+					<sval type="int" val="8" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="11" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.0: Yaki get 1.5x to compensate for universal disdain." />
+					<sval type="string" val="Add-Ons 2.0: Yaki get 1.5x to compensate for universal disdain. 2x gave A LOT!" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="string" val="This amount is still less than what factions normally start with, but Yaki have more clustered territory (unlike most factions that have remote sectors) and generally start later. " />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="13" />
+					<sval type="int" val="10" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
