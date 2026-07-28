@@ -4,7 +4,9 @@ Add-Ons for Mayhem 3 Renegades, featuring Renegades balance adjustments, milesto
 
 Forum thread: https://forum.egosoft.com/viewtopic.php?t=473331
 
-Base Renegades Full Install - Download from Google Drive: https://drive.google.com/file/d/1y5tHTYfXYe9FXuQMfDC0d3MFMbTd2vOo/view?usp=sharing
+Base Renegades Full Install (original): https://eve.transcendsharp.com/Mayhem/Renegades/Install_540.zip
+
+Base Renegades Full Install - Alternative location on Google Drive: https://drive.google.com/file/d/1y5tHTYfXYe9FXuQMfDC0d3MFMbTd2vOo/view?usp=sharing
 
 Russian localization: https://github.com/alexalsp2/Renegades_AddOns_russian
 
