@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Menu.ZH.FactoryConstruction.Set</name>
-	<version>18</version>
+	<version>20</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -56,6 +56,9 @@
 			<comment>* Herobetty 5.2: Fixed a bug where the player could add more orders to the backlog if there's no more support.</comment>
 		</line>
 		<line linenr="006" indent="">
+			<comment>* Add-Ons 2.0.4: Refactored support calculation to SSOT.</comment>
+		</line>
+		<line linenr="007" indent="">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -67,65 +70,8 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="007" indent="">
-			<var>$support</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$sector</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_sector.support'</text>
-		</line>
 		<line linenr="008" indent="" interruptable="@">
-			<text>if</text>
-			<text> </text>
-			<var>$station</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.IsPerkUnlocked</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>perk</text>
-			<text>=</text>
-			<text>'Extra support'</text>
-		</line>
-		<line linenr="009" indent="&#160;">
-			<comment>* Herobetty 5.2: Extra support perk gives +2 support.</comment>
-		</line>
-		<line linenr="010" indent="&#160;">
 			<var>$support</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$support</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="011" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="012" indent="">
-			<comment>* Add-Ons 1.7: Refund slots if taken up by docks (pirate bases and company stations).</comment>
-		</line>
-		<line linenr="013" indent="" interruptable="@">
-			<var>$refundSlots</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -136,7 +82,7 @@
 			<text> </text>
 			<text>script</text>
 			<text> </text>
-			<call>Mayhem.CountForeignDocks</call>
+			<call>Mayhem.SectorSupport</call>
 			<text> </text>
 			<text>:</text>
 			<text> </text>
@@ -144,19 +90,8 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="014" indent="">
-			<var>$support</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$support</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>$refundSlots</var>
-		</line>
-		<line linenr="015" indent="" />
-		<line linenr="016" indent="">
+		<line linenr="009" indent="" />
+		<line linenr="010" indent="">
 			<var>$stations</var>
 			<text> </text>
 			<text>=</text>
@@ -174,7 +109,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="017" indent="">
+		<line linenr="011" indent="">
 			<var>$stations.size</var>
 			<text> </text>
 			<text>=</text>
@@ -187,7 +122,7 @@
 			<text> </text>
 			<var>$stations</var>
 		</line>
-		<line linenr="018" indent="">
+		<line linenr="012" indent="">
 			<var>$buildOrders.size</var>
 			<text> </text>
 			<text>=</text>
@@ -200,7 +135,7 @@
 			<text> </text>
 			<var>$buildOrders</var>
 		</line>
-		<line linenr="019" indent="">
+		<line linenr="013" indent="">
 			<var>$freeSupport</var>
 			<text> </text>
 			<text>=</text>
@@ -215,21 +150,21 @@
 			<text> </text>
 			<var>$buildOrders.size</var>
 		</line>
-		<line linenr="020" indent="" />
-		<line linenr="021" indent="">
+		<line linenr="014" indent="" />
+		<line linenr="015" indent="">
 			<comment>* Add-Ons 1.8: Cannot have a 2nd research station if one already exists or if it's already in the queue.</comment>
 		</line>
-		<line linenr="022" indent="">
+		<line linenr="016" indent="">
 			<comment>* Note: Mine checking is not done here (done in ZH.Task.Architect) as there's the slim chance to generate asteroids from prospecting missions by the time the architect checks orders.</comment>
 		</line>
-		<line linenr="023" indent="">
+		<line linenr="017" indent="">
 			<var>$hasResearchStationOrder</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="024" indent="">
+		<line linenr="018" indent="">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -242,17 +177,17 @@
 			<text> </text>
 			<var>$buildOrders</var>
 		</line>
-		<line linenr="025" indent="&#160;">
+		<line linenr="019" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="026" indent="&#160;&#160;">
+		<line linenr="020" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="027" indent="&#160;&#160;">
+		<line linenr="021" indent="&#160;&#160;">
 			<var>$order</var>
 			<text> </text>
 			<text>=</text>
@@ -262,7 +197,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="028" indent="&#160;">
+		<line linenr="022" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$order</var>
@@ -271,25 +206,24 @@
 			<text> </text>
 			<var>{Research Station}</var>
 		</line>
-		<line linenr="029" indent="">
+		<line linenr="023" indent="">
 			<var>$hasResearchStationOrder</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="030" indent="">
+		<line linenr="024" indent="">
 			<text>break</text>
 		</line>
-		<line linenr="031" indent="">
-			<text>end</text>
-			<text> </text>
-		</line>
-		<line linenr="032" indent="&#160;">
+		<line linenr="025" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="033" indent="&#160;&#160;" />
-		<line linenr="034" indent="&#160;&#160;">
+		<line linenr="026" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="027" indent="&#160;&#160;" />
+		<line linenr="028" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$type</var>
@@ -298,7 +232,7 @@
 			<text> </text>
 			<var>{Research Station}</var>
 		</line>
-		<line linenr="035" indent="&#160;&#160;">
+		<line linenr="029" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>find</text>
@@ -342,14 +276,14 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="036" indent="&#160;&#160;">
+		<line linenr="030" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'Sector has an existing Research Station.'</text>
 		</line>
-		<line linenr="037" indent="&#160;" interruptable="@">
+		<line linenr="031" indent="&#160;" interruptable="@">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -373,7 +307,7 @@
 			<text>=</text>
 			<text>'r'</text>
 		</line>
-		<line linenr="038" indent="&#160;" interruptable="@">
+		<line linenr="032" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -403,28 +337,28 @@
 			<text>=</text>
 			<var>1000</var>
 		</line>
-		<line linenr="039" indent="&#160;">
+		<line linenr="033" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="040" indent="&#160;&#160;">
+		<line linenr="034" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="041" indent="&#160;&#160;" />
-		<line linenr="042" indent="&#160;&#160;">
+		<line linenr="035" indent="&#160;&#160;" />
+		<line linenr="036" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$hasResearchStationOrder</var>
 		</line>
-		<line linenr="043" indent="&#160;&#160;">
+		<line linenr="037" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'Research Station is already planned.'</text>
 		</line>
-		<line linenr="044" indent="&#160;" interruptable="@">
+		<line linenr="038" indent="&#160;" interruptable="@">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -448,7 +382,7 @@
 			<text>=</text>
 			<text>'r'</text>
 		</line>
-		<line linenr="045" indent="" interruptable="@">
+		<line linenr="039" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -478,19 +412,19 @@
 			<text>=</text>
 			<var>1000</var>
 		</line>
-		<line linenr="046" indent="">
+		<line linenr="040" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="047" indent="">
+		<line linenr="041" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="048" indent="&#160;">
+		<line linenr="042" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="049" indent="&#160;" />
-		<line linenr="050" indent="&#160;">
+		<line linenr="043" indent="&#160;" />
+		<line linenr="044" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$freeSupport</var>
@@ -499,14 +433,14 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="051" indent="&#160;">
+		<line linenr="045" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'Sector has reached maximum support'</text>
+			<text>'Sector has reached maximum support.'</text>
 		</line>
-		<line linenr="052" indent="" interruptable="@">
+		<line linenr="046" indent="" interruptable="@">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -530,7 +464,7 @@
 			<text>=</text>
 			<text>'r'</text>
 		</line>
-		<line linenr="053" indent="" interruptable="@">
+		<line linenr="047" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -560,16 +494,16 @@
 			<text>=</text>
 			<var>1000</var>
 		</line>
-		<line linenr="054" indent="">
+		<line linenr="048" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="055" indent="">
+		<line linenr="049" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="056" indent="" />
-		<line linenr="057" indent="">
+		<line linenr="050" indent="" />
+		<line linenr="051" indent="">
 			<text>append</text>
 			<text> </text>
 			<var>$type</var>
@@ -580,8 +514,8 @@
 			<text> </text>
 			<var>$buildOrders</var>
 		</line>
-		<line linenr="058" indent="" />
-		<line linenr="059" indent="">
+		<line linenr="052" indent="" />
+		<line linenr="053" indent="">
 			<var>$station</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -600,16 +534,16 @@
 			<text>=</text>
 			<var>$buildOrders</var>
 		</line>
-		<line linenr="060" indent="" />
-		<line linenr="061" indent="">
+		<line linenr="054" indent="" />
+		<line linenr="055" indent="">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>1225</var>
 		</line>
-		<line linenr="062" indent="" />
-		<line linenr="063" indent="">
+		<line linenr="056" indent="" />
+		<line linenr="057" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -620,15 +554,14 @@
 			<sval type="string" val="Menu.ZH.FactoryConstruction.Set" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="18" />
+			<sval type="int" val="20" />
 			<sval type="int" val="0" />
-			<sval type="array" size="14">
+			<sval type="array" size="13">
 				<sval type="string" val="type" />
 				<sval type="string" val="station" />
 				<sval type="string" val="buildOrders" />
 				<sval type="string" val="sector" />
 				<sval type="string" val="support" />
-				<sval type="string" val="refundSlots" />
 				<sval type="string" val="stations" />
 				<sval type="string" val="stations.size" />
 				<sval type="string" val="buildOrders.size" />
@@ -638,7 +571,7 @@
 				<sval type="string" val="XS.Iterator1" />
 				<sval type="string" val="t" />
 			</sval>
-			<sval type="array" size="42">
+			<sval type="array" size="38">
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
 					<sval type="int" val="131074" />
@@ -668,94 +601,46 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="3" />
 				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="156" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_sector.support" />
-					<sval type="int" val="4" />
-				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.IsPerkUnlocked" />
-					<sval type="int" val="-1610610941" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Extra support" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
+					<sval type="string" val="Mayhem.SectorSupport" />
 					<sval type="int" val="4" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.CountForeignDocks" />
-					<sval type="int" val="5" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="4" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
-				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1009" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
 					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
 					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="8" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="9" />
+					<sval type="int" val="8" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="6" />
 					<sval type="int" val="15" />
 					<sval type="int" val="12" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="7" />
 					<sval type="int" val="15" />
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
@@ -767,7 +652,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="10" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
@@ -776,37 +661,37 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="12" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607095" />
+					<sval type="int" val="-1610608119" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="12" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="11" />
+					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607357" />
+					<sval type="int" val="-1610608381" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="10" />
 					<sval type="int" val="9" />
 					<sval type="int" val="394115" />
 					<sval type="int" val="15" />
@@ -818,7 +703,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="10" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
@@ -827,15 +712,15 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="22" />
+					<sval type="int" val="18" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="15" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604285" />
+					<sval type="int" val="-1610605309" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -850,7 +735,7 @@
 				</sval>
 				<sval type="array" size="18">
 					<sval type="int" val="794" />
-					<sval type="int" val="-1610605565" />
+					<sval type="int" val="-1610606589" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 					<sval type="int" val="9" />
@@ -870,7 +755,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Sector has an existing Research Station." />
@@ -880,12 +765,12 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.ColorText" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="string" val="r" />
 				</sval>
@@ -897,7 +782,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="string" val="no" />
 					<sval type="int" val="4" />
@@ -912,16 +797,16 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604285" />
+					<sval type="int" val="-1610605309" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Research Station is already planned." />
@@ -931,12 +816,12 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.ColorText" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="string" val="r" />
 				</sval>
@@ -948,7 +833,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="string" val="no" />
 					<sval type="int" val="4" />
@@ -963,10 +848,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603005" />
+					<sval type="int" val="-1610604029" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="8" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -978,22 +863,22 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Sector has reached maximum support" />
+					<sval type="string" val="Sector has reached maximum support." />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.ColorText" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="string" val="r" />
 				</sval>
@@ -1005,7 +890,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="string" val="no" />
 					<sval type="int" val="4" />
@@ -1055,7 +940,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="23">
+			<sval type="array" size="21">
 				<sval type="array" size="2">
 					<sval type="int" val="3" />
 					<sval type="int" val="2" />
@@ -1066,91 +951,82 @@
 					<sval type="string" val="Herobetty 5.2: Fixed a bug where the player could add more orders to the backlog if there's no more support." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="6" />
+					<sval type="int" val="3" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Herobetty 5.2: Extra support perk gives +2 support." />
+					<sval type="string" val="Add-Ons 2.0.4: Refactored support calculation to SSOT." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="7" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.7: Refund slots if taken up by docks (pirate bases and company stations)." />
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="9" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="13" />
-					<sval type="int" val="2" />
-				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="13" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.8: Cannot have a 2nd research station if one already exists or if it's already in the queue." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="13" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Note: Mine checking is not done here (done in ZH.Task.Architect) as there's the slim chance to generate asteroids from prospecting missions by the time the architect checks orders." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
+					<sval type="int" val="17" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="22" />
+					<sval type="int" val="18" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="22" />
+					<sval type="int" val="18" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="24" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="24" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="33" />
+					<sval type="int" val="29" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="33" />
+					<sval type="int" val="29" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="33" />
+					<sval type="int" val="29" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="38" />
+					<sval type="int" val="34" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="38" />
+					<sval type="int" val="34" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="39" />
+					<sval type="int" val="35" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="40" />
+					<sval type="int" val="36" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="41" />
+					<sval type="int" val="37" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
