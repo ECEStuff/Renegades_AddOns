@@ -8,7 +8,7 @@ Base Renegades Full Install (original): https://eve.transcendsharp.com/Mayhem/Re
 
 Base Renegades Full Install - Alternative location on Google Drive: https://drive.google.com/file/d/1y5tHTYfXYe9FXuQMfDC0d3MFMbTd2vOo/view?usp=sharing
 
-Russian localization: https://github.com/alexalsp2/Renegades_AddOns_russian
+Russian localization (outdated): https://github.com/alexalsp2/Renegades_AddOns_russian
 
 Modified ZMap for Renegades Add-Ons: https://github.com/ECEStuff/ZMap_AddOns/tree/main
 
