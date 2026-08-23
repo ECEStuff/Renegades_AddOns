@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Favor.GetInfo</name>
-	<version>4</version>
+	<version>6</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -294,7 +294,7 @@
 		</line>
 		<line linenr="037" indent="" />
 		<line linenr="038" indent="">
-			<comment>* Add-Ons 1.4.2: Now displays fractional time.</comment>
+			<comment>* Add-Ons 2.1.3: Now uses standardized duration formatting instead of fractional hours.</comment>
 		</line>
 		<line linenr="039" indent="" interruptable="@">
 			<var>$duration</var>
@@ -321,38 +321,6 @@
 			<var>$favorName</var>
 		</line>
 		<line linenr="040" indent="">
-			<var>$duration.hours</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$duration</var>
-			<text> </text>
-			<text>/</text>
-			<text> </text>
-			<var>3600</var>
-		</line>
-		<line linenr="041" indent="">
-			<var>$duration.fractionalHours</var>
-			<text> </text>
-			<text>=</text>
-			<text>  </text>
-			<text>(</text>
-			<var>$duration</var>
-			<text> </text>
-			<text>-</text>
-			<text> </text>
-			<var>$duration.hours</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>3600</var>
-			<text>)</text>
-			<text> </text>
-			<text>/</text>
-			<text> </text>
-			<var>360</var>
-		</line>
-		<line linenr="042" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$duration</var>
@@ -361,7 +329,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="043" indent="&#160;">
+		<line linenr="041" indent="&#160;">
 			<var>$info</var>
 			<text> </text>
 			<text>=</text>
@@ -372,16 +340,35 @@
 			<text> </text>
 			<text>' Duration: permanent.'</text>
 		</line>
-		<line linenr="044" indent="&#160;">
-			<comment>*else if $duration == 1</comment>
-		</line>
-		<line linenr="045" indent="&#160;">
-			<comment>*$info = $info + ' Duration: ' + $duration + ' hour.'</comment>
-		</line>
-		<line linenr="046" indent="">
+		<line linenr="042" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="047" indent="&#160;">
+		<line linenr="043" indent="&#160;" interruptable="@">
+			<var>$duration.f</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.FormatDuration</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>seconds</text>
+			<text>=</text>
+			<var>$duration</var>
+			<text> </text>
+			<text>approximate</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+			<text> </text>
+		</line>
+		<line linenr="044" indent="&#160;">
 			<var>$info</var>
 			<text> </text>
 			<text>=</text>
@@ -394,25 +381,17 @@
 			<text> </text>
 			<text>+</text>
 			<text> </text>
-			<var>$duration.hours</var>
+			<var>$duration.f</var>
 			<text> </text>
 			<text>+</text>
 			<text> </text>
 			<text>'.'</text>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>$duration.fractionalHours</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<text>' hours.'</text>
 		</line>
-		<line linenr="048" indent="">
+		<line linenr="045" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="049" indent="" />
-		<line linenr="050" indent="">
+		<line linenr="046" indent="" />
+		<line linenr="047" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$info</var>
@@ -423,16 +402,15 @@
 			<sval type="string" val="Mayhem.Favor.GetInfo" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="4" />
+			<sval type="int" val="6" />
 			<sval type="int" val="0" />
-			<sval type="array" size="5">
+			<sval type="array" size="4">
 				<sval type="string" val="favorName" />
 				<sval type="string" val="info" />
 				<sval type="string" val="duration" />
-				<sval type="string" val="duration.hours" />
-				<sval type="string" val="duration.fractionalHours" />
+				<sval type="string" val="duration.f" />
 			</sval>
-			<sval type="array" size="54">
+			<sval type="array" size="53">
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610611965" />
@@ -872,51 +850,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="3600" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="27">
-					<sval type="int" val="104" />
-					<sval type="int" val="4" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="4" />
-					<sval type="int" val="3600" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="15" />
-					<sval type="int" val="12" />
-					<sval type="int" val="4" />
-					<sval type="int" val="360" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="9" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="12" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-3" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-6" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610599421" />
+					<sval type="int" val="-1610599933" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -946,12 +880,24 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="53" />
+					<sval type="int" val="52" />
 				</sval>
-				<sval type="array" size="37">
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.FormatDuration" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="25">
 					<sval type="int" val="104" />
 					<sval type="int" val="1" />
-					<sval type="int" val="11" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
@@ -966,15 +912,7 @@
 					<sval type="string" val="." />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="5" />
-					<sval type="string" val=" hours." />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="11" />
+					<sval type="int" val="7" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="11" />
 					<sval type="int" val="-2" />
@@ -982,10 +920,6 @@
 					<sval type="int" val="-4" />
 					<sval type="int" val="11" />
 					<sval type="int" val="-6" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-8" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-10" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -999,7 +933,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="12">
+			<sval type="array" size="10">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1027,28 +961,18 @@
 				<sval type="array" size="3">
 					<sval type="int" val="46" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.4.2: Now displays fractional time." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="51" />
-					<sval type="int" val="1" />
-					<sval type="string" val="else if $duration == 1" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="51" />
-					<sval type="int" val="1" />
-					<sval type="string" val="$info = $info + ' Duration: ' + $duration + ' hour.'" />
+					<sval type="string" val="Add-Ons 2.1.3: Now uses standardized duration formatting instead of fractional hours." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="52" />
+					<sval type="int" val="50" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="53" />
+					<sval type="int" val="52" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="53" />
+					<sval type="int" val="52" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
