@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GetResearchStationRate</name>
-	<version>14</version>
+	<version>19</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -11,7 +11,7 @@
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
-			<comment>*************************************************</comment>
+			<comment>* ************************************************</comment>
 		</line>
 		<line linenr="002" indent="">
 			<comment>* SCRIPT NAME: Mayhem.GetResearchStationRate.xml</comment>
@@ -29,15 +29,18 @@
 			<comment>* AUTHOR:           DATE: 29 August 2026</comment>
 		</line>
 		<line linenr="007" indent="">
-			<comment>*************************************************</comment>
+			<comment>* ************************************************</comment>
 		</line>
 		<line linenr="008" indent="">
 			<comment>* Get base rate. For example, 80 = 80% research rate. </comment>
 		</line>
 		<line linenr="009" indent="">
-			<comment>* NOTE: Do not use Mayhem.SectorResearch since it includes Faster research. Factor in the perk at the end.</comment>
+			<comment>* All additive Research Rate modifiers scale from this base rate.</comment>
 		</line>
 		<line linenr="010" indent="">
+			<comment>* NOTE: Do not use Mayhem.SectorResearch since it includes Faster research. Factor in the perk at the end.</comment>
+		</line>
+		<line linenr="011" indent="">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -49,8 +52,8 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="011" indent="">
-			<var>$researchRate</var>
+		<line linenr="012" indent="">
+			<var>$baseResearchRate</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -68,11 +71,25 @@
 			<text>=</text>
 			<text>'mayhem_sector.research'</text>
 		</line>
-		<line linenr="012" indent="" />
 		<line linenr="013" indent="">
-			<comment>* The current project determines what our modified rate is.</comment>
+			<var>$researchRate</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$baseResearchRate</var>
 		</line>
 		<line linenr="014" indent="">
+			<var>$bonus.percent.total</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="015" indent="" />
+		<line linenr="016" indent="">
+			<comment>* The current project determines what our modified rate is.</comment>
+		</line>
+		<line linenr="017" indent="">
 			<var>$currentProject</var>
 			<text> </text>
 			<text>=</text>
@@ -91,12 +108,12 @@
 			<text>=</text>
 			<text>'mayhem_currentProject'</text>
 		</line>
-		<line linenr="015" indent="">
+		<line linenr="018" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$currentProject</var>
 		</line>
-		<line linenr="016" indent="&#160;">
+		<line linenr="019" indent="&#160;">
 			<var>$makerRace</var>
 			<text> </text>
 			<text>=</text>
@@ -112,18 +129,18 @@
 			<text>=</text>
 			<var>$currentProject</var>
 		</line>
-		<line linenr="017" indent="&#160;" />
-		<line linenr="018" indent="&#160;">
+		<line linenr="020" indent="&#160;" />
+		<line linenr="021" indent="&#160;">
 			<comment>* ===== Research rate modifiers =====</comment>
 		</line>
-		<line linenr="019" indent="&#160;" />
-		<line linenr="020" indent="&#160;">
-			<comment>* Origin race: +50% for most origin factions.</comment>
+		<line linenr="022" indent="&#160;" />
+		<line linenr="023" indent="&#160;">
+			<comment>* Origin race: +35% of base Research Rate for most origin factions.</comment>
 		</line>
-		<line linenr="021" indent="&#160;">
-			<comment>* If origin faction is Terran and project is a Terran ship, +70% to compensate for Terran memory.</comment>
+		<line linenr="024" indent="&#160;">
+			<comment>* Terran origin: +50% of base Research Rate to compensate for Terran Memory restriction.</comment>
 		</line>
-		<line linenr="022" indent="&#160;">
+		<line linenr="025" indent="&#160;">
 			<var>$playerRace</var>
 			<text> </text>
 			<text>=</text>
@@ -139,7 +156,7 @@
 			<text>=</text>
 			<text>'mayhem_playerRace'</text>
 		</line>
-		<line linenr="023" indent="&#160;">
+		<line linenr="026" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$makerRace</var>
@@ -148,7 +165,7 @@
 			<text> </text>
 			<var>$playerRace</var>
 		</line>
-		<line linenr="024" indent="&#160;&#160;">
+		<line linenr="027" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$playerRace</var>
@@ -157,42 +174,41 @@
 			<text> </text>
 			<var>[Terran]</var>
 		</line>
-		<line linenr="025" indent="&#160;&#160;&#160;">
-			<var>$researchRate</var>
+		<line linenr="028" indent="&#160;&#160;&#160;">
+			<var>$bonus.percent</var>
 			<text> </text>
 			<text>=</text>
-			<text> </text>
-			<var>$researchRate</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>70</var>
-		</line>
-		<line linenr="026" indent="&#160;&#160;">
-			<text>else</text>
-		</line>
-		<line linenr="027" indent="&#160;&#160;&#160;">
-			<var>$researchRate</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$researchRate</var>
-			<text> </text>
-			<text>+</text>
 			<text> </text>
 			<var>50</var>
 		</line>
-		<line linenr="028" indent="&#160;&#160;">
+		<line linenr="029" indent="&#160;&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="030" indent="&#160;&#160;&#160;">
+			<var>$bonus.percent</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>35</var>
+		</line>
+		<line linenr="031" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="029" indent="&#160;">
+		<line linenr="032" indent="&#160;&#160;" />
+		<line linenr="033" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>StackResearchRate</var>
+			<text>:</text>
+		</line>
+		<line linenr="034" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="030" indent="&#160;" />
-		<line linenr="031" indent="&#160;">
-			<comment>* Border: +35% (slightly increased from +33%).</comment>
+		<line linenr="035" indent="&#160;" />
+		<line linenr="036" indent="&#160;">
+			<comment>* Border: +20% of base Research Rate.</comment>
 		</line>
-		<line linenr="032" indent="&#160;" interruptable="@">
+		<line linenr="037" indent="&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -214,25 +230,27 @@
 			<text>=</text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="033" indent="&#160;&#160;">
-			<var>$researchRate</var>
+		<line linenr="038" indent="&#160;&#160;">
+			<var>$bonus.percent</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$researchRate</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>35</var>
+			<var>20</var>
 		</line>
-		<line linenr="034" indent="&#160;">
+		<line linenr="039" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>StackResearchRate</var>
+			<text>:</text>
+		</line>
+		<line linenr="040" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="035" indent="&#160;" />
-		<line linenr="036" indent="&#160;">
-			<comment>* Matching docked ship: +35%.</comment>
+		<line linenr="041" indent="&#160;" />
+		<line linenr="042" indent="&#160;">
+			<comment>* Matching docked ship: +25% of base Research Rate.</comment>
 		</line>
-		<line linenr="037" indent="&#160;">
+		<line linenr="043" indent="&#160;">
 			<var>$rstationships</var>
 			<text> </text>
 			<text>=</text>
@@ -254,12 +272,12 @@
 			<text>/</text>
 			<text>station</text>
 		</line>
-		<line linenr="038" indent="&#160;">
+		<line linenr="044" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rstationships</var>
 		</line>
-		<line linenr="039" indent="&#160;&#160;">
+		<line linenr="045" indent="&#160;&#160;">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -272,17 +290,17 @@
 			<text> </text>
 			<var>$rstationships</var>
 		</line>
-		<line linenr="040" indent="&#160;&#160;&#160;">
+		<line linenr="046" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="041" indent="&#160;&#160;&#160;">
+		<line linenr="047" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="042" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="048" indent="&#160;&#160;&#160;&#160;">
 			<var>$rship</var>
 			<text> </text>
 			<text>=</text>
@@ -292,7 +310,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="043" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="049" indent="&#160;&#160;&#160;&#160;">
 			<var>$rcode</var>
 			<text> </text>
 			<text>=</text>
@@ -312,7 +330,7 @@
 			<text> </text>
 			<text>object</text>
 		</line>
-		<line linenr="044" indent="&#160;&#160;&#160;">
+		<line linenr="050" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$currentProject</var>
@@ -321,41 +339,39 @@
 			<text> </text>
 			<var>$rcode</var>
 		</line>
-		<line linenr="045" indent="&#160;&#160;">
-			<var>$researchRate</var>
+		<line linenr="051" indent="&#160;&#160;&#160;">
+			<var>$bonus.percent</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$researchRate</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>35</var>
+			<var>25</var>
 		</line>
-		<line linenr="046" indent="&#160;">
+		<line linenr="052" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>StackResearchRate</var>
+			<text>:</text>
+		</line>
+		<line linenr="053" indent="&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="047" indent="&#160;">
+		<line linenr="054" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="048" indent="&#160;">
+		<line linenr="055" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="049" indent="&#160;">
+		<line linenr="056" indent="&#160;">
 			<text>end</text>
-			<text> </text>
 		</line>
-		<line linenr="050" indent="&#160;" />
-		<line linenr="051" indent="&#160;">
-			<comment>* Good relations</comment>
+		<line linenr="057" indent="&#160;" />
+		<line linenr="058" indent="&#160;">
+			<comment>* Good relations: +3% of base Research Rate per rank above rank 5.</comment>
 		</line>
-		<line linenr="052" indent="&#160;">
-			<comment>* Old: +1 point per rank above rank 5.</comment>
+		<line linenr="059" indent="&#160;&#160;">
+			<comment>* Maximum: +15% at rank 10.</comment>
 		</line>
-		<line linenr="053" indent="&#160;&#160;">
-			<comment>* New: +5% per rank above rank 5 (max: +25% at rank 10).</comment>
-		</line>
-		<line linenr="054" indent="&#160;&#160;">
+		<line linenr="060" indent="&#160;&#160;">
 			<var>$rank</var>
 			<text> </text>
 			<text>=</text>
@@ -380,7 +396,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="055" indent="&#160;">
+		<line linenr="061" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rank</var>
@@ -389,8 +405,8 @@
 			<text> </text>
 			<var>5</var>
 		</line>
-		<line linenr="056" indent="&#160;">
-			<var>$bonus.rate</var>
+		<line linenr="062" indent="&#160;">
+			<var>$bonus.percent</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -404,34 +420,22 @@
 			<text> </text>
 			<text>*</text>
 			<text> </text>
-			<var>5</var>
+			<var>3</var>
 		</line>
-		<line linenr="057" indent="&#160;">
-			<var>$researchRate</var>
+		<line linenr="063" indent="&#160;">
+			<text>gosub</text>
 			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$researchRate</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>$bonus.rate</var>
+			<var>StackResearchRate</var>
+			<text>:</text>
 		</line>
-		<line linenr="058" indent="&#160;">
+		<line linenr="064" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="059" indent="&#160;" />
-		<line linenr="060" indent="&#160;">
-			<comment>* Coalition</comment>
+		<line linenr="065" indent="&#160;&#160;" />
+		<line linenr="066" indent="&#160;&#160;">
+			<comment>* Coalition: +150% of base Research Rate.</comment>
 		</line>
-		<line linenr="061" indent="&#160;&#160;">
-			<comment>* Old: +50 points</comment>
-		</line>
-		<line linenr="062" indent="&#160;">
-			<comment>* New: +150%</comment>
-		</line>
-		<line linenr="063" indent="&#160;" interruptable="@">
-			<text> </text>
+		<line linenr="067" indent="&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -453,31 +457,27 @@
 			<text>=</text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="064" indent="&#160;">
-			<var>$researchRate</var>
+		<line linenr="068" indent="&#160;">
+			<var>$bonus.percent</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$researchRate</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
 			<var>150</var>
 		</line>
-		<line linenr="065" indent="&#160;">
+		<line linenr="069" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>StackResearchRate</var>
+			<text>:</text>
+		</line>
+		<line linenr="070" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="066" indent="&#160;" />
-		<line linenr="067" indent="&#160;">
-			<comment>* Favor</comment>
+		<line linenr="071" indent="&#160;&#160;" />
+		<line linenr="072" indent="&#160;&#160;">
+			<comment>* Favor: +70% of base Research Rate.</comment>
 		</line>
-		<line linenr="068" indent="&#160;&#160;">
-			<comment>* Old: +20 points</comment>
-		</line>
-		<line linenr="069" indent="&#160;">
-			<comment>* New: +70%</comment>
-		</line>
-		<line linenr="070" indent="&#160;" interruptable="@">
+		<line linenr="073" indent="&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -499,28 +499,30 @@
 			<text>=</text>
 			<text>'research'</text>
 		</line>
-		<line linenr="071" indent="&#160;">
-			<var>$researchRate</var>
+		<line linenr="074" indent="&#160;">
+			<var>$bonus.percent</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$researchRate</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
 			<var>70</var>
 		</line>
-		<line linenr="072" indent="&#160;">
+		<line linenr="075" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>StackResearchRate</var>
+			<text>:</text>
+		</line>
+		<line linenr="076" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="073" indent="&#160;" />
-		<line linenr="074" indent="&#160;&#160;">
-			<comment>* OCV signals: +5% research rate per OCV signal.</comment>
+		<line linenr="077" indent="&#160;" />
+		<line linenr="078" indent="&#160;&#160;">
+			<comment>* OCV signals: +5% of base Research Rate per 1% Abnormal Signal strength.</comment>
 		</line>
-		<line linenr="075" indent="&#160;&#160;">
+		<line linenr="079" indent="&#160;&#160;">
 			<comment>* If there's no OCV signals, then cripple research to 1 point (handled in Mayhem.GetResearchPointsPerCycle).</comment>
 		</line>
-		<line linenr="076" indent="&#160;&#160;&#160;">
+		<line linenr="080" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$makerRace</var>
@@ -529,7 +531,7 @@
 			<text> </text>
 			<var>[OCV]</var>
 		</line>
-		<line linenr="077" indent="&#160;&#160;">
+		<line linenr="081" indent="&#160;&#160;">
 			<var>$ocvSignals</var>
 			<text> </text>
 			<text>=</text>
@@ -548,46 +550,70 @@
 			<text>=</text>
 			<text>'mayhem_sector.ocvSignals'</text>
 		</line>
-		<line linenr="078" indent="&#160;&#160;">
+		<line linenr="082" indent="&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$ocvSignals</var>
 		</line>
-		<line linenr="079" indent="&#160;">
+		<line linenr="083" indent="&#160;&#160;">
 			<var>$ocvSignals</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="080" indent="&#160;" />
-		<line linenr="081" indent="&#160;">
-			<var>$researchRate</var>
+		<line linenr="084" indent="&#160;" />
+		<line linenr="085" indent="&#160;">
+			<var>$bonus.percent</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$researchRate</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<text>(</text>
 			<var>$ocvSignals</var>
 			<text> </text>
 			<text>*</text>
 			<text> </text>
 			<var>5</var>
-			<text>)</text>
 		</line>
-		<line linenr="082" indent="&#160;">
+		<line linenr="086" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>StackResearchRate</var>
+			<text>:</text>
+		</line>
+		<line linenr="087" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="083" indent="&#160;" />
-		<line linenr="084" indent="&#160;">
+		<line linenr="088" indent="&#160;" />
+		<line linenr="089" indent="&#160;">
+			<var>$researchRate</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$baseResearchRate</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<text>(</text>
+			<var>100</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$bonus.percent.total</var>
+			<text>)</text>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="090" indent="&#160;" />
+		<line linenr="091" indent="&#160;">
 			<comment>* Faster Research (1.5x) multiplies the complete additive Research Station rate.</comment>
 		</line>
-		<line linenr="085" indent="&#160;&#160;">
+		<line linenr="092" indent="&#160;&#160;">
 			<var>$sector.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -601,7 +627,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="086" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="093" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$outpost</var>
 			<text> </text>
 			<text>=</text>
@@ -625,7 +651,7 @@
 			<text>=</text>
 			<var>$sector.owner</var>
 		</line>
-		<line linenr="087" indent="&#160;&#160;&#160;">
+		<line linenr="094" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$outpost</var>
@@ -633,7 +659,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="088" indent="&#160;&#160;" interruptable="@">
+		<line linenr="095" indent="&#160;&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>$outpost</var>
@@ -651,7 +677,7 @@
 			<text>=</text>
 			<text>'Faster research'</text>
 		</line>
-		<line linenr="089" indent="&#160;" interruptable="@">
+		<line linenr="096" indent="&#160;" interruptable="@">
 			<var>$researchRateBonus</var>
 			<text> </text>
 			<text>=</text>
@@ -667,7 +693,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="090" indent="&#160;">
+		<line linenr="097" indent="&#160;">
 			<var>$researchRate</var>
 			<text> </text>
 			<text>=</text>
@@ -690,17 +716,17 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="091" indent="&#160;">
+		<line linenr="098" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="092" indent="&#160;">
+		<line linenr="099" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="093" indent="&#160;&#160;" />
-		<line linenr="094" indent="&#160;&#160;&#160;">
+		<line linenr="100" indent="&#160;&#160;" />
+		<line linenr="101" indent="&#160;&#160;&#160;">
 			<comment>* Yaki: multiplies research rate with infamy or halves without infamy.</comment>
 		</line>
-		<line linenr="095" indent="&#160;&#160;&#160;">
+		<line linenr="102" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$makerRace</var>
@@ -709,7 +735,7 @@
 			<text> </text>
 			<var>[Yaki]</var>
 		</line>
-		<line linenr="096" indent="&#160;&#160;&#160;">
+		<line linenr="103" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>get</text>
@@ -723,10 +749,10 @@
 			<text>=</text>
 			<text>'playerInfamy'</text>
 		</line>
-		<line linenr="097" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="104" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.3: Insane mode reduces bonus research to 1.5x as much (25% less research than usual).</comment>
 		</line>
-		<line linenr="098" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="105" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -742,7 +768,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="099" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="106" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -751,7 +777,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="100" indent="&#160;&#160;&#160;">
+		<line linenr="107" indent="&#160;&#160;&#160;">
 			<var>$researchRate</var>
 			<text> </text>
 			<text>=</text>
@@ -762,17 +788,16 @@
 			<text>*</text>
 			<text> </text>
 			<var>150</var>
-			<text> </text>
 			<text>)</text>
 			<text> </text>
 			<text>/</text>
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="101" indent="&#160;&#160;">
+		<line linenr="108" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="102" indent="&#160;&#160;&#160;">
+		<line linenr="109" indent="&#160;&#160;&#160;">
 			<var>$researchRate</var>
 			<text> </text>
 			<text>=</text>
@@ -783,13 +808,13 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="103" indent="&#160;&#160;">
+		<line linenr="110" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="104" indent="&#160;">
+		<line linenr="111" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="105" indent="&#160;">
+		<line linenr="112" indent="&#160;">
 			<var>$researchRate</var>
 			<text> </text>
 			<text>=</text>
@@ -800,17 +825,17 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="106" indent="&#160;">
+		<line linenr="113" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="107" indent="&#160;">
+		<line linenr="114" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="108" indent="&#160;" />
-		<line linenr="109" indent="&#160;&#160;">
+		<line linenr="115" indent="&#160;" />
+		<line linenr="116" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.2: Terraforming now penalizes research.</comment>
 		</line>
-		<line linenr="110" indent="&#160;">
+		<line linenr="117" indent="&#160;">
 			<var>$projects.global</var>
 			<text> </text>
 			<text>=</text>
@@ -826,22 +851,22 @@
 			<text>=</text>
 			<text>'ZH_TerraformingProjects'</text>
 		</line>
-		<line linenr="111" indent="&#160;">
+		<line linenr="118" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$projects.global</var>
 		</line>
-		<line linenr="112" indent="&#160;&#160;">
+		<line linenr="119" indent="&#160;&#160;">
 			<var>$projects.global</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="113" indent="&#160;&#160;" />
-		<line linenr="114" indent="&#160;&#160;">
+		<line linenr="120" indent="&#160;&#160;" />
+		<line linenr="121" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$projects.global</var>
@@ -850,7 +875,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="115" indent="&#160;&#160;" interruptable="@">
+		<line linenr="122" indent="&#160;&#160;" interruptable="@">
 			<var>$penalty.local</var>
 			<text> </text>
 			<text>=</text>
@@ -870,7 +895,7 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="116" indent="&#160;&#160;" interruptable="@">
+		<line linenr="123" indent="&#160;&#160;" interruptable="@">
 			<var>$penalty.global</var>
 			<text> </text>
 			<text>=</text>
@@ -890,14 +915,14 @@
 			<text>=</text>
 			<var>$outpost</var>
 		</line>
-		<line linenr="117" indent="&#160;&#160;" />
-		<line linenr="118" indent="&#160;&#160;">
+		<line linenr="124" indent="&#160;&#160;" />
+		<line linenr="125" indent="&#160;&#160;">
 			<comment>* Overflow if we do all the multiplication at once. Need to convert the stacked penalties into percentage (no decimal points) ranging from 0 to 100%. </comment>
 		</line>
-		<line linenr="119" indent="&#160;">
+		<line linenr="126" indent="&#160;">
 			<comment>* Then, convert that percentage to a decimal and multiply accordingly.</comment>
 		</line>
-		<line linenr="120" indent="">
+		<line linenr="127" indent="">
 			<var>$penalty.total</var>
 			<text> </text>
 			<text>=</text>
@@ -918,7 +943,7 @@
 			<text> </text>
 			<var>10000</var>
 		</line>
-		<line linenr="121" indent="">
+		<line linenr="128" indent="">
 			<var>$researchRate</var>
 			<text> </text>
 			<text>=</text>
@@ -935,17 +960,36 @@
 			<text> </text>
 			<var>10000</var>
 		</line>
-		<line linenr="122" indent="">
+		<line linenr="129" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="123" indent="">
+		<line linenr="130" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="124" indent="" />
-		<line linenr="125" indent="">
+		<line linenr="131" indent="" />
+		<line linenr="132" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>$researchRate</var>
+		</line>
+		<line linenr="133" indent="" />
+		<line linenr="134" indent="">
+			<var>StackResearchRate</var>
+			<text>:</text>
+		</line>
+		<line linenr="135" indent="">
+			<var>$bonus.percent.total</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$bonus.percent.total</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$bonus.percent</var>
+		</line>
+		<line linenr="136" indent="">
+			<text>endsub</text>
 		</line>
 	</sourcetext>
 	<codearray>
@@ -953,21 +997,23 @@
 			<sval type="string" val="Mayhem.GetResearchStationRate" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="14" />
+			<sval type="int" val="19" />
 			<sval type="int" val="0" />
-			<sval type="array" size="21">
+			<sval type="array" size="23">
 				<sval type="string" val="researchStation" />
 				<sval type="string" val="sector" />
+				<sval type="string" val="baseResearchRate" />
 				<sval type="string" val="researchRate" />
+				<sval type="string" val="bonus.percent.total" />
 				<sval type="string" val="currentProject" />
 				<sval type="string" val="makerRace" />
 				<sval type="string" val="playerRace" />
+				<sval type="string" val="bonus.percent" />
 				<sval type="string" val="rstationships" />
 				<sval type="string" val="rship" />
 				<sval type="string" val="XS.Iterator1" />
 				<sval type="string" val="rcode" />
 				<sval type="string" val="rank" />
-				<sval type="string" val="bonus.rate" />
 				<sval type="string" val="ocvSignals" />
 				<sval type="string" val="sector.owner" />
 				<sval type="string" val="outpost" />
@@ -978,7 +1024,7 @@
 				<sval type="string" val="penalty.global" />
 				<sval type="string" val="penalty.total" />
 			</sval>
-			<sval type="array" size="61">
+			<sval type="array" size="73">
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
 					<sval type="int" val="131074" />
@@ -993,43 +1039,61 @@
 					<sval type="string" val="mayhem_sector.research" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_currentProject" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610597373" />
+					<sval type="int" val="-1610595069" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1349" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_playerRace" />
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609917" />
+					<sval type="int" val="-1610609149" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="3" />
@@ -1039,10 +1103,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610173" />
+					<sval type="int" val="-1610609661" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 					<sval type="int" val="10" />
 					<sval type="int" val="18" />
 					<sval type="int" val="15" />
@@ -1052,169 +1116,157 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
 					<sval type="int" val="4" />
-					<sval type="int" val="70" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
+					<sval type="int" val="50" />
+					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
 					<sval type="int" val="4" />
-					<sval type="int" val="50" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
+					<sval type="int" val="35" />
+					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="70" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="ZH.IsFactionBorderWith" />
-					<sval type="int" val="-1610609405" />
+					<sval type="int" val="-1610608381" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
 					<sval type="int" val="4" />
-					<sval type="int" val="35" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
+					<sval type="int" val="20" />
+					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="70" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1008" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="6" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606589" />
+					<sval type="int" val="-1610605309" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="8" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606583" />
+					<sval type="int" val="-1610605303" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="8" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="7" />
+					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="707" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="9" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610606845" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="35" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="24" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="16" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="1472" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
 					<sval type="int" val="10" />
-					<sval type="int" val="10" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
+					<sval type="int" val="12" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610605565" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="25" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="70" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="29" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="20" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1472" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="13" />
 					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610604285" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="int" val="15" />
@@ -1226,16 +1278,16 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="11" />
+					<sval type="int" val="8" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="int" val="15" />
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
-					<sval type="int" val="5" />
+					<sval type="int" val="3" />
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
 					<sval type="int" val="7" />
@@ -1247,81 +1299,66 @@
 					<sval type="int" val="13" />
 					<sval type="int" val="-4" />
 				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="70" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.HasCoalitionWith" />
-					<sval type="int" val="-1610605053" />
+					<sval type="int" val="-1610603517" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="150" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
+					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="70" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Favor.GetTimeout" />
-					<sval type="int" val="-1610604541" />
+					<sval type="int" val="-1610602749" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="5" />
 					<sval type="string" val="research" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="70" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
+					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="70" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603261" />
+					<sval type="int" val="-1610601213" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="10" />
 					<sval type="int" val="16" />
 					<sval type="int" val="15" />
@@ -1337,79 +1374,106 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_sector.ocvSignals" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536861689" />
+					<sval type="int" val="-536859897" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="21">
+				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
-					<sval type="int" val="5" />
+					<sval type="int" val="8" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="70" />
+				</sval>
+				<sval type="array" size="29">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
-					<sval type="int" val="7" />
-					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
 					<sval type="int" val="11" />
 					<sval type="int" val="16" />
-					<sval type="int" val="-2" />
+					<sval type="int" val="-1" />
 					<sval type="int" val="13" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
 					<sval type="int" val="-3" />
 					<sval type="int" val="17" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-6" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetOutpost" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-1610601725" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1610599421" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsPerkUnlocked" />
-					<sval type="int" val="-1610601725" />
+					<sval type="int" val="-1610599421" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Faster research" />
@@ -1417,21 +1481,21 @@
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetResearchRatePerkBonus" />
-					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="29">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="15" />
@@ -1455,10 +1519,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610599421" />
+					<sval type="int" val="-1610597117" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="10" />
 					<sval type="int" val="19" />
 					<sval type="int" val="15" />
@@ -1472,22 +1536,22 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="playerInfamy" />
-					<sval type="int" val="-1610599677" />
+					<sval type="int" val="-1610597373" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetDifficulty" />
-					<sval type="int" val="16" />
+					<sval type="int" val="18" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600189" />
+					<sval type="int" val="-1610597885" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="16" />
+					<sval type="int" val="18" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -1499,10 +1563,10 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="4" />
 					<sval type="int" val="150" />
 					<sval type="int" val="15" />
@@ -1522,14 +1586,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="50" />
+					<sval type="int" val="59" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -1541,14 +1605,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="52" />
+					<sval type="int" val="61" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -1562,20 +1626,20 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="ZH_TerraformingProjects" />
-					<sval type="int" val="17" />
+					<sval type="int" val="19" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536856825" />
+					<sval type="int" val="-536854521" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="17" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="17" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -1584,10 +1648,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610597373" />
+					<sval type="int" val="-1610595069" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="17" />
+					<sval type="int" val="19" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -1600,7 +1664,7 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="ZH.Terraforming.Get.Penalty.Local" />
-					<sval type="int" val="18" />
+					<sval type="int" val="20" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -1610,21 +1674,21 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="ZH.Terraforming.Get.Penalty.Global" />
-					<sval type="int" val="19" />
+					<sval type="int" val="21" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 				</sval>
 				<sval type="array" size="27">
 					<sval type="int" val="104" />
-					<sval type="int" val="20" />
+					<sval type="int" val="22" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="18" />
+					<sval type="int" val="20" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="19" />
+					<sval type="int" val="21" />
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
 					<sval type="int" val="4" />
@@ -1648,12 +1712,12 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="20" />
+					<sval type="int" val="22" />
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
 					<sval type="int" val="4" />
@@ -1672,7 +1736,29 @@
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="string" val="StackResearchRate" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
 				</sval>
 			</sval>
 			<sval type="array" size="1">
@@ -1681,7 +1767,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="69">
+			<sval type="array" size="68">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1725,60 +1811,48 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
+					<sval type="string" val="All additive Research Rate modifiers scale from this base rate." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
 					<sval type="string" val="NOTE: Do not use Mayhem.SectorResearch since it includes Faster research. Factor in the perk at the end." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The current project determines what our modified rate is." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="string" val="===== Research rate modifiers =====" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Origin race: +50% for most origin factions." />
+					<sval type="string" val="Origin race: +35% of base Research Rate for most origin factions." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
-					<sval type="string" val="If origin faction is Terran and project is a Terran ship, +70% to compensate for Terran memory." />
+					<sval type="string" val="Terran origin: +50% of base Research Rate to compensate for Terran Memory restriction." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="11" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="11" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="11" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Border: +35% (slightly increased from +33%)." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="13" />
@@ -1788,206 +1862,210 @@
 					<sval type="int" val="13" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="13" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Matching docked ship: +35%." />
+				<sval type="array" size="2">
+					<sval type="int" val="14" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="23" />
+					<sval type="int" val="14" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Border: +20% of base Research Rate." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="17" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="17" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Matching docked ship: +25% of base Research Rate." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="23" />
+					<sval type="int" val="28" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="24" />
+					<sval type="int" val="29" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="24" />
+					<sval type="int" val="29" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="24" />
+					<sval type="int" val="29" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="24" />
+					<sval type="int" val="29" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Good relations" />
+					<sval type="string" val="Good relations: +3% of base Research Rate per rank above rank 5." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="24" />
+					<sval type="int" val="29" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Old: +1 point per rank above rank 5." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="24" />
-					<sval type="int" val="1" />
-					<sval type="string" val="New: +5% per rank above rank 5 (max: +25% at rank 10)." />
+					<sval type="string" val="Maximum: +15% at rank 10." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="33" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="33" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="28" />
+					<sval type="int" val="33" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Coalition" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="28" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Old: +50 points" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="28" />
-					<sval type="int" val="1" />
-					<sval type="string" val="New: +150%" />
+					<sval type="string" val="Coalition: +150% of base Research Rate." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="30" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="30" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="30" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Favor" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="30" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Old: +20 points" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="30" />
-					<sval type="int" val="1" />
-					<sval type="string" val="New: +70%" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="32" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="32" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="32" />
-					<sval type="int" val="1" />
-					<sval type="string" val="OCV signals: +5% research rate per OCV signal." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="32" />
-					<sval type="int" val="1" />
-					<sval type="string" val="If there's no OCV signals, then cripple research to 1 point (handled in Mayhem.GetResearchPointsPerCycle)." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="36" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="36" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Favor: +70% of base Research Rate." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="37" />
+					<sval type="int" val="39" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="37" />
+					<sval type="int" val="39" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="37" />
+					<sval type="int" val="39" />
+					<sval type="int" val="1" />
+					<sval type="string" val="OCV signals: +5% of base Research Rate per 1% Abnormal Signal strength." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="39" />
+					<sval type="int" val="1" />
+					<sval type="string" val="If there's no OCV signals, then cripple research to 1 point (handled in Mayhem.GetResearchPointsPerCycle)." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="43" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="46" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="46" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Faster Research (1.5x) multiplies the complete additive Research Station rate." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="43" />
+					<sval type="int" val="52" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="43" />
+					<sval type="int" val="52" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="43" />
+					<sval type="int" val="52" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="43" />
+					<sval type="int" val="52" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Yaki: multiplies research rate with infamy or halves without infamy." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="45" />
+					<sval type="int" val="54" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.3: Insane mode reduces bonus research to 1.5x as much (25% less research than usual)." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="49" />
+					<sval type="int" val="58" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="50" />
+					<sval type="int" val="59" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="51" />
+					<sval type="int" val="60" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="52" />
+					<sval type="int" val="61" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="52" />
+					<sval type="int" val="61" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="52" />
+					<sval type="int" val="61" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="52" />
+					<sval type="int" val="61" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.2: Terraforming now penalizes research." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="55" />
+					<sval type="int" val="64" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="58" />
+					<sval type="int" val="67" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="58" />
+					<sval type="int" val="67" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Overflow if we do all the multiplication at once. Need to convert the stacked penalties into percentage (no decimal points) ranging from 0 to 100%. " />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="58" />
+					<sval type="int" val="67" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Then, convert that percentage to a decimal and multiply accordingly." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="60" />
+					<sval type="int" val="69" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="60" />
+					<sval type="int" val="69" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="60" />
+					<sval type="int" val="69" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="70" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
