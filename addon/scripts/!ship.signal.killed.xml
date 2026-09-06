@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>!ship.signal.killed</name>
-	<version>179</version>
+	<version>180</version>
 	<engineversion>50</engineversion>
 	<description>Synchron signal. killed</description>
 	<arguments>
@@ -5688,22 +5688,22 @@
 			<text> </text>
 			<var>$bounty</var>
 		</line>
-		<line linenr="553" indent="&#160;">
+		<line linenr="553" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="554" indent="&#160;">
+		<line linenr="554" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="555" indent="&#160;">
+		<line linenr="555" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="556" indent="&#160;">
+		<line linenr="556" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="557" indent="&#160;">
+		<line linenr="557" indent="">
 			<comment>* Get. Add-Ons 1.13: No bounty reward for OCV players. (1.13.2: Moved to new script.)</comment>
 		</line>
-		<line linenr="558" indent="&#160;" interruptable="@">
+		<line linenr="558" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -5742,21 +5742,24 @@
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="564" indent="&#160;&#160;" />
-		<line linenr="565" indent="&#160;&#160;" />
-		<line linenr="566" indent="&#160;&#160;&#160;">
+		<line linenr="564" indent="&#160;" />
+		<line linenr="565" indent="&#160;" />
+		<line linenr="566" indent="&#160;">
 			<comment>* Mordan8</comment>
 		</line>
-		<line linenr="567" indent="&#160;&#160;">
+		<line linenr="567" indent="&#160;">
 			<comment>* To prevent savescumming, for 'most' ships I could find, I set a bail chance when they are created. </comment>
 		</line>
-		<line linenr="568" indent="&#160;&#160;&#160;">
+		<line linenr="568" indent="&#160;">
 			<comment>* This call will return that boolean if it's present, otherwise it will calculate it on the fly.</comment>
 		</line>
-		<line linenr="569" indent="&#160;&#160;">
+		<line linenr="569" indent="&#160;">
 			<comment>* Add-Ons 1.9.3: Only for big ships (M6, TM, M8, and military capships). Fighters bail only when fleeing. TS, TP, and TL cannot bail at all.</comment>
 		</line>
-		<line linenr="570" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="570" indent="&#160;&#160;">
+			<comment>* Add-Ons 2.2: Now respects the global bail cap. Ignores the local cap due to how rare bigger ship bailing is.</comment>
+		</line>
+		<line linenr="571" indent="&#160;&#160;" interruptable="@">
 			<var>$WillBail</var>
 			<text> </text>
 			<text>=</text>
@@ -5776,7 +5779,7 @@
 			<text>=</text>
 			<var>[THIS]</var>
 		</line>
-		<line linenr="571" indent="&#160;&#160;">
+		<line linenr="572" indent="&#160;&#160;&#160;">
 			<var>$isBig</var>
 			<text> </text>
 			<text>=</text>
@@ -5792,7 +5795,54 @@
 			<text> </text>
 			<var>[Big Ship]</var>
 		</line>
-		<line linenr="572" indent="&#160;&#160;">
+		<line linenr="573" indent="&#160;&#160;" />
+		<line linenr="574" indent="&#160;&#160;&#160;">
+			<var>$maxBailedShips</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_maxBailedShips'</text>
+		</line>
+		<line linenr="575" indent="&#160;&#160;">
+			<var>$neutralShips</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_abandonedShips'</text>
+		</line>
+		<line linenr="576" indent="&#160;&#160;&#160;">
+			<var>$neutralShips.s</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$neutralShips</var>
+		</line>
+		<line linenr="577" indent="&#160;&#160;" />
+		<line linenr="578" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$WillBail</var>
@@ -5800,14 +5850,24 @@
 			<text>AND</text>
 			<text> </text>
 			<var>$isBig</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>(</text>
+			<var>$neutralShips.s</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>$maxBailedShips</var>
+			<text>)</text>
 		</line>
-		<line linenr="573" indent="&#160;&#160;&#160;">
+		<line linenr="579" indent="&#160;&#160;&#160;">
 			<comment>* give it a bit of hull back, because technically, it's dead at this point.</comment>
 		</line>
-		<line linenr="574" indent="&#160;&#160;&#160;">
+		<line linenr="580" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.13.1: This results in 4% being shown. Fix underflow via ceiling math.</comment>
 		</line>
-		<line linenr="575" indent="&#160;&#160;">
+		<line linenr="581" indent="&#160;&#160;">
 			<var>$hull.max</var>
 			<text> </text>
 			<text>=</text>
@@ -5821,7 +5881,7 @@
 			<text> </text>
 			<text>hull</text>
 		</line>
-		<line linenr="576" indent="&#160;">
+		<line linenr="582" indent="&#160;">
 			<var>$hullfragment</var>
 			<text> </text>
 			<text>=</text>
@@ -5842,7 +5902,7 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="577" indent="&#160;">
+		<line linenr="583" indent="&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -5854,33 +5914,33 @@
 			<text> </text>
 			<var>$hullfragment</var>
 		</line>
-		<line linenr="578" indent="&#160;" />
-		<line linenr="579" indent="&#160;" />
-		<line linenr="580" indent="&#160;">
+		<line linenr="584" indent="&#160;" />
+		<line linenr="585" indent="&#160;" />
+		<line linenr="586" indent="&#160;">
 			<comment>* Mordan9 - give a little message just to point out that a capital ship bailed.</comment>
 		</line>
-		<line linenr="581" indent="&#160;">
+		<line linenr="587" indent="&#160;">
 			<comment>* Only do this if the player has a satellite in the sector.</comment>
 		</line>
-		<line linenr="582" indent="&#160;">
+		<line linenr="588" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>IsPlayerSatellite</var>
 			<text>:</text>
 		</line>
-		<line linenr="583" indent="&#160;">
+		<line linenr="589" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$hasSatelliteInSystem</var>
 		</line>
-		<line linenr="584" indent="&#160;&#160;">
+		<line linenr="590" indent="&#160;&#160;">
 			<var>$shipClass</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="585" indent="&#160;&#160;">
+		<line linenr="591" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -5894,14 +5954,14 @@
 			<text> </text>
 			<var>[M7]</var>
 		</line>
-		<line linenr="586" indent="&#160;">
+		<line linenr="592" indent="&#160;">
 			<var>$shipClass</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'Frigate'</text>
 		</line>
-		<line linenr="587" indent="&#160;">
+		<line linenr="593" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -5917,14 +5977,14 @@
 			<text> </text>
 			<var>[M1]</var>
 		</line>
-		<line linenr="588" indent="&#160;">
+		<line linenr="594" indent="&#160;">
 			<var>$shipClass</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'Carrier'</text>
 		</line>
-		<line linenr="589" indent="">
+		<line linenr="595" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -5940,22 +6000,22 @@
 			<text> </text>
 			<var>[M2]</var>
 		</line>
-		<line linenr="590" indent="">
+		<line linenr="596" indent="">
 			<var>$shipClass</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'Destroyer'</text>
 		</line>
-		<line linenr="591" indent="">
+		<line linenr="597" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="592" indent="">
+		<line linenr="598" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$shipClass</var>
 		</line>
-		<line linenr="593" indent="&#160;">
+		<line linenr="599" indent="&#160;">
 			<var>$info</var>
 			<text> </text>
 			<text>=</text>
@@ -5982,7 +6042,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="594" indent="" interruptable="@">
+		<line linenr="600" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -6012,21 +6072,21 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="595" indent="">
+		<line linenr="601" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="596" indent="">
+		<line linenr="602" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="597" indent="" />
-		<line linenr="598" indent="" />
-		<line linenr="599" indent="&#160;">
+		<line linenr="603" indent="" />
+		<line linenr="604" indent="" />
+		<line linenr="605" indent="&#160;">
 			<comment>* Add-Ons 1.13.2: START [NULL] on this script may lead to an extremely dangerous race condition by attempting to clone a ghost ship.</comment>
 		</line>
-		<line linenr="600" indent="&#160;">
+		<line linenr="606" indent="&#160;">
 			<comment>* If the ship is currently not pending a bail and not yet bailing, set the queue flag to indicate that it wants to bail. Bail.Copy will change it to running.</comment>
 		</line>
-		<line linenr="601" indent="&#160;">
+		<line linenr="607" indent="&#160;">
 			<var>$bailQueued</var>
 			<text> </text>
 			<text>=</text>
@@ -6045,7 +6105,7 @@
 			<text>=</text>
 			<text>'mayhem_bailCopyQueued'</text>
 		</line>
-		<line linenr="602" indent="&#160;&#160;">
+		<line linenr="608" indent="&#160;&#160;">
 			<var>$bailRunning</var>
 			<text> </text>
 			<text>=</text>
@@ -6064,7 +6124,7 @@
 			<text>=</text>
 			<text>'mayhem_bailCopyRunning'</text>
 		</line>
-		<line linenr="603" indent="&#160;&#160;">
+		<line linenr="609" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
@@ -6075,7 +6135,7 @@
 			<text>!</text>
 			<var>$bailRunning</var>
 		</line>
-		<line linenr="604" indent="&#160;&#160;&#160;">
+		<line linenr="610" indent="&#160;&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -6094,7 +6154,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="605" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="611" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -6120,30 +6180,30 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="606" indent="&#160;&#160;">
+		<line linenr="612" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="607" indent="&#160;">
+		<line linenr="613" indent="&#160;">
 			<comment>* write to log file 1 append=[TRUE] printf: fmt='%s Bailed !', [THIS], null, null, null, null</comment>
 		</line>
-		<line linenr="608" indent="">
+		<line linenr="614" indent="">
 			<var>$dropLoot</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="609" indent="">
+		<line linenr="615" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="610" indent="" />
-		<line linenr="611" indent="" />
-		<line linenr="612" indent="">
+		<line linenr="616" indent="" />
+		<line linenr="617" indent="" />
+		<line linenr="618" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$dropLoot</var>
 		</line>
-		<line linenr="613" indent="" interruptable="@">
+		<line linenr="619" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -6161,28 +6221,28 @@
 			<text>=</text>
 			<var>$killer</var>
 		</line>
-		<line linenr="614" indent="">
+		<line linenr="620" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="615" indent="" />
-		<line linenr="616" indent="">
+		<line linenr="621" indent="" />
+		<line linenr="622" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="617" indent="" />
-		<line linenr="618" indent="">
+		<line linenr="623" indent="" />
+		<line linenr="624" indent="">
 			<var>IsPlayerSatellite</var>
 			<text>:</text>
 		</line>
-		<line linenr="619" indent="">
+		<line linenr="625" indent="">
 			<var>$hasSatelliteInSystem</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="620" indent="">
+		<line linenr="626" indent="">
 			<var>$sats</var>
 			<text> </text>
 			<text>=</text>
@@ -6206,7 +6266,7 @@
 			<text>=</text>
 			<var>{Neutral Race Advanced Satellite}</var>
 		</line>
-		<line linenr="621" indent="">
+		<line linenr="627" indent="">
 			<var>$satiterator</var>
 			<text> </text>
 			<text>=</text>
@@ -6219,17 +6279,17 @@
 			<text> </text>
 			<var>$sats</var>
 		</line>
-		<line linenr="622" indent="">
+		<line linenr="628" indent="">
 			<text>while</text>
 			<text> </text>
 			<var>$satiterator</var>
 		</line>
-		<line linenr="623" indent="">
+		<line linenr="629" indent="">
 			<text>dec</text>
 			<text> </text>
 			<var>$satiterator</var>
 		</line>
-		<line linenr="624" indent="">
+		<line linenr="630" indent="">
 			<var>$sat</var>
 			<text> </text>
 			<text>=</text>
@@ -6239,7 +6299,7 @@
 			<var>$satiterator</var>
 			<text>]</text>
 		</line>
-		<line linenr="625" indent="">
+		<line linenr="631" indent="">
 			<var>$satsystem</var>
 			<text> </text>
 			<text>=</text>
@@ -6251,7 +6311,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="626" indent="">
+		<line linenr="632" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$satsystem</var>
@@ -6260,42 +6320,42 @@
 			<text> </text>
 			<var>[SECTOR]</var>
 		</line>
-		<line linenr="627" indent="">
+		<line linenr="633" indent="">
 			<var>$hasSatelliteInSystem</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="628" indent="">
+		<line linenr="634" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="629" indent="">
+		<line linenr="635" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="630" indent="">
+		<line linenr="636" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="631" indent="">
+		<line linenr="637" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="632" indent="" />
-		<line linenr="633" indent="" />
-		<line linenr="634" indent="" />
-		<line linenr="635" indent="" />
-		<line linenr="636" indent="" />
-		<line linenr="637" indent="" />
 		<line linenr="638" indent="" />
 		<line linenr="639" indent="" />
+		<line linenr="640" indent="" />
+		<line linenr="641" indent="" />
+		<line linenr="642" indent="" />
+		<line linenr="643" indent="" />
+		<line linenr="644" indent="" />
+		<line linenr="645" indent="" />
 	</sourcetext>
 	<codearray>
 		<sval type="array" size="10">
 			<sval type="string" val="!ship.signal.killed" />
 			<sval type="int" val="50" />
 			<sval type="string" val="Synchron signal. killed" />
-			<sval type="int" val="179" />
+			<sval type="int" val="180" />
 			<sval type="int" val="0" />
-			<sval type="array" size="82">
+			<sval type="array" size="85">
 				<sval type="string" val="killer" />
 				<sval type="string" val="cmd" />
 				<sval type="string" val="cmdtarget" />
@@ -6367,6 +6427,9 @@
 				<sval type="string" val="dropLoot" />
 				<sval type="string" val="WillBail" />
 				<sval type="string" val="isBig" />
+				<sval type="string" val="maxBailedShips" />
+				<sval type="string" val="neutralShips" />
+				<sval type="string" val="neutralShips.s" />
 				<sval type="string" val="hull.max" />
 				<sval type="string" val="hullfragment" />
 				<sval type="string" val="hasSatelliteInSystem" />
@@ -6379,7 +6442,7 @@
 				<sval type="string" val="satiterator" />
 				<sval type="string" val="satsystem" />
 			</sval>
-			<sval type="array" size="397">
+			<sval type="array" size="400">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -10423,33 +10486,65 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="2073" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_maxBailedShips" />
+					<sval type="int" val="71" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_abandonedShips" />
+					<sval type="int" val="72" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="73" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="72" />
+				</sval>
+				<sval type="array" size="27">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610515197" />
-					<sval type="int" val="3" />
+					<sval type="int" val="-1610514429" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="69" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="70" />
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="73" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="71" />
+					<sval type="int" val="15" />
 					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="9" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="9" />
 					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-5" />
+					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="786" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="71" />
+					<sval type="int" val="74" />
 				</sval>
 				<sval type="array" size="27">
 					<sval type="int" val="104" />
-					<sval type="int" val="72" />
+					<sval type="int" val="75" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="71" />
+					<sval type="int" val="74" />
 					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="int" val="15" />
@@ -10478,24 +10573,24 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="72" />
+					<sval type="int" val="75" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="384" />
+					<sval type="int" val="387" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610516733" />
+					<sval type="int" val="-1610515965" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="73" />
+					<sval type="int" val="76" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="74" />
+					<sval type="int" val="77" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
@@ -10506,13 +10601,13 @@
 					<sval type="int" val="705" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-1610518781" />
+					<sval type="int" val="-1610518013" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2027" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="74" />
+					<sval type="int" val="77" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Frigate" />
@@ -10521,19 +10616,19 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="372" />
+					<sval type="int" val="375" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="705" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-1610518011" />
+					<sval type="int" val="-1610517243" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2021" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="74" />
+					<sval type="int" val="77" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Carrier" />
@@ -10542,19 +10637,19 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="372" />
+					<sval type="int" val="375" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="705" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-1610517499" />
+					<sval type="int" val="-1610516731" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2022" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="74" />
+					<sval type="int" val="77" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Destroyer" />
@@ -10563,22 +10658,22 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610516733" />
+					<sval type="int" val="-1610515965" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="74" />
+					<sval type="int" val="77" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="14">
 					<sval type="int" val="149" />
-					<sval type="int" val="75" />
+					<sval type="int" val="78" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Satellite Notification, sector %s.  A %s has bailed" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="74" />
+					<sval type="int" val="77" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -10594,7 +10689,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="75" />
+					<sval type="int" val="78" />
 					<sval type="int" val="4" />
 					<sval type="int" val="21" />
 					<sval type="int" val="4" />
@@ -10608,7 +10703,7 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_bailCopyQueued" />
-					<sval type="int" val="76" />
+					<sval type="int" val="79" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
@@ -10616,18 +10711,18 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_bailCopyRunning" />
-					<sval type="int" val="77" />
+					<sval type="int" val="80" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610515453" />
+					<sval type="int" val="-1610514685" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="76" />
+					<sval type="int" val="79" />
 					<sval type="int" val="15" />
 					<sval type="int" val="65556" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="77" />
+					<sval type="int" val="80" />
 					<sval type="int" val="15" />
 					<sval type="int" val="65556" />
 					<sval type="int" val="15" />
@@ -10673,7 +10768,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610514685" />
+					<sval type="int" val="-1610513917" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="68" />
@@ -10701,7 +10796,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="73" />
+					<sval type="int" val="76" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
@@ -10712,49 +10807,49 @@
 					<sval type="int" val="1068" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
-					<sval type="int" val="78" />
+					<sval type="int" val="81" />
 					<sval type="int" val="9" />
 					<sval type="int" val="459030" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="80" />
+					<sval type="int" val="83" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="78" />
+					<sval type="int" val="81" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610511351" />
+					<sval type="int" val="-1610510583" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="80" />
+					<sval type="int" val="83" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="80" />
+					<sval type="int" val="83" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="79" />
+					<sval type="int" val="82" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="78" />
+					<sval type="int" val="81" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="80" />
+					<sval type="int" val="83" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="79" />
-					<sval type="int" val="81" />
+					<sval type="int" val="82" />
+					<sval type="int" val="84" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610511613" />
+					<sval type="int" val="-1610510845" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="81" />
+					<sval type="int" val="84" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="6" />
 					<sval type="int" val="15" />
@@ -10766,7 +10861,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="73" />
+					<sval type="int" val="76" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
@@ -10778,7 +10873,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="388" />
+					<sval type="int" val="391" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -10810,7 +10905,7 @@
 					<sval type="string" val="cmdpar2" />
 				</sval>
 			</sval>
-			<sval type="array" size="267">
+			<sval type="array" size="270">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -11851,90 +11946,91 @@
 					<sval type="string" val="Add-Ons 1.9.3: Only for big ships (M6, TM, M8, and military capships). Fighters bail only when fleeing. TS, TP, and TL cannot bail at all." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="358" />
+					<sval type="int" val="355" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 2.2: Now respects the global bail cap. Ignores the local cap due to how rare bigger ship bailing is." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="357" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="360" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="361" />
 					<sval type="int" val="1" />
 					<sval type="string" val="give it a bit of hull back, because technically, it's dead at this point." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="358" />
+					<sval type="int" val="361" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.13.1: This results in 4% being shown. Fix underflow via ceiling math." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="361" />
+					<sval type="int" val="364" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="361" />
+					<sval type="int" val="364" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="361" />
+					<sval type="int" val="364" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan9 - give a little message just to point out that a capital ship bailed." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="361" />
+					<sval type="int" val="364" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Only do this if the player has a satellite in the sector." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="372" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
 					<sval type="int" val="375" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="375" />
+					<sval type="int" val="378" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="375" />
+					<sval type="int" val="378" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="378" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="375" />
+					<sval type="int" val="378" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="375" />
+					<sval type="int" val="378" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.13.2: START [NULL] on this script may lead to an extremely dangerous race condition by attempting to clone a ghost ship." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="375" />
+					<sval type="int" val="378" />
 					<sval type="int" val="1" />
 					<sval type="string" val="If the ship is currently not pending a bail and not yet bailing, set the queue flag to indicate that it wants to bail. Bail.Copy will change it to running." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="380" />
+					<sval type="int" val="383" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="380" />
+					<sval type="int" val="383" />
 					<sval type="int" val="1" />
 					<sval type="string" val="write to log file 1 append=[TRUE] printf: fmt='%s Bailed !', [THIS], null, null, null, null" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="381" />
+					<sval type="int" val="384" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="381" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="381" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="383" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="383" />
+					<sval type="int" val="384" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
@@ -11942,43 +12038,55 @@
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="395" />
+					<sval type="int" val="386" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="396" />
+					<sval type="int" val="386" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="387" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="398" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="397" />
+					<sval type="int" val="399" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="400" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="397" />
+					<sval type="int" val="400" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="397" />
+					<sval type="int" val="400" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="397" />
+					<sval type="int" val="400" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="397" />
+					<sval type="int" val="400" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="397" />
+					<sval type="int" val="400" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="397" />
+					<sval type="int" val="400" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="397" />
+					<sval type="int" val="400" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
