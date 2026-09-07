@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Mission.Fail</name>
-	<version>29</version>
+	<version>34</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -165,10 +165,10 @@
 			<comment>* Police mission incurs double penalty if the player scanned and claimed the culprit.</comment>
 		</line>
 		<line linenr="015" indent="">
-			<comment>* Delivery mission incurs double penalty if all stations and the player is currently flying the delivery ship.</comment>
+			<comment>* Delivery mission incurs double penalty if all stations are alive and the player is currently flying the delivery ship.</comment>
 		</line>
 		<line linenr="016" indent="">
-			<comment>* Supply always incurs double penalty.</comment>
+			<comment>* Supplies always incurs double penalty.</comment>
 		</line>
 		<line linenr="017" indent="" />
 		<line linenr="018" indent="">
@@ -194,7 +194,6 @@
 			<text>==</text>
 			<text> </text>
 			<text>'other4'</text>
-			<text> </text>
 		</line>
 		<line linenr="020" indent="&#160;">
 			<var>$ship</var>
@@ -730,16 +729,12 @@
 		</line>
 		<line linenr="081" indent="" />
 		<line linenr="082" indent="">
-			<comment>* ===== Mission Cleanup =====</comment>
+			<comment>* Remove mission.</comment>
 		</line>
-		<line linenr="083" indent="" />
-		<line linenr="084" indent="">
-			<comment>* Abort mission</comment>
-		</line>
-		<line linenr="085" indent="">
+		<line linenr="083" indent="">
 			<comment>* Don't use Mayhem.MissionEntry.Abort. Must properly remove the mission with Mayhem.Mission.Remove.</comment>
 		</line>
-		<line linenr="086" indent="" interruptable="@">
+		<line linenr="084" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -756,8 +751,12 @@
 			<text>missionIdOrStation</text>
 			<text>=</text>
 			<var>$missionId</var>
+			<text> </text>
+			<text>completed</text>
+			<text>=</text>
+			<var>[FALSE]</var>
 		</line>
-		<line linenr="087" indent="&#160;">
+		<line linenr="085" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -780,8 +779,8 @@
 			<text> </text>
 			<text>' reputation'</text>
 		</line>
-		<line linenr="088" indent="" />
-		<line linenr="089" indent="">
+		<line linenr="086" indent="" />
+		<line linenr="087" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$actualLoyaltyLoss</var>
@@ -790,7 +789,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="090" indent="">
+		<line linenr="088" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -809,11 +808,11 @@
 			<text> </text>
 			<text>' Loyalty'</text>
 		</line>
-		<line linenr="091" indent="">
+		<line linenr="089" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="092" indent="" />
-		<line linenr="093" indent="">
+		<line linenr="090" indent="" />
+		<line linenr="091" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -824,8 +823,8 @@
 			<text> </text>
 			<text>'.'</text>
 		</line>
-		<line linenr="094" indent="" />
-		<line linenr="095" indent="" interruptable="@">
+		<line linenr="092" indent="" />
+		<line linenr="093" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -851,7 +850,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="096" indent="">
+		<line linenr="094" indent="">
 			<var>$speech</var>
 			<text> </text>
 			<text>=</text>
@@ -865,7 +864,7 @@
 			<text>=</text>
 			<var>2</var>
 		</line>
-		<line linenr="097" indent="">
+		<line linenr="095" indent="">
 			<var>$speech</var>
 			<text>[</text>
 			<var>0</var>
@@ -875,7 +874,7 @@
 			<text> </text>
 			<var>13</var>
 		</line>
-		<line linenr="098" indent="">
+		<line linenr="096" indent="">
 			<var>$speech</var>
 			<text>[</text>
 			<var>1</var>
@@ -885,7 +884,7 @@
 			<text> </text>
 			<var>9091</var>
 		</line>
-		<line linenr="099" indent="" interruptable="@">
+		<line linenr="097" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<text>speak</text>
@@ -899,850 +898,15 @@
 			<text>=</text>
 			<var>100</var>
 		</line>
-		<line linenr="100" indent="&#160;">
+		<line linenr="098" indent="">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>1007</var>
 		</line>
-		<line linenr="101" indent="&#160;" />
-		<line linenr="102" indent="&#160;">
-			<comment>* Cleanup</comment>
-		</line>
-		<line linenr="103" indent="&#160;&#160;">
-			<comment>* Add-Ons 2.2: Added extra cleanup for additional missions besides rescue and police.</comment>
-		</line>
-		<line linenr="104" indent="&#160;&#160;&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$missionName</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'other4'</text>
-		</line>
-		<line linenr="105" indent="&#160;">
-			<comment>* Rescue: destroy passengers. JOO the ship if it's not [PLAYERSHIP].</comment>
-		</line>
-		<line linenr="106" indent="&#160;">
-			<var>$passengers</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$goals</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'passengers'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="107" indent="&#160;">
-			<var>$XS.Iterator2</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$passengers</var>
-		</line>
-		<line linenr="108" indent="&#160;">
-			<text>while</text>
-			<text> </text>
-			<var>$XS.Iterator2</var>
-		</line>
-		<line linenr="109" indent="&#160;&#160;">
-			<text>dec</text>
-			<text> </text>
-			<var>$XS.Iterator2</var>
-		</line>
-		<line linenr="110" indent="&#160;&#160;&#160;">
-			<var>$passenger</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$passengers</var>
-			<text>[</text>
-			<var>$XS.Iterator2</var>
-			<text>]</text>
-		</line>
-		<line linenr="111" indent="&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$passenger</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="112" indent="&#160;">
-			<var>$passenger</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>destruct</text>
-			<text>:</text>
-			<text> </text>
-			<text>show</text>
-			<text> </text>
-			<text>no</text>
-			<text> </text>
-			<text>explosion</text>
-			<text>=</text>
-			<var>1</var>
-		</line>
-		<line linenr="113" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="114" indent="&#160;" />
-		<line linenr="115" indent="&#160;">
-			<var>$ship</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$goals</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'ship'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="116" indent="&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="117" indent="&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text> </text>
-			<text>!=</text>
-			<text> </text>
-			<var>[PLAYERSHIP]</var>
-		</line>
-		<line linenr="118" indent="&#160;&#160;" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.JOO.Global</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>ship</text>
-			<text>=</text>
-			<var>$ship</var>
-		</line>
-		<line linenr="119" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="120" indent="&#160;" />
-		<line linenr="121" indent="&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$missionName</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'other5'</text>
-		</line>
-		<line linenr="122" indent="&#160;">
-			<comment>* Police: destroy passenger. Remove the local variable from the culprit.</comment>
-		</line>
-		<line linenr="123" indent="&#160;">
-			<comment>* Unlike the other ship reward missions, the culprit is not destroyed because it is a real worker.</comment>
-		</line>
-		<line linenr="124" indent="&#160;&#160;">
-			<var>$ship</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$goals</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'stolenShip'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="125" indent="&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="126" indent="">
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_missionIsStolen'</text>
-			<text> </text>
-			<text>value</text>
-			<text>=</text>
-			<var>null</var>
-		</line>
-		<line linenr="127" indent="&#160;">
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_missionPolice'</text>
-			<text> </text>
-			<text>value</text>
-			<text>=</text>
-			<var>null</var>
-		</line>
-		<line linenr="128" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="129" indent="&#160;" />
-		<line linenr="130" indent="&#160;">
-			<var>$passenger</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$goals</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'passenger'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="131" indent="&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$passenger</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="132" indent="&#160;&#160;">
-			<var>$passenger</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>destruct</text>
-			<text>:</text>
-			<text> </text>
-			<text>show</text>
-			<text> </text>
-			<text>no</text>
-			<text> </text>
-			<text>explosion</text>
-			<text>=</text>
-			<var>1</var>
-		</line>
-		<line linenr="133" indent="&#160;&#160;" />
-		<line linenr="134" indent="&#160;&#160;&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$missionName</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'trade3'</text>
-		</line>
-		<line linenr="135" indent="&#160;">
-			<comment>* Delivery: clear mission state from the delivery ship.</comment>
-		</line>
-		<line linenr="136" indent="&#160;">
-			<comment>* If a destination station was destroyed, the surviving delivery ship is allowed to remain as consolation.</comment>
-		</line>
-		<line linenr="137" indent="">
-			<comment>* Otherwise, remove it unless it is the PLAYERSHIP. If it is the PLAYERSHIP, the increased failure penalty applies.</comment>
-		</line>
-		<line linenr="138" indent="&#160;">
-			<var>$ship</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$goals</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'ship'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="139" indent="&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="140" indent="&#160;">
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_missionDelivery'</text>
-			<text> </text>
-			<text>value</text>
-			<text>=</text>
-			<var>null</var>
-		</line>
-		<line linenr="141" indent="&#160;&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text> </text>
-			<text>!=</text>
-			<text> </text>
-			<var>[PLAYERSHIP]</var>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<var>$allStationsAlive</var>
-		</line>
-		<line linenr="142" indent="&#160;&#160;&#160;" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.JOO.Global</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>ship</text>
-			<text>=</text>
-			<var>$ship</var>
-		</line>
-		<line linenr="143" indent="&#160;&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="144" indent="&#160;&#160;" />
-		<line linenr="145" indent="&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$missionName</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'fight1'</text>
-		</line>
-		<line linenr="146" indent="&#160;">
-			<comment>* Patrol: JOO all spawned Xenon ships.</comment>
-		</line>
-		<line linenr="147" indent="">
-			<var>$xenons</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$goals</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'xenons'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="148" indent="&#160;">
-			<text>if</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$xenons</var>
-		</line>
-		<line linenr="149" indent="&#160;">
-			<var>$XS.Iterator3</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$xenons</var>
-		</line>
-		<line linenr="150" indent="&#160;">
-			<text>while</text>
-			<text> </text>
-			<var>$XS.Iterator3</var>
-		</line>
-		<line linenr="151" indent="&#160;&#160;">
-			<text>dec</text>
-			<text> </text>
-			<var>$XS.Iterator3</var>
-		</line>
-		<line linenr="152" indent="&#160;&#160;&#160;">
-			<var>$xenon</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$xenons</var>
-			<text>[</text>
-			<var>$XS.Iterator3</var>
-			<text>]</text>
-		</line>
-		<line linenr="153" indent="&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$xenon</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="154" indent="&#160;" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.JOO.Global</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>ship</text>
-			<text>=</text>
-			<var>$xenon</var>
-		</line>
-		<line linenr="155" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="156" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="157" indent="&#160;&#160;" />
-		<line linenr="158" indent="&#160;&#160;&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$missionName</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'fight3'</text>
-		</line>
-		<line linenr="159" indent="&#160;&#160;&#160;&#160;">
-			<comment>* Bait: JOO the bait ship if it's not [PLAYERSHIP] and all spawned Kha'ak ships.</comment>
-		</line>
-		<line linenr="160" indent="&#160;&#160;">
-			<var>$ship</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$goals</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'ship'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="161" indent="&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="162" indent="&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text> </text>
-			<text>!=</text>
-			<text> </text>
-			<var>[PLAYERSHIP]</var>
-		</line>
-		<line linenr="163" indent="" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.JOO.Global</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>ship</text>
-			<text>=</text>
-			<var>$ship</var>
-		</line>
-		<line linenr="164" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="165" indent="&#160;" />
-		<line linenr="166" indent="&#160;">
-			<var>$khaaks</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$goals</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'khaaks'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="167" indent="&#160;&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$khaaks</var>
-		</line>
-		<line linenr="168" indent="&#160;">
-			<var>$XS.Iterator4</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$khaaks</var>
-		</line>
-		<line linenr="169" indent="&#160;">
-			<text>while</text>
-			<text> </text>
-			<var>$XS.Iterator4</var>
-		</line>
-		<line linenr="170" indent="&#160;">
-			<text>dec</text>
-			<text> </text>
-			<var>$XS.Iterator4</var>
-		</line>
-		<line linenr="171" indent="&#160;&#160;">
-			<var>$khaak</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$khaaks</var>
-			<text>[</text>
-			<var>$XS.Iterator4</var>
-			<text>]</text>
-		</line>
-		<line linenr="172" indent="&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$khaak</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="173" indent="&#160;" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.JOO.Global</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>ship</text>
-			<text>=</text>
-			<var>$khaak</var>
-		</line>
-		<line linenr="174" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="175" indent="&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="176" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="177" indent="&#160;&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$missionName</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'fight4'</text>
-		</line>
-		<line linenr="178" indent="&#160;">
-			<comment>* Defense: JOO all spawned Xenon ships.</comment>
-		</line>
-		<line linenr="179" indent="">
-			<var>$xenons</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$goals</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'xenons'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="180" indent="">
-			<text>skip</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$xenons</var>
-		</line>
-		<line linenr="181" indent="">
-			<var>$xenons</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<text>alloc</text>
-			<text>:</text>
-			<text> </text>
-			<text>size</text>
-			<text>=</text>
-			<var>0</var>
-		</line>
-		<line linenr="182" indent="" />
-		<line linenr="183" indent="">
-			<var>$beacon</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>table</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<var>$goals</var>
-			<text> </text>
-			<text>(</text>
-			<text> </text>
-			<text>'beacon'</text>
-			<text> </text>
-			<text>)</text>
-		</line>
-		<line linenr="184" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$beacon</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="185" indent="">
-			<text>append</text>
-			<text> </text>
-			<var>$beacon</var>
-			<text> </text>
-			<text>to</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$xenons</var>
-		</line>
-		<line linenr="186" indent="" />
-		<line linenr="187" indent="">
-			<text>if</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$xenons</var>
-		</line>
-		<line linenr="188" indent="">
-			<var>$XS.Iterator5</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$xenons</var>
-		</line>
-		<line linenr="189" indent="">
-			<text>while</text>
-			<text> </text>
-			<var>$XS.Iterator5</var>
-		</line>
-		<line linenr="190" indent="">
-			<text>dec</text>
-			<text> </text>
-			<var>$XS.Iterator5</var>
-		</line>
-		<line linenr="191" indent="">
-			<var>$xenon</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$xenons</var>
-			<text>[</text>
-			<var>$XS.Iterator5</var>
-			<text>]</text>
-		</line>
-		<line linenr="192" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$xenon</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="193" indent="" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.JOO.Global</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>ship</text>
-			<text>=</text>
-			<var>$xenon</var>
-		</line>
-		<line linenr="194" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="195" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="196" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="197" indent="" />
-		<line linenr="198" indent="">
+		<line linenr="099" indent="" />
+		<line linenr="100" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -1753,9 +917,9 @@
 			<sval type="string" val="Mayhem.Mission.Fail" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="29" />
+			<sval type="int" val="34" />
 			<sval type="int" val="0" />
-			<sval type="array" size="38">
+			<sval type="array" size="27">
 				<sval type="string" val="mission" />
 				<sval type="string" val="missionsAccepted" />
 				<sval type="string" val="station" />
@@ -1783,19 +947,8 @@
 				<sval type="string" val="actualLoyaltyLoss" />
 				<sval type="string" val="t" />
 				<sval type="string" val="speech" />
-				<sval type="string" val="passengers" />
-				<sval type="string" val="passenger" />
-				<sval type="string" val="XS.Iterator2" />
-				<sval type="string" val="xenons" />
-				<sval type="string" val="xenon" />
-				<sval type="string" val="XS.Iterator3" />
-				<sval type="string" val="khaaks" />
-				<sval type="string" val="khaak" />
-				<sval type="string" val="XS.Iterator4" />
-				<sval type="string" val="beacon" />
-				<sval type="string" val="XS.Iterator5" />
 			</sval>
-			<sval type="array" size="141">
+			<sval type="array" size="70">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -2384,15 +1537,17 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="8">
+				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Mission.Remove" />
 					<sval type="int" val="-2147483647" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
-					<sval type="int" val="1" />
+					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="31">
 					<sval type="int" val="104" />
@@ -2535,572 +1690,6 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="1007" />
 				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610591485" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-					<sval type="int" val="5" />
-					<sval type="string" val="other4" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="27" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="string" val="passengers" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="29" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="27" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610592759" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="29" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="143" />
-					<sval type="int" val="29" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="129" />
-					<sval type="int" val="28" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="27" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="29" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="28" />
-					<sval type="int" val="-1610593016" />
-				</sval>
-				<sval type="array" size="5">
-					<sval type="int" val="765" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="28" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="72" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="string" val="ship" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-1610591741" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610591736" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="3" />
-					<sval type="int" val="15" />
-					<sval type="int" val="1" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.JOO.Global" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="140" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610589179" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-					<sval type="int" val="5" />
-					<sval type="string" val="other5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="string" val="stolenShip" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-1610590205" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="155" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_missionIsStolen" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="155" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_missionPolice" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="28" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="string" val="passenger" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="28" />
-					<sval type="int" val="-1610589432" />
-				</sval>
-				<sval type="array" size="5">
-					<sval type="int" val="765" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="28" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="140" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610587387" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-					<sval type="int" val="5" />
-					<sval type="string" val="trade3" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="string" val="ship" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-1610587645" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="155" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_missionDelivery" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="19">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610587640" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="3" />
-					<sval type="int" val="15" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="5" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="9" />
-					<sval type="int" val="-4" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.JOO.Global" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="140" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610584571" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-					<sval type="int" val="5" />
-					<sval type="string" val="fight1" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="30" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="string" val="xenons" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="-1610584829" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="32" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610584823" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="32" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="143" />
-					<sval type="int" val="32" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="129" />
-					<sval type="int" val="31" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="32" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="31" />
-					<sval type="int" val="-1610585080" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.JOO.Global" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="31" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="103" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="140" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610580731" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-					<sval type="int" val="5" />
-					<sval type="string" val="fight3" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="string" val="ship" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-1610583293" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610583288" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="3" />
-					<sval type="int" val="15" />
-					<sval type="int" val="1" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.JOO.Global" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="33" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="string" val="khaaks" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610580989" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="33" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="35" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="33" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610580983" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="143" />
-					<sval type="int" val="35" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="129" />
-					<sval type="int" val="34" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="33" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="34" />
-					<sval type="int" val="-1610581240" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.JOO.Global" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="34" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="118" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="140" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610576891" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-					<sval type="int" val="5" />
-					<sval type="string" val="fight4" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="30" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="string" val="xenons" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="-536837881" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="128" />
-					<sval type="int" val="30" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="36" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="5" />
-					<sval type="string" val="beacon" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="36" />
-					<sval type="int" val="-1610578936" />
-				</sval>
-				<sval type="array" size="5">
-					<sval type="int" val="135" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="36" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="-1610576893" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="37" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610576887" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="37" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="143" />
-					<sval type="int" val="37" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="129" />
-					<sval type="int" val="31" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="37" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="31" />
-					<sval type="int" val="-1610577144" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.JOO.Global" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="31" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="134" />
-				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="0" />
@@ -3113,7 +1702,7 @@
 					<sval type="string" val="Table." />
 				</sval>
 			</sval>
-			<sval type="array" size="72">
+			<sval type="array" size="36">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -3140,12 +1729,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="9" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Delivery mission incurs double penalty if all stations and the player is currently flying the delivery ship." />
+					<sval type="string" val="Delivery mission incurs double penalty if all stations are alive and the player is currently flying the delivery ship." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="9" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Supply always incurs double penalty." />
+					<sval type="string" val="Supplies always incurs double penalty." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="9" />
@@ -3241,16 +1830,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="58" />
 					<sval type="int" val="1" />
-					<sval type="string" val="===== Mission Cleanup =====" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="58" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="58" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Abort mission" />
+					<sval type="string" val="Remove mission." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="58" />
@@ -3275,153 +1855,6 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="69" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="69" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Cleanup" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="69" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.2: Added extra cleanup for additional missions besides rescue and police." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="70" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Rescue: destroy passengers. JOO the ship if it's not [PLAYERSHIP]." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="78" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="78" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="82" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="82" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="84" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Police: destroy passenger. Remove the local variable from the culprit." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="84" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Unlike the other ship reward missions, the culprit is not destroyed because it is a real worker." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="88" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="88" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="91" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="93" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Delivery: clear mission state from the delivery ship." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="93" />
-					<sval type="int" val="1" />
-					<sval type="string" val="If a destination station was destroyed, the surviving delivery ship is allowed to remain as consolation." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="93" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Otherwise, remove it unless it is the PLAYERSHIP. If it is the PLAYERSHIP, the increased failure penalty applies." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="98" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="98" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="100" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Patrol: JOO all spawned Xenon ships." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="109" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="109" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="109" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="111" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Bait: JOO the bait ship if it's not [PLAYERSHIP] and all spawned Kha'ak ships." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="115" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="115" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="124" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="124" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="124" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="126" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Defense: JOO all spawned Xenon ships." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="129" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="132" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="140" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="140" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="140" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="140" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
