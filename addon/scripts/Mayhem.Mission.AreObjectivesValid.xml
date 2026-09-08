@@ -1,0 +1,755 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>Mayhem.Mission.AreObjectivesValid</name>
+	<version>7</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments>
+		<argument index="1" name="mission" type="Value" desc="Table" />
+	</arguments>
+	<sourcetext>
+		<line linenr="001" indent="">
+			<comment>*************************************************</comment>
+		</line>
+		<line linenr="002" indent="">
+			<comment>* SCRIPT NAME: Mayhem.Mission.AreObjectivesValid.xml</comment>
+		</line>
+		<line linenr="003" indent="">
+			<comment>* DESCRIPTION: Returns [TRUE] if all required pre-existing mission objects are still valid when viewing or accepting an offer.</comment>
+		</line>
+		<line linenr="004" indent="">
+			<comment>* Otherwise returns [FALSE].</comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="006" indent="">
+			<comment>* AUTHOR:           DATE: 7 September 2026</comment>
+		</line>
+		<line linenr="007" indent="">
+			<comment>*************************************************</comment>
+		</line>
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="">
+			<comment>* This script does NOT handle acquisition missions.</comment>
+		</line>
+		<line linenr="010" indent="">
+			<comment>* See Mayhem.Mission.ShowBriefing and Mayhem.Mission.Callback for acquisition missions.</comment>
+		</line>
+		<line linenr="011" indent="">
+			<var>$missionName</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$mission</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'name'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="012" indent="">
+			<var>$goals</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$mission</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'goals'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="013" indent="" />
+		<line linenr="014" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$missionName</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'other5'</text>
+		</line>
+		<line linenr="015" indent="&#160;">
+			<comment>* Police: all suspects must still exist.</comment>
+		</line>
+		<line linenr="016" indent="&#160;">
+			<var>$ships</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$goals</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'ships'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="017" indent="&#160;">
+			<var>$XS.Iterator1</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$ships</var>
+		</line>
+		<line linenr="018" indent="&#160;&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="019" indent="&#160;&#160;&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="020" indent="&#160;">
+			<var>$ship</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ships</var>
+			<text>[</text>
+			<var>$XS.Iterator1</var>
+			<text>]</text>
+		</line>
+		<line linenr="021" indent="&#160;">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="022" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="023" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="024" indent="&#160;" />
+		<line linenr="025" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$missionName</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'trade3'</text>
+		</line>
+		<line linenr="026" indent="&#160;&#160;">
+			<comment>* Delivery: all destination stations must still exist.</comment>
+		</line>
+		<line linenr="027" indent="&#160;&#160;&#160;">
+			<var>$deliveryStations</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$goals</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'stations'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="028" indent="&#160;">
+			<var>$XS.Iterator2</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$deliveryStations</var>
+		</line>
+		<line linenr="029" indent="&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$XS.Iterator2</var>
+		</line>
+		<line linenr="030" indent="">
+			<text>dec</text>
+			<text> </text>
+			<var>$XS.Iterator2</var>
+		</line>
+		<line linenr="031" indent="&#160;">
+			<var>$deliveryStation</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$deliveryStations</var>
+			<text>[</text>
+			<var>$XS.Iterator2</var>
+			<text>]</text>
+		</line>
+		<line linenr="032" indent="&#160;">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$deliveryStation</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="033" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="034" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="035" indent="&#160;" />
+		<line linenr="036" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$missionName</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'fight2'</text>
+		</line>
+		<line linenr="037" indent="&#160;&#160;">
+			<comment>* Suppression (TODO): The target must still exist.</comment>
+		</line>
+		<line linenr="038" indent="&#160;" />
+		<line linenr="039" indent="">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$missionName</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'fight5'</text>
+		</line>
+		<line linenr="040" indent="&#160;">
+			<comment>* Intel: target must still exist.</comment>
+		</line>
+		<line linenr="041" indent="&#160;">
+			<var>$enemyStation</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$goals</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'enemyStation'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="042" indent="&#160;">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$enemyStation</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="043" indent="&#160;&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="044" indent="&#160;" />
+		<line linenr="045" indent="">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$goals</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'isFedex'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="046" indent="">
+			<comment>* Fedex (VIP and Supplies): destination must still exist.</comment>
+		</line>
+		<line linenr="047" indent="">
+			<var>$destination</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$goals</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'destination'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="048" indent="">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$destination</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="049" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="050" indent="" />
+		<line linenr="051" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="052" indent="" />
+		<line linenr="053" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="Mayhem.Mission.AreObjectivesValid" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="7" />
+			<sval type="int" val="0" />
+			<sval type="array" size="11">
+				<sval type="string" val="mission" />
+				<sval type="string" val="missionName" />
+				<sval type="string" val="goals" />
+				<sval type="string" val="ships" />
+				<sval type="string" val="ship" />
+				<sval type="string" val="XS.Iterator1" />
+				<sval type="string" val="deliveryStations" />
+				<sval type="string" val="deliveryStation" />
+				<sval type="string" val="XS.Iterator2" />
+				<sval type="string" val="enemyStation" />
+				<sval type="string" val="destination" />
+			</sval>
+			<sval type="array" size="34">
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="name" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="goals" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609661" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="other5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="ships" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609911" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-536868345" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="33" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607099" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="trade3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="stations" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607351" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="8" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-536865785" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="15" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="33" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606587" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="fight2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="33" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605307" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="fight5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="enemyStation" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-536863737" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="33" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="-1610604283" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="isFedex" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="destination" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-536862457" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
+			</sval>
+			<sval type="array" size="1">
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="string" val="Table" />
+				</sval>
+			</sval>
+			<sval type="array" size="25">
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="SCRIPT NAME: Mayhem.Mission.AreObjectivesValid.xml" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DESCRIPTION: Returns [TRUE] if all required pre-existing mission objects are still valid when viewing or accepting an offer." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Otherwise returns [FALSE]." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="AUTHOR:           DATE: 7 September 2026" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="This script does NOT handle acquisition missions." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="See Mayhem.Mission.ShowBriefing and Mayhem.Mission.Callback for acquisition missions." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="2" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Police: all suspects must still exist." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="11" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Delivery: all destination stations must still exist." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="23" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Suppression (TODO): The target must still exist." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="23" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="25" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Intel: target must still exist." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="30" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Fedex (VIP and Supplies): destination must still exist." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="33" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="33" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="33" />
+					<sval type="int" val="2" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>
