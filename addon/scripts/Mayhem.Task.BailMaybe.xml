@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Task.BailMaybe</name>
-	<version>29</version>
+	<version>34</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -323,7 +323,7 @@
 			<comment>* From !ship.signal.killed: did a player's mercenary group cause the bail? If yes, set the $playerMercKill flag to [TRUE].</comment>
 		</line>
 		<line linenr="033" indent="&#160;&#160;&#160;" interruptable="@">
-			<var>$playerMercKill</var>
+			<var>$isPlayerAttacker</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -334,42 +334,48 @@
 			<text> </text>
 			<text>script</text>
 			<text> </text>
-			<call>Mayhem.IsMercKill</call>
+			<call>Mayhem.IsPlayerAttacker</call>
 			<text> </text>
 			<text>:</text>
 			<text> </text>
-			<text>killer</text>
+			<text>attacker</text>
 			<text>=</text>
 			<var>$attacker</var>
-			<text> </text>
-			<text>race</text>
-			<text>=</text>
-			<var>[Player]</var>
 		</line>
 		<line linenr="034" indent="&#160;&#160;&#160;">
-			<var>$killer.owner</var>
+			<text>if</text>
 			<text> </text>
+			<var>$isPlayerAttacker</var>
+		</line>
+		<line linenr="035" indent="&#160;&#160;&#160;&#160;">
+			<comment>* Ascension.</comment>
+		</line>
+		<line linenr="036" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
-			<var>$attacker</var>
+			<var>[NULL]</var>
 			<text>-&gt;</text>
 			<text> </text>
-			<text>get</text>
+			<text>call</text>
 			<text> </text>
-			<text>owner</text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Ascension.AddDefeat</call>
+			<text> </text>
+			<text>:</text>
 			<text> </text>
 			<text>race</text>
+			<text>=</text>
+			<var>[OWNER]</var>
 		</line>
-		<line linenr="035" indent="&#160;&#160;&#160;">
-			<comment>* Bounty</comment>
+		<line linenr="037" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="038" indent="&#160;&#160;&#160;&#160;">
+			<comment>* Bounty.</comment>
 		</line>
-		<line linenr="036" indent="&#160;&#160;&#160;">
+		<line linenr="039" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Note: unlike the bounty logic in !ship.signal.killed, freighters in ZH never bail via combat. As such, no need to set the bounty of the attacker.</comment>
 		</line>
-		<line linenr="037" indent="&#160;&#160;&#160;">
-			<comment>* Add-Ons 1.13.2: Moved to new script.</comment>
-		</line>
-		<line linenr="038" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="040" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -391,33 +397,9 @@
 			<text>=</text>
 			<var>$attacker</var>
 		</line>
-		<line linenr="039" indent="&#160;&#160;&#160;" />
-		<line linenr="040" indent="&#160;&#160;&#160;">
-			<comment>* Pirates count (ascension purpose).</comment>
-		</line>
-		<line linenr="041" indent="&#160;&#160;&#160;">
-			<comment>* Add-Ons 1.7: Pirate bailing now drops hints.</comment>
-		</line>
-		<line linenr="042" indent="&#160;&#160;&#160;">
+		<line linenr="041" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="042" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
-			<text> </text>
-			<text>(</text>
-			<var>$killer.owner</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Player]</var>
-			<text> </text>
-			<text>OR</text>
-			<text> </text>
-			<var>$playerMercKill</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[TRUE]</var>
-			<text>)</text>
-			<text> </text>
-			<text>AND</text>
 			<text> </text>
 			<var>[OWNER]</var>
 			<text> </text>
@@ -425,83 +407,10 @@
 			<text> </text>
 			<var>[Pirates]</var>
 		</line>
-		<line linenr="043" indent="&#160;&#160;&#160;&#160;" interruptable="@">
-			<var>$completed</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.IsAscensionCompleted</call>
-			<text> </text>
-			<text>:</text>
+		<line linenr="043" indent="&#160;&#160;&#160;&#160;&#160;">
+			<comment>* Pirate clue.</comment>
 		</line>
-		<line linenr="044" indent="&#160;&#160;&#160;&#160;">
-			<text>if</text>
-			<text> </text>
-			<text>!</text>
-			<var>$completed</var>
-		</line>
-		<line linenr="045" indent="&#160;&#160;&#160;&#160;&#160;">
-			<var>$killedPirates</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>global</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_killedPirates'</text>
-		</line>
-		<line linenr="046" indent="&#160;&#160;&#160;&#160;&#160;">
-			<text>skip</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$killedPirates</var>
-		</line>
-		<line linenr="047" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
-			<var>$killedPirates</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>0</var>
-		</line>
-		<line linenr="048" indent="&#160;&#160;&#160;&#160;&#160;">
-			<text>inc</text>
-			<text> </text>
-			<var>$killedPirates</var>
-		</line>
-		<line linenr="049" indent="&#160;&#160;&#160;&#160;&#160;">
-			<text>set</text>
-			<text> </text>
-			<text>global</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_killedPirates'</text>
-			<text> </text>
-			<text>value</text>
-			<text>=</text>
-			<var>$killedPirates</var>
-		</line>
-		<line linenr="050" indent="&#160;&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="051" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="044" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -523,14 +432,9 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="052" indent="&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="053" indent="&#160;&#160;&#160;" />
-		<line linenr="054" indent="&#160;&#160;&#160;">
-			<comment>* Add-Ons 1.1: Added edge case for lower difficulties when bailing a renegade fighter.</comment>
-		</line>
-		<line linenr="055" indent="&#160;&#160;&#160;">
+		<line linenr="045" indent="&#160;&#160;&#160;&#160;">
+			<text>else</text>
+			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -539,7 +443,10 @@
 			<text> </text>
 			<var>[Unknown]</var>
 		</line>
-		<line linenr="056" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="046" indent="&#160;&#160;&#160;&#160;&#160;">
+			<comment>* Add-Ons 1.1: Added edge case for lower difficulties when bailing a renegade fighter.</comment>
+		</line>
+		<line linenr="047" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -565,17 +472,20 @@
 			<text>=</text>
 			<var>$attacker</var>
 		</line>
-		<line linenr="057" indent="&#160;&#160;&#160;">
+		<line linenr="048" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="058" indent="&#160;&#160;&#160;" />
-		<line linenr="059" indent="&#160;&#160;&#160;">
+		<line linenr="049" indent="&#160;&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="050" indent="&#160;&#160;&#160;" />
+		<line linenr="051" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.13.2: START [NULL] on this script may lead to an extremely dangerous race condition by attempting to clone a ghost ship. </comment>
 		</line>
-		<line linenr="060" indent="&#160;&#160;&#160;">
+		<line linenr="052" indent="&#160;&#160;&#160;">
 			<comment>* However, Bail.Copy is a global script, so this is tricky to patch.</comment>
 		</line>
-		<line linenr="061" indent="&#160;&#160;&#160;">
+		<line linenr="053" indent="&#160;&#160;&#160;">
 			<var>$beingDestroyed</var>
 			<text> </text>
 			<text>=</text>
@@ -594,7 +504,7 @@
 			<text>=</text>
 			<text>'mayhem_beingDestroyed'</text>
 		</line>
-		<line linenr="062" indent="&#160;&#160;&#160;">
+		<line linenr="054" indent="&#160;&#160;&#160;">
 			<var>$bailQueued</var>
 			<text> </text>
 			<text>=</text>
@@ -613,7 +523,7 @@
 			<text>=</text>
 			<text>'mayhem_bailCopyQueued'</text>
 		</line>
-		<line linenr="063" indent="&#160;&#160;&#160;">
+		<line linenr="055" indent="&#160;&#160;&#160;">
 			<var>$bailRunning</var>
 			<text> </text>
 			<text>=</text>
@@ -632,7 +542,7 @@
 			<text>=</text>
 			<text>'mayhem_bailCopyRunning'</text>
 		</line>
-		<line linenr="064" indent="&#160;&#160;&#160;">
+		<line linenr="056" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
@@ -648,7 +558,7 @@
 			<text>!</text>
 			<var>$bailRunning</var>
 		</line>
-		<line linenr="065" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="057" indent="&#160;&#160;&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -667,7 +577,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="066" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="058" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -693,22 +603,22 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="067" indent="&#160;&#160;&#160;">
+		<line linenr="059" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="068" indent="&#160;&#160;">
+		<line linenr="060" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="069" indent="&#160;">
+		<line linenr="061" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="070" indent="">
+		<line linenr="062" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="071" indent="&#160;">
+		<line linenr="063" indent="&#160;">
 			<comment>* If he doesn't bail when he has the occasion to do it once, he'll never bail.</comment>
 		</line>
-		<line linenr="072" indent="&#160;" interruptable="@">
+		<line linenr="064" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -730,11 +640,11 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="073" indent="">
+		<line linenr="065" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="074" indent="" />
-		<line linenr="075" indent="">
+		<line linenr="066" indent="" />
+		<line linenr="067" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -745,9 +655,9 @@
 			<sval type="string" val="Mayhem.Task.BailMaybe" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="29" />
+			<sval type="int" val="34" />
 			<sval type="int" val="0" />
-			<sval type="array" size="15">
+			<sval type="array" size="12">
 				<sval type="string" val="attacker" />
 				<sval type="string" val="bail" />
 				<sval type="string" val="maxBailedShipsPerSector" />
@@ -756,15 +666,12 @@
 				<sval type="string" val="maxBailedShips" />
 				<sval type="string" val="neutralShips" />
 				<sval type="string" val="neutralShips.s" />
-				<sval type="string" val="playerMercKill" />
-				<sval type="string" val="killer.owner" />
-				<sval type="string" val="completed" />
-				<sval type="string" val="killedPirates" />
+				<sval type="string" val="isPlayerAttacker" />
 				<sval type="string" val="beingDestroyed" />
 				<sval type="string" val="bailQueued" />
 				<sval type="string" val="bailRunning" />
 			</sval>
-			<sval type="array" size="44">
+			<sval type="array" size="39">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -882,7 +789,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610601981" />
+					<sval type="int" val="-1610603261" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -923,7 +830,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602237" />
+					<sval type="int" val="-1610603517" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -956,7 +863,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602237" />
+					<sval type="int" val="-1610603517" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
@@ -969,23 +876,34 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="10">
+				<sval type="array" size="8">
 					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.IsMercKill" />
+					<sval type="string" val="Mayhem.IsPlayerAttacker" />
 					<sval type="int" val="8" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
-					<sval type="int" val="2" />
+					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="10" />
-					<sval type="int" val="10" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="701" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605053" />
+					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="9" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Ascension.AddDefeat" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
@@ -999,101 +917,20 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="39">
+				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604285" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="10" />
-					<sval type="int" val="10" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="10" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
+					<sval type="int" val="-1610605565" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
 					<sval type="int" val="10" />
 					<sval type="int" val="8" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="13" />
-					<sval type="int" val="16" />
+					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-5" />
-					<sval type="int" val="17" />
-					<sval type="int" val="9" />
-					<sval type="int" val="-8" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-9" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.IsAscensionCompleted" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="10">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610604541" />
-					<sval type="int" val="2" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="15" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="2" />
-					<sval type="int" val="65556" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="158" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_killedPirates" />
-					<sval type="int" val="11" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-536863225" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="142" />
-					<sval type="int" val="11" />
-				</sval>
-				<sval type="array" size="5">
-					<sval type="int" val="157" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_killedPirates" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
@@ -1107,9 +944,13 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="30" />
+				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603773" />
+					<sval type="int" val="-1610605051" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -1142,7 +983,7 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_beingDestroyed" />
-					<sval type="int" val="12" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
@@ -1150,7 +991,7 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_bailCopyQueued" />
-					<sval type="int" val="13" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
@@ -1158,24 +999,24 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_bailCopyRunning" />
-					<sval type="int" val="14" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="28">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602237" />
+					<sval type="int" val="-1610603517" />
 					<sval type="int" val="8" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="9" />
 					<sval type="int" val="15" />
 					<sval type="int" val="65556" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="65556" />
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="11" />
 					<sval type="int" val="15" />
 					<sval type="int" val="65556" />
 					<sval type="int" val="15" />
@@ -1215,7 +1056,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
@@ -1241,7 +1082,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="32">
+			<sval type="array" size="30">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1295,94 +1136,85 @@
 				<sval type="array" size="3">
 					<sval type="int" val="23" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Bounty" />
+					<sval type="string" val="Ascension." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="23" />
+					<sval type="int" val="24" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Bounty." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="24" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Note: unlike the bounty logic in !ship.signal.killed, freighters in ZH never bail via combat. As such, no need to set the bounty of the attacker." />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="23" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.13.2: Moved to new script." />
-				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="24" />
+					<sval type="int" val="25" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="24" />
+					<sval type="int" val="26" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Pirates count (ascension purpose)." />
+					<sval type="string" val="Pirate clue." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="24" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.7: Pirate bailing now drops hints." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="32" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="33" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="33" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="33" />
+					<sval type="int" val="29" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.1: Added edge case for lower difficulties when bailing a renegade fighter." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="30" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="30" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="30" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="35" />
+					<sval type="int" val="30" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.13.2: START [NULL] on this script may lead to an extremely dangerous race condition by attempting to clone a ghost ship. " />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="35" />
+					<sval type="int" val="30" />
 					<sval type="int" val="1" />
 					<sval type="string" val="However, Bail.Copy is a global script, so this is tricky to patch." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="41" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="41" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="41" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="42" />
+					<sval type="int" val="37" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="42" />
+					<sval type="int" val="37" />
 					<sval type="int" val="1" />
 					<sval type="string" val="If he doesn't bail when he has the occasion to do it once, he'll never bail." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
