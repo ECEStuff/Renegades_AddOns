@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.GameCreator.VeryQuickstart</name>
-	<version>26</version>
+	<version>28</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -36,71 +36,87 @@
 		</line>
 		<line linenr="006" indent="" />
 		<line linenr="007" indent="">
-			<comment>* Add-Ons 2.1.3: Rebalanced quickstart for parity with standard ascension. </comment>
+			<comment>* Add-Ons 2.2: Rebalanced quickstart for parity with standard ascension. This is a tradeoff between tempo and long-term starting value.</comment>
 		</line>
 		<line linenr="008" indent="">
-			<comment>* This is a tradeoff between tempo and long-term starting value.</comment>
-		</line>
-		<line linenr="009" indent="">
 			<comment>* 1. Starting money: 2,000,000 -&gt; 0. Testing revealed that the player could sell early EC/waste and obtain early tax.</comment>
 		</line>
-		<line linenr="010" indent="">
+		<line linenr="009" indent="">
 			<comment>* 2. Starting reputation: +3k rep with ALL factions -&gt; +2.3k rep with ONLY origin race (now handled in StartingOptions.Callbacks).</comment>
 		</line>
-		<line linenr="011" indent="">
+		<line linenr="010" indent="">
 			<comment>* 3. Ship classes: 2 M6 -&gt; 0 M6, 12 M3 -&gt; 3 M3, 5 TS -&gt; 2 TS.</comment>
 		</line>
-		<line linenr="012" indent="">
+		<line linenr="011" indent="">
 			<comment>* - Ships now use standardized starting ship types, consistent with standard starting bonuses.</comment>
 		</line>
-		<line linenr="013" indent="">
+		<line linenr="012" indent="">
 			<comment>* - The new numbers are based on comparable ascension requirements.</comment>
 		</line>
-		<line linenr="014" indent="">
+		<line linenr="013" indent="">
 			<comment>* - Ships no longer receive additional starting cargo or items.</comment>
 		</line>
-		<line linenr="015" indent="">
+		<line linenr="014" indent="">
 			<comment>* - Ship blueprints are no longer automatically unlocked; starting ships can be scanned normally.</comment>
 		</line>
-		<line linenr="016" indent="" />
+		<line linenr="015" indent="" />
+		<line linenr="016" indent="">
+			<comment>* Add-Ons 2.2: Spawn at a random position in the origin sector instead of beside the player's current ship.</comment>
+		</line>
 		<line linenr="017" indent="">
-			<var>$sector</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[PLAYERSHIP]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>sector</text>
+			<comment>* The player can still move via strafing during starting questions, so the current ship position is not a stable spawn reference.</comment>
 		</line>
 		<line linenr="018" indent="">
+			<var>$plSector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_playerOrigin'</text>
+		</line>
+		<line linenr="019" indent="" interruptable="@">
 			<var>$pos</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>[PLAYERSHIP]</var>
+			<var>[NULL]</var>
 			<text>-&gt;</text>
 			<text> </text>
-			<text>get</text>
+			<text>call</text>
 			<text> </text>
-			<text>position</text>
+			<text>script</text>
 			<text> </text>
-			<text>as</text>
+			<call>Joubarbe.Lib.GetValidPos</call>
 			<text> </text>
-			<text>array</text>
-		</line>
-		<line linenr="019" indent="">
-			<text>append</text>
+			<text>:</text>
 			<text> </text>
-			<var>$sector</var>
+			<text>sector</text>
+			<text>=</text>
+			<var>$plSector</var>
 			<text> </text>
-			<text>to</text>
+			<text>minDistance</text>
+			<text>=</text>
+			<var>0</var>
 			<text> </text>
-			<text>array</text>
+			<text>posArray</text>
+			<text>=</text>
+			<var>null</var>
 			<text> </text>
-			<var>$pos</var>
+			<text>verticalOnly</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+			<text> </text>
+			<text>refobj</text>
+			<text>=</text>
+			<var>null</var>
 		</line>
 		<line linenr="020" indent="" />
 		<line linenr="021" indent="">
@@ -373,10 +389,10 @@
 			<sval type="string" val="ZH.GameCreator.VeryQuickstart" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="26" />
+			<sval type="int" val="28" />
 			<sval type="int" val="0" />
 			<sval type="array" size="9">
-				<sval type="string" val="sector" />
+				<sval type="string" val="plSector" />
 				<sval type="string" val="pos" />
 				<sval type="string" val="classes" />
 				<sval type="string" val="class" />
@@ -386,7 +402,7 @@
 				<sval type="string" val="i" />
 				<sval type="string" val="ship" />
 			</sval>
-			<sval type="array" size="28">
+			<sval type="array" size="27">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -399,22 +415,27 @@
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="4">
-					<sval type="int" val="703" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="3" />
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_playerOrigin" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="795" />
+				<sval type="array" size="16">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.GetValidPos" />
+					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
-					<sval type="int" val="3" />
-					<sval type="int" val="1" />
-				</sval>
-				<sval type="array" size="5">
-					<sval type="int" val="135" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="4">
@@ -449,7 +470,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610605815" />
+					<sval type="int" val="-1610606071" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -480,7 +501,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606077" />
+					<sval type="int" val="-1610606333" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -489,7 +510,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608381" />
+					<sval type="int" val="-1610608637" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -513,7 +534,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="18" />
+					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -541,7 +562,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606071" />
+					<sval type="int" val="-1610606327" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
@@ -589,7 +610,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606333" />
+					<sval type="int" val="-1610606589" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -623,11 +644,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="19" />
+					<sval type="int" val="18" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="9" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -636,7 +657,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="28">
+			<sval type="array" size="29">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -657,12 +678,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="2" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.1.3: Rebalanced quickstart for parity with standard ascension. " />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="2" />
-					<sval type="int" val="1" />
-					<sval type="string" val="This is a tradeoff between tempo and long-term starting value." />
+					<sval type="string" val="Add-Ons 2.2: Rebalanced quickstart for parity with standard ascension. This is a tradeoff between tempo and long-term starting value." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="2" />
@@ -703,40 +719,58 @@
 					<sval type="int" val="2" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 2.2: Spawn at a random position in the origin sector instead of beside the player's current ship." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The player can still move via strafing during starting questions, so the current ship position is not a stable spawn reference." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="5" />
+					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="5" />
+					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 2.2: No longer calls GetRandomShip since that returns ship variants. Now returns standardized ships." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="17" />
+					<sval type="int" val="16" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="18" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="18" />
+					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="18" />
+					<sval type="int" val="17" />
 					<sval type="int" val="1" />
 					<sval type="string" val="BuildShip handles standard equipment. However, player-built Spitfyres do not receive lasers, so equip their lasers separately." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="22" />
+					<sval type="int" val="21" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="22" />
+					<sval type="int" val="21" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The starting Spitfyres are also scan-locked to prevent them from being scanned for blueprints." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="25" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="25" />
@@ -748,18 +782,10 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="26" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="27" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="27" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="27" />
+					<sval type="int" val="26" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
