@@ -3,14 +3,15 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Merc.CreateGroup</name>
-	<version>16</version>
+	<version>33</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
 		<argument index="1" name="shipArray" type="Var/Array" desc="" />
 		<argument index="2" name="hireTime" type="Var/Number" desc="Optional." />
 		<argument index="3" name="vip" type="Var/Ship" desc="Optional." />
-		<argument index="4" name="regroup" type="Var/Boolean" desc="[TRUE] if called by followers." />
+		<argument index="4" name="vipNPC" type="Var/Ship" desc="" />
+		<argument index="5" name="groupID" type="Var/Number" desc="integer if reforming group." />
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="" />
@@ -19,20 +20,21 @@
 		</line>
 		<line linenr="003" indent="" />
 		<line linenr="004" indent="">
-			<comment>* Mayhem.SelectNewLeader Gets ship with the most HULL.  Does not assign a new leader.</comment>
+			<comment>* Mayhem.SelectNewLeader Gets ship with the most HULL. It does not assign a new leader.</comment>
 		</line>
 		<line linenr="005" indent="">
-			<comment>* Add-Ons 2.2: Fix race condition where followers could follow each other.</comment>
+			<comment>* Add-Ons 2.2: Group reformation is handled by Mayhem.Merc.ReformGroup.</comment>
 		</line>
 		<line linenr="006" indent="">
-			<comment>* Serialize orphaned mercenary regrouping per sector/company.</comment>
+			<comment>* Group membership is globally tracked through mayhem_mercGroups.</comment>
 		</line>
 		<line linenr="007" indent="" />
 		<line linenr="008" indent="">
-			<comment>* Get a valid reference ship.</comment>
+			<comment>* ===== Get leader =====</comment>
 		</line>
-		<line linenr="009" indent="" interruptable="@">
-			<var>$reference</var>
+		<line linenr="009" indent="" />
+		<line linenr="010" indent="" interruptable="@">
+			<var>$leader</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -59,226 +61,158 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="010" indent="">
+		<line linenr="011" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
-			<var>$reference</var>
+			<var>$leader</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="011" indent="&#160;">
+		<line linenr="012" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="012" indent="" />
-		<line linenr="013" indent="">
-			<var>$sector</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$reference</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>sector</text>
-		</line>
+		<line linenr="013" indent="" />
 		<line linenr="014" indent="">
-			<var>$company</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$reference</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>owner</text>
-			<text> </text>
-			<text>race</text>
+			<comment>* ===== Allocate group ID =====</comment>
 		</line>
 		<line linenr="015" indent="" />
 		<line linenr="016" indent="">
-			<var>$lockName</var>
+			<comment>* A null ID means this is a newly created physical group.</comment>
+		</line>
+		<line linenr="017" indent="">
+			<text>if</text>
 			<text> </text>
-			<text>=</text>
+			<var>$groupID</var>
+			<text> </text>
+			<text>==</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="017" indent="" />
-		<line linenr="018" indent="">
-			<comment>* ===== Regroup Serialization =====</comment>
-		</line>
-		<line linenr="019" indent="">
-			<comment>* Normal group generation does NOT use this.</comment>
-		</line>
-		<line linenr="020" indent="">
-			<comment>* Only orphaned followers competing to reconstruct a group do.</comment>
-		</line>
-		<line linenr="021" indent="" />
-		<line linenr="022" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$regroup</var>
-		</line>
-		<line linenr="023" indent="&#160;">
-			<comment>* Sector-local lock. Each company has its own regroup lock.</comment>
-		</line>
-		<line linenr="024" indent="&#160;">
-			<var>$lockName</var>
+		<line linenr="018" indent="&#160;">
+			<var>$groupID</var>
 			<text> </text>
 			<text>=</text>
-			<text> </text>
-			<text>'mayhem_mercRegrouping.'</text>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>$company</var>
-		</line>
-		<line linenr="025" indent="&#160;">
-			<var>$regrouping</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$sector</var>
-			<text>-&gt;</text>
 			<text> </text>
 			<text>get</text>
 			<text> </text>
-			<text>local</text>
+			<text>global</text>
 			<text> </text>
 			<text>variable</text>
 			<text>:</text>
 			<text> </text>
 			<text>name</text>
 			<text>=</text>
-			<var>$lockName</var>
+			<text>'mayhem_mercNextGroupID'</text>
 		</line>
-		<line linenr="026" indent="&#160;" />
-		<line linenr="027" indent="&#160;">
-			<comment>* Another regroup is already rebuilding this company's mercenaries.</comment>
-		</line>
-		<line linenr="028" indent="&#160;">
+		<line linenr="019" indent="&#160;" />
+		<line linenr="020" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
-			<var>$regrouping</var>
-		</line>
-		<line linenr="029" indent="&#160;&#160;">
-			<text>return</text>
+			<var>$groupID</var>
+			<text> </text>
+			<text>==</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="030" indent="&#160;" />
-		<line linenr="031" indent="&#160;">
-			<var>$sector</var>
-			<text>-&gt;</text>
+		<line linenr="021" indent="&#160;&#160;">
+			<var>$groupID</var>
 			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="022" indent="&#160;" />
+		<line linenr="023" indent="&#160;">
+			<var>$nextGroupID</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$groupID</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="024" indent="&#160;">
 			<text>set</text>
 			<text> </text>
-			<text>local</text>
+			<text>global</text>
 			<text> </text>
 			<text>variable</text>
 			<text>:</text>
 			<text> </text>
 			<text>name</text>
 			<text>=</text>
-			<var>$lockName</var>
+			<text>'mayhem_mercNextGroupID'</text>
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
-			<var>[TRUE]</var>
+			<var>$nextGroupID</var>
 		</line>
-		<line linenr="032" indent="&#160;" />
+		<line linenr="025" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="026" indent="" />
+		<line linenr="027" indent="">
+			<comment>* ===== Globals =====</comment>
+		</line>
+		<line linenr="028" indent="" />
+		<line linenr="029" indent="">
+			<var>$mercs</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_mercs'</text>
+		</line>
+		<line linenr="030" indent="">
+			<var>$mercGroups</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_mercGroups'</text>
+		</line>
+		<line linenr="031" indent="" />
+		<line linenr="032" indent="">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$hireTime</var>
+		</line>
 		<line linenr="033" indent="&#160;">
-			<comment>* Recheck: Another follower may have already reconstructed the group.</comment>
+			<var>$hireTime</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
 		</line>
-		<line linenr="034" indent="&#160;" interruptable="@">
-			<var>$leadersAround</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.Merc.GetLeaders</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>company</text>
-			<text>=</text>
-			<var>$company</var>
-			<text> </text>
-			<text>sector</text>
-			<text>=</text>
-			<var>$sector</var>
-			<text> </text>
-			<text>onlyHired</text>
-			<text>=</text>
-			<var>[FALSE]</var>
-		</line>
-		<line linenr="035" indent="&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$leadersAround</var>
-		</line>
-		<line linenr="036" indent="&#160;&#160;" interruptable="@">
-			<var>$leader</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.GetRandomElement</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>array</text>
-			<text>=</text>
-			<var>$leadersAround</var>
-		</line>
-		<line linenr="037" indent="&#160;&#160;" interruptable="@">
-			<var>$followers</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.Merc.GetFollowers</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>leader</text>
-			<text>=</text>
-			<var>$leader</var>
-		</line>
-		<line linenr="038" indent="&#160;&#160;">
-			<text>if</text>
-			<text> </text>
-			<text>not</text>
-			<text> </text>
-			<var>$followers</var>
-		</line>
-		<line linenr="039" indent="&#160;&#160;&#160;">
+		<line linenr="034" indent="" />
+		<line linenr="035" indent="">
 			<var>$followers</var>
 			<text> </text>
 			<text>=</text>
@@ -292,8 +226,261 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="040" indent="&#160;&#160;&#160;">
-			<var>$leader</var>
+		<line linenr="036" indent="">
+			<var>$members</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<text>alloc</text>
+			<text>:</text>
+			<text> </text>
+			<text>size</text>
+			<text>=</text>
+			<var>0</var>
+		</line>
+		<line linenr="037" indent="" />
+		<line linenr="038" indent="">
+			<comment>* ===== Build group =====</comment>
+		</line>
+		<line linenr="039" indent="" />
+		<line linenr="040" indent="">
+			<var>$XS.Iterator1</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$shipArray</var>
+		</line>
+		<line linenr="041" indent="&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="042" indent="&#160;&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="043" indent="&#160;">
+			<var>$ship</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$shipArray</var>
+			<text>[</text>
+			<var>$XS.Iterator1</var>
+			<text>]</text>
+		</line>
+		<line linenr="044" indent="&#160;">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="045" indent="&#160;">
+			<text>continue</text>
+		</line>
+		<line linenr="046" indent="&#160;" />
+		<line linenr="047" indent="&#160;&#160;">
+			<comment>* If this ship is being moved from another group, remove its stale membership.</comment>
+		</line>
+		<line linenr="048" indent="&#160;&#160;">
+			<var>$oldGroupID</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_mercGroupID'</text>
+		</line>
+		<line linenr="049" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$oldGroupID</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>null</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$oldGroupID</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>$groupID</var>
+		</line>
+		<line linenr="050" indent="&#160;&#160;&#160;">
+			<var>$oldMembers</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$mercGroups</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>$oldGroupID</var>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="051" indent="&#160;&#160;&#160;" />
+		<line linenr="052" indent="&#160;&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$oldMembers</var>
+		</line>
+		<line linenr="053" indent="&#160;&#160;&#160;">
+			<var>$oldIndex</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>index</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<var>$ship</var>
+			<text> </text>
+			<text>in</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$oldMembers</var>
+			<text> </text>
+			<text>offset</text>
+			<text>=</text>
+			<var>0</var>
+		</line>
+		<line linenr="054" indent="&#160;&#160;&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$oldIndex</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="055" indent="&#160;&#160;&#160;&#160;">
+			<text>remove</text>
+			<text> </text>
+			<text>element</text>
+			<text> </text>
+			<text>from</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$oldMembers</var>
+			<text> </text>
+			<text>at</text>
+			<text> </text>
+			<text>index</text>
+			<text> </text>
+			<var>$oldIndex</var>
+		</line>
+		<line linenr="056" indent="&#160;&#160;" />
+		<line linenr="057" indent="&#160;">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$oldMembers</var>
+		</line>
+		<line linenr="058" indent="&#160;">
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>remove</text>
+			<text> </text>
+			<text>key</text>
+			<text>:</text>
+			<text> </text>
+			<text>table</text>
+			<text>=</text>
+			<var>$mercGroups</var>
+			<text>,</text>
+			<text> </text>
+			<text>key</text>
+			<text>=</text>
+			<var>$oldGroupID</var>
+		</line>
+		<line linenr="059" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="060" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="061" indent="&#160;" />
+		<line linenr="062" indent="&#160;">
+			<text>append</text>
+			<text> </text>
+			<var>$ship</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$members</var>
+		</line>
+		<line linenr="063" indent="&#160;" />
+		<line linenr="064" indent="&#160;">
+			<comment>* Initialize complete group and contract state.</comment>
+		</line>
+		<line linenr="065" indent="&#160;">
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>set</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_mercGroupID'</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>$groupID</var>
+		</line>
+		<line linenr="066" indent="&#160;">
+			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>set</text>
@@ -309,143 +496,9 @@
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
-			<var>$followers</var>
+			<var>null</var>
 		</line>
-		<line linenr="041" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="042" indent="&#160;&#160;" />
-		<line linenr="043" indent="&#160;&#160;">
-			<var>$leaderVip</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$leader</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_mercVip'</text>
-		</line>
-		<line linenr="044" indent="&#160;&#160;" interruptable="@">
-			<var>$leaderHireTime</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.Merc.GetHireTime</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>ship</text>
-			<text>=</text>
-			<var>$leader</var>
-		</line>
-		<line linenr="045" indent="&#160;&#160;" />
-		<line linenr="046" indent="&#160;&#160;">
-			<var>$XS.Iterator1</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$shipArray</var>
-		</line>
-		<line linenr="047" indent="&#160;&#160;&#160;">
-			<text>while</text>
-			<text> </text>
-			<var>$XS.Iterator1</var>
-		</line>
-		<line linenr="048" indent="&#160;&#160;&#160;&#160;">
-			<text>dec</text>
-			<text> </text>
-			<var>$XS.Iterator1</var>
-		</line>
-		<line linenr="049" indent="&#160;&#160;&#160;">
-			<var>$ship</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$shipArray</var>
-			<text>[</text>
-			<var>$XS.Iterator1</var>
-			<text>]</text>
-		</line>
-		<line linenr="050" indent="&#160;&#160;&#160;">
-			<text>skip</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="051" indent="&#160;&#160;&#160;&#160;">
-			<text>continue</text>
-		</line>
-		<line linenr="052" indent="&#160;&#160;&#160;" />
-		<line linenr="053" indent="&#160;&#160;&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>$leader</var>
-		</line>
-		<line linenr="054" indent="&#160;&#160;&#160;&#160;">
-			<text>continue</text>
-		</line>
-		<line linenr="055" indent="&#160;&#160;&#160;" />
-		<line linenr="056" indent="&#160;&#160;&#160;">
-			<text>skip</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<text>find</text>
-			<text> </text>
-			<var>$ship</var>
-			<text> </text>
-			<text>in</text>
-			<text> </text>
-			<text>array</text>
-			<text>:</text>
-			<text> </text>
-			<var>$followers</var>
-		</line>
-		<line linenr="057" indent="&#160;&#160;&#160;">
-			<text>append</text>
-			<text> </text>
-			<var>$ship</var>
-			<text> </text>
-			<text>to</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$followers</var>
-		</line>
-		<line linenr="058" indent="&#160;&#160;&#160;" />
-		<line linenr="059" indent="&#160;&#160;&#160;">
+		<line linenr="067" indent="&#160;">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -462,9 +515,28 @@
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
-			<var>$leaderVip</var>
+			<var>$vip</var>
 		</line>
-		<line linenr="060" indent="&#160;&#160;">
+		<line linenr="068" indent="&#160;">
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>set</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_mercVipNPC'</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>$vipNPC</var>
+		</line>
+		<line linenr="069" indent="&#160;&#160;">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -481,33 +553,20 @@
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
-			<var>$leaderHireTime</var>
+			<var>$hireTime</var>
 		</line>
-		<line linenr="061" indent="&#160;&#160;" />
-		<line linenr="062" indent="&#160;&#160;" interruptable="@">
-			<text>START</text>
+		<line linenr="070" indent="&#160;&#160;" />
+		<line linenr="071" indent="&#160;">
+			<text>if</text>
 			<text> </text>
 			<var>$ship</var>
-			<text>-&gt;</text>
 			<text> </text>
-			<text>call</text>
+			<text>==</text>
 			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.Task.Merc.Follower</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>leader</text>
-			<text>=</text>
 			<var>$leader</var>
 		</line>
-		<line linenr="063" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="064" indent="&#160;" />
-		<line linenr="065" indent="">
-			<var>$sector</var>
+		<line linenr="072" indent="&#160;">
+			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>set</text>
@@ -519,69 +578,82 @@
 			<text> </text>
 			<text>name</text>
 			<text>=</text>
-			<var>$lockName</var>
+			<text>'mayhem_mercLeader'</text>
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="066" indent="">
-			<text>return</text>
-			<text> </text>
-			<var>$leader</var>
+		<line linenr="073" indent="&#160;">
+			<text>continue</text>
 		</line>
-		<line linenr="067" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="068" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="069" indent="" />
-		<line linenr="070" indent="">
-			<comment>* ===== Create group if no leaders are nearby. =====</comment>
-		</line>
-		<line linenr="071" indent="" />
-		<line linenr="072" indent="">
-			<var>$leader</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$reference</var>
-		</line>
-		<line linenr="073" indent="" />
 		<line linenr="074" indent="&#160;">
-			<var>$mercs</var>
+			<text>end</text>
+		</line>
+		<line linenr="075" indent="" />
+		<line linenr="076" indent="">
+			<var>$ship</var>
+			<text>-&gt;</text>
 			<text> </text>
-			<text>=</text>
+			<text>set</text>
 			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>global</text>
+			<text>local</text>
 			<text> </text>
 			<text>variable</text>
 			<text>:</text>
 			<text> </text>
 			<text>name</text>
 			<text>=</text>
-			<text>'mayhem_mercs'</text>
-		</line>
-		<line linenr="075" indent="" />
-		<line linenr="076" indent="">
-			<text>skip</text>
+			<text>'mayhem_mercLeader'</text>
 			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$hireTime</var>
+			<text>value</text>
+			<text>=</text>
+			<var>$leader</var>
 		</line>
 		<line linenr="077" indent="">
-			<var>$hireTime</var>
+			<text>append</text>
+			<text> </text>
+			<var>$ship</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$followers</var>
+		</line>
+		<line linenr="078" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="079" indent="" />
+		<line linenr="080" indent="">
+			<comment>* ===== Register group =====</comment>
+		</line>
+		<line linenr="081" indent="" />
+		<line linenr="082" indent="">
+			<comment>* Store our own clean member array rather than the caller's working array.</comment>
+		</line>
+		<line linenr="083" indent="">
+			<text>table</text>
+			<text> </text>
+			<text>set</text>
+			<text> </text>
+			<var>$mercGroups</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>$groupID</var>
+			<text> </text>
+			<text>)</text>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>0</var>
+			<var>$members</var>
 		</line>
-		<line linenr="078" indent="" />
-		<line linenr="079" indent="">
+		<line linenr="084" indent="" />
+		<line linenr="085" indent="">
+			<comment>* Register the new leader.</comment>
+		</line>
+		<line linenr="086" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -598,161 +670,8 @@
 			<text> </text>
 			<var>$hireTime</var>
 		</line>
-		<line linenr="080" indent="" />
-		<line linenr="081" indent="&#160;">
-			<var>$followers</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<text>alloc</text>
-			<text>:</text>
-			<text> </text>
-			<text>size</text>
-			<text>=</text>
-			<var>0</var>
-		</line>
-		<line linenr="082" indent="&#160;&#160;" />
-		<line linenr="083" indent="&#160;">
-			<var>$XS.Iterator2</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$shipArray</var>
-		</line>
-		<line linenr="084" indent="&#160;">
-			<text>while</text>
-			<text> </text>
-			<var>$XS.Iterator2</var>
-		</line>
-		<line linenr="085" indent="&#160;">
-			<text>dec</text>
-			<text> </text>
-			<var>$XS.Iterator2</var>
-		</line>
-		<line linenr="086" indent="&#160;">
-			<var>$ship</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$shipArray</var>
-			<text>[</text>
-			<var>$XS.Iterator2</var>
-			<text>]</text>
-		</line>
-		<line linenr="087" indent="&#160;">
-			<text>skip</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
+		<line linenr="087" indent="" />
 		<line linenr="088" indent="&#160;">
-			<text>continue</text>
-		</line>
-		<line linenr="089" indent="&#160;" />
-		<line linenr="090" indent="&#160;&#160;">
-			<comment>* Preserve group state so surviving followers can reconstruct it.</comment>
-		</line>
-		<line linenr="091" indent="&#160;">
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_mercFollowers'</text>
-			<text> </text>
-			<text>value</text>
-			<text>=</text>
-			<var>null</var>
-		</line>
-		<line linenr="092" indent="&#160;">
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_mercVip'</text>
-			<text> </text>
-			<text>value</text>
-			<text>=</text>
-			<var>$vip</var>
-		</line>
-		<line linenr="093" indent="">
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_mercHireTime'</text>
-			<text> </text>
-			<text>value</text>
-			<text>=</text>
-			<var>$hireTime</var>
-		</line>
-		<line linenr="094" indent="" />
-		<line linenr="095" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>$leader</var>
-		</line>
-		<line linenr="096" indent="&#160;">
-			<text>continue</text>
-		</line>
-		<line linenr="097" indent="" />
-		<line linenr="098" indent="&#160;">
-			<text>append</text>
-			<text> </text>
-			<var>$ship</var>
-			<text> </text>
-			<text>to</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$followers</var>
-		</line>
-		<line linenr="099" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="100" indent="" />
-		<line linenr="101" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>size</text>
@@ -763,7 +682,7 @@
 			<text> </text>
 			<var>$followers</var>
 		</line>
-		<line linenr="102" indent="">
+		<line linenr="089" indent="">
 			<var>$leader</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -782,10 +701,10 @@
 			<text>=</text>
 			<var>$followers</var>
 		</line>
-		<line linenr="103" indent="">
+		<line linenr="090" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="104" indent="&#160;">
+		<line linenr="091" indent="">
 			<var>$leader</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -804,11 +723,108 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="105" indent="">
+		<line linenr="092" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="106" indent="" />
-		<line linenr="107" indent="" interruptable="@">
+		<line linenr="093" indent="" />
+		<line linenr="094" indent="">
+			<comment>* ===== Start leader =====</comment>
+		</line>
+		<line linenr="095" indent="" />
+		<line linenr="096" indent="">
+			<comment>* Stop any former follower watchdog if this ship was promoted.</comment>
+		</line>
+		<line linenr="097" indent="">
+			<var>$leader</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>begin</text>
+			<text> </text>
+			<text>task</text>
+			<text> </text>
+			<var>1334</var>
+			<text> </text>
+			<text>with</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>!lib.interrupt</call>
+			<text> </text>
+			<text>and</text>
+			<text> </text>
+			<text>priority</text>
+			<text> </text>
+			<var>0</var>
+			<text>:</text>
+			<text> </text>
+			<text>arg1</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg2</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg3</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg4</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg5</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="098" indent="" />
+		<line linenr="099" indent="">
+			<comment>* Replace any stale Task 0 command.</comment>
+		</line>
+		<line linenr="100" indent="">
+			<var>$leader</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>begin</text>
+			<text> </text>
+			<text>task</text>
+			<text> </text>
+			<var>0</var>
+			<text> </text>
+			<text>with</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>!lib.interrupt</call>
+			<text> </text>
+			<text>and</text>
+			<text> </text>
+			<text>priority</text>
+			<text> </text>
+			<var>0</var>
+			<text>:</text>
+			<text> </text>
+			<text>arg1</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg2</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg3</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg4</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg5</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="101" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>$leader</var>
@@ -825,10 +841,17 @@
 			<text>vip</text>
 			<text>=</text>
 			<var>$vip</var>
+			<text> </text>
+			<text>vipNPC</text>
+			<text>=</text>
+			<var>$vipNPC</var>
 		</line>
-		<line linenr="108" indent="" />
-		<line linenr="109" indent="&#160;">
-			<var>$XS.Iterator3</var>
+		<line linenr="102" indent="&#160;" />
+		<line linenr="103" indent="&#160;">
+			<comment>* ===== Start followers=====</comment>
+		</line>
+		<line linenr="104" indent="&#160;">
+			<var>$XS.Iterator2</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -840,27 +863,74 @@
 			<text> </text>
 			<var>$followers</var>
 		</line>
-		<line linenr="110" indent="">
+		<line linenr="105" indent="&#160;">
 			<text>while</text>
 			<text> </text>
-			<var>$XS.Iterator3</var>
+			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="111" indent="">
+		<line linenr="106" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
-			<var>$XS.Iterator3</var>
+			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="112" indent="">
+		<line linenr="107" indent="&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$followers</var>
 			<text>[</text>
-			<var>$XS.Iterator3</var>
+			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="113" indent="" interruptable="@">
+		<line linenr="108" indent="&#160;" />
+		<line linenr="109" indent="&#160;">
+			<comment>* Replace any stale Task 0 command.</comment>
+		</line>
+		<line linenr="110" indent="">
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>begin</text>
+			<text> </text>
+			<text>task</text>
+			<text> </text>
+			<var>0</var>
+			<text> </text>
+			<text>with</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>!lib.interrupt</call>
+			<text> </text>
+			<text>and</text>
+			<text> </text>
+			<text>priority</text>
+			<text> </text>
+			<var>0</var>
+			<text>:</text>
+			<text> </text>
+			<text>arg1</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg2</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg3</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg4</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg5</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="111" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>$ship</var>
@@ -878,41 +948,101 @@
 			<text>=</text>
 			<var>$leader</var>
 		</line>
+		<line linenr="112" indent="" />
+		<line linenr="113" indent="">
+			<comment>* Dedicated follower watchdog.</comment>
+		</line>
 		<line linenr="114" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="115" indent="" />
-		<line linenr="116" indent="">
-			<comment>* Regroup transition is now complete.</comment>
-		</line>
-		<line linenr="117" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$lockName</var>
-		</line>
-		<line linenr="118" indent="">
-			<var>$sector</var>
+			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
-			<text>set</text>
+			<text>begin</text>
 			<text> </text>
-			<text>local</text>
+			<text>task</text>
 			<text> </text>
-			<text>variable</text>
+			<var>1334</var>
+			<text> </text>
+			<text>with</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>!lib.interrupt</call>
+			<text> </text>
+			<text>and</text>
+			<text> </text>
+			<text>priority</text>
+			<text> </text>
+			<var>0</var>
 			<text>:</text>
 			<text> </text>
-			<text>name</text>
+			<text>arg1</text>
 			<text>=</text>
-			<var>$lockName</var>
+			<var>null</var>
 			<text> </text>
-			<text>value</text>
+			<text>arg2</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg3</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg4</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg5</text>
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="119" indent="" />
-		<line linenr="120" indent="">
+		<line linenr="115" indent="">
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>begin</text>
+			<text> </text>
+			<text>task</text>
+			<text> </text>
+			<var>1334</var>
+			<text> </text>
+			<text>with</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Task.Merc.Follower.WD</call>
+			<text> </text>
+			<text>and</text>
+			<text> </text>
+			<text>priority</text>
+			<text> </text>
+			<var>0</var>
+			<text>:</text>
+			<text> </text>
+			<text>arg1</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg2</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg3</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg4</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>arg5</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="116" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="117" indent="" />
+		<line linenr="118" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$leader</var>
@@ -923,34 +1053,32 @@
 			<sval type="string" val="Mayhem.Merc.CreateGroup" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="16" />
+			<sval type="int" val="33" />
 			<sval type="int" val="0" />
-			<sval type="array" size="19">
+			<sval type="array" size="17">
 				<sval type="string" val="shipArray" />
 				<sval type="string" val="hireTime" />
 				<sval type="string" val="vip" />
-				<sval type="string" val="regroup" />
-				<sval type="string" val="reference" />
-				<sval type="string" val="sector" />
-				<sval type="string" val="company" />
-				<sval type="string" val="lockName" />
-				<sval type="string" val="regrouping" />
-				<sval type="string" val="leadersAround" />
+				<sval type="string" val="vipNPC" />
+				<sval type="string" val="groupID" />
 				<sval type="string" val="leader" />
+				<sval type="string" val="nextGroupID" />
+				<sval type="string" val="mercs" />
+				<sval type="string" val="mercGroups" />
 				<sval type="string" val="followers" />
-				<sval type="string" val="leaderVip" />
-				<sval type="string" val="leaderHireTime" />
+				<sval type="string" val="members" />
 				<sval type="string" val="ship" />
 				<sval type="string" val="XS.Iterator1" />
-				<sval type="string" val="mercs" />
+				<sval type="string" val="oldGroupID" />
+				<sval type="string" val="oldMembers" />
+				<sval type="string" val="oldIndex" />
 				<sval type="string" val="XS.Iterator2" />
-				<sval type="string" val="XS.Iterator3" />
 			</sval>
-			<sval type="array" size="70">
+			<sval type="array" size="61">
 				<sval type="array" size="12">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.SelectNewLeader" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="3" />
@@ -964,7 +1092,7 @@
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="-536870137" />
 				</sval>
 				<sval type="array" size="3">
@@ -972,212 +1100,14 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="703" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="701" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
-					<sval type="int" val="6" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610603261" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="7" />
-					<sval type="int" val="3" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_mercRegrouping." />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="156" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="8" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610609912" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="155" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="10" />
-				</sval>
-				<sval type="array" size="12">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.Merc.GetLeaders" />
-					<sval type="int" val="9" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
+					<sval type="int" val="-1610610429" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610603261" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.GetRandomElement" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.Merc.GetFollowers" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-536866044" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="128" />
-					<sval type="int" val="11" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="155" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_mercFollowers" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="156" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_mercVip" />
-					<sval type="int" val="12" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.Merc.GetHireTime" />
-					<sval type="int" val="13" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="15" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610603767" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="143" />
-					<sval type="int" val="15" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="129" />
-					<sval type="int" val="14" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-536863993" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="22" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610605304" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="3" />
@@ -1185,89 +1115,73 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="22" />
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_mercNextGroupID" />
+					<sval type="int" val="4" />
 				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1406" />
-					<sval type="int" val="-536862969" />
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610936" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="6" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
 					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="5">
-					<sval type="int" val="135" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="155" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="157" />
 					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_mercVip" />
+					<sval type="string" val="mayhem_mercNextGroupID" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="155" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_mercHireTime" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.Task.Merc.Follower" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="22" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="155" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="10" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_mercs" />
-					<sval type="int" val="16" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_mercGroups" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536860409" />
+					<sval type="int" val="-536867577" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -1283,62 +1197,173 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="1708" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="16" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+				<sval type="array" size="4">
+					<sval type="int" val="128" />
+					<sval type="int" val="9" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="128" />
-					<sval type="int" val="11" />
+					<sval type="int" val="10" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="17" />
+					<sval type="int" val="12" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610598391" />
+					<sval type="int" val="-1610601975" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="17" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="17" />
+					<sval type="int" val="12" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="14" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="17" />
+					<sval type="int" val="12" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-536858361" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-536865529" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="44" />
+					<sval type="int" val="16" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_mercGroupID" />
+					<sval type="int" val="13" />
+				</sval>
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605053" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605053" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="1083" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605560" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="136" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="-536863225" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1711" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="135" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_mercGroupID" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="155" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_mercFollowers" />
 					<sval type="int" val="0" />
@@ -1347,7 +1372,7 @@
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="11" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_mercVip" />
 					<sval type="int" val="131074" />
@@ -1356,7 +1381,16 @@
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_mercVipNPC" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="155" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_mercHireTime" />
 					<sval type="int" val="131074" />
@@ -1364,12 +1398,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610598904" />
+					<sval type="int" val="-1610602749" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="5" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="3" />
@@ -1377,125 +1411,245 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="155" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_mercLeader" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="44" />
+					<sval type="int" val="16" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="155" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_mercLeader" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="135" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="44" />
+					<sval type="int" val="16" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="1708" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="1708" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="-1610597629" />
+					<sval type="int" val="-1610600701" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="5" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_mercFollowers" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="60" />
+					<sval type="int" val="48" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="5" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_mercFollowers" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="8">
+				<sval type="array" size="18">
+					<sval type="int" val="1017" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="string" val="!lib.interrupt" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1334" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="18">
+					<sval type="int" val="1017" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="string" val="!lib.interrupt" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Task.Merc.Leader" />
 					<sval type="int" val="-2147483646" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="18" />
+					<sval type="int" val="16" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610595575" />
+					<sval type="int" val="-1610597367" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="18" />
+					<sval type="int" val="16" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="18" />
+					<sval type="int" val="16" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="14" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="18" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+				</sval>
+				<sval type="array" size="18">
+					<sval type="int" val="1017" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="string" val="!lib.interrupt" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Task.Merc.Follower" />
 					<sval type="int" val="-2147483646" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="18">
+					<sval type="int" val="1017" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="string" val="!lib.interrupt" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1334" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="18">
+					<sval type="int" val="1017" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="string" val="Mayhem.Task.Merc.Follower.WD" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1334" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="62" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610595064" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="155" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+					<sval type="int" val="52" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="5" />
 				</sval>
 			</sval>
-			<sval type="array" size="4">
+			<sval type="array" size="5">
 				<sval type="array" size="2">
 					<sval type="int" val="45" />
 					<sval type="string" val="" />
@@ -1509,11 +1663,15 @@
 					<sval type="string" val="Optional." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="63" />
-					<sval type="string" val="[TRUE] if called by followers." />
+					<sval type="int" val="21" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="integer if reforming group." />
 				</sval>
 			</sval>
-			<sval type="array" size="58">
+			<sval type="array" size="62">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1530,17 +1688,17 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Mayhem.SelectNewLeader Gets ship with the most HULL.  Does not assign a new leader." />
+					<sval type="string" val="Mayhem.SelectNewLeader Gets ship with the most HULL. It does not assign a new leader." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.2: Fix race condition where followers could follow each other." />
+					<sval type="string" val="Add-Ons 2.2: Group reformation is handled by Mayhem.Merc.ReformGroup." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Serialize orphaned mercenary regrouping per sector/company." />
+					<sval type="string" val="Group membership is globally tracked through mayhem_mercGroups." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
@@ -1549,43 +1707,41 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Get a valid reference ship." />
+					<sval type="string" val="===== Get leader =====" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="3" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="===== Allocate group ID =====" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="3" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="A null ID means this is a newly created physical group." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="5" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="6" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="6" />
-					<sval type="int" val="1" />
-					<sval type="string" val="===== Regroup Serialization =====" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="6" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Normal group generation does NOT use this." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="6" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Only orphaned followers competing to reconstruct a group do." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="6" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
 					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Sector-local lock. Each company has its own regroup lock." />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="9" />
@@ -1594,170 +1750,194 @@
 				<sval type="array" size="3">
 					<sval type="int" val="9" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Another regroup is already rebuilding this company's mercenaries." />
+					<sval type="string" val="===== Globals =====" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="11" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="12" />
+					<sval type="int" val="15" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Recheck: Another follower may have already reconstructed the group." />
+					<sval type="string" val="===== Build group =====" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="19" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="15" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="21" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="27" />
-					<sval type="int" val="6" />
+				<sval type="array" size="3">
+					<sval type="int" val="21" />
+					<sval type="int" val="1" />
+					<sval type="string" val="If this ship is being moved from another group, remove its stale membership." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="27" />
+					<sval type="int" val="24" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="29" />
-					<sval type="int" val="6" />
+					<sval type="int" val="28" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="29" />
+					<sval type="int" val="30" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="30" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="30" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="31" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="33" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="35" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="35" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="37" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="37" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="37" />
-					<sval type="int" val="2" />
-				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="37" />
+					<sval type="int" val="31" />
 					<sval type="int" val="1" />
-					<sval type="string" val="===== Create group if no leaders are nearby. =====" />
+					<sval type="string" val="Initialize complete group and contract state." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="37" />
+					<sval type="int" val="36" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="38" />
-					<sval type="int" val="2" />
+					<sval type="int" val="39" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="39" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="39" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="41" />
-					<sval type="int" val="2" />
+					<sval type="int" val="42" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="42" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="42" />
+					<sval type="int" val="1" />
+					<sval type="string" val="===== Register group =====" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="42" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="42" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Store our own clean member array rather than the caller's working array." />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="43" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="49" />
-					<sval type="int" val="6" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="49" />
-					<sval type="int" val="2" />
-				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="49" />
+					<sval type="int" val="43" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Preserve group state so surviving followers can reconstruct it." />
+					<sval type="string" val="Register the new leader." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="52" />
+					<sval type="int" val="44" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="54" />
-					<sval type="int" val="6" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="54" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="56" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="56" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="59" />
+					<sval type="int" val="47" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="60" />
+					<sval type="int" val="48" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="60" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="61" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="67" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="67" />
+					<sval type="int" val="48" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="67" />
+					<sval type="int" val="48" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Regroup transition is now complete." />
+					<sval type="string" val="===== Start leader =====" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="69" />
+					<sval type="int" val="48" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="48" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Stop any former follower watchdog if this ship was promoted." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="49" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="49" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Replace any stale Task 0 command." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="51" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="51" />
+					<sval type="int" val="1" />
+					<sval type="string" val="===== Start followers=====" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="55" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="55" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Replace any stale Task 0 command." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="57" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="57" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Dedicated follower watchdog." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="60" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="60" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
