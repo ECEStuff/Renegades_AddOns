@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Calculate.Scaling</name>
-	<version>19</version>
+	<version>20</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -326,8 +326,14 @@
 			<var>100</var>
 		</line>
 		<line linenr="053" indent="" />
-		<line linenr="054" indent="" interruptable="@">
-			<var>$galaxy</var>
+		<line linenr="054" indent="">
+			<comment>* Add-Ons 2.2: New helper for galaxy size category. Scaling cap is equal to 400 - 100 * size category.</comment>
+		</line>
+		<line linenr="055" indent="">
+			<comment>* Size categories are 0 (small), 1 (medium), 2 (large).</comment>
+		</line>
+		<line linenr="056" indent="" interruptable="@">
+			<var>$galaxySize.enum</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -338,89 +344,29 @@
 			<text> </text>
 			<text>script</text>
 			<text> </text>
-			<call>Mayhem.GetGalaxy</call>
+			<call>Mayhem.GetGalaxy.SizeCategory</call>
 			<text> </text>
 			<text>:</text>
 			<text> </text>
-			<text>known</text>
-			<text>=</text>
-			<var>[FALSE]</var>
-			<text> </text>
-			<text>randomize</text>
-			<text>=</text>
-			<var>[FALSE]</var>
 		</line>
-		<line linenr="055" indent="">
-			<var>$galaxy.size</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$galaxy</var>
-		</line>
-		<line linenr="056" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$galaxy.size</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>144</var>
-		</line>
-		<line linenr="057" indent="&#160;">
-			<comment>* Large galaxy: 145+ sectors</comment>
-		</line>
-		<line linenr="058" indent="&#160;">
-			<var>$npcScaleFactor.cap</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>200</var>
-		</line>
-		<line linenr="059" indent="">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$galaxy.size</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>85</var>
-		</line>
-		<line linenr="060" indent="&#160;">
-			<comment>* Medium galaxy: 86-144 sectors</comment>
-		</line>
-		<line linenr="061" indent="&#160;">
-			<var>$npcScaleFactor.cap</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>300</var>
-		</line>
-		<line linenr="062" indent="">
-			<text>else</text>
-		</line>
-		<line linenr="063" indent="&#160;">
-			<comment>* Small galaxy: &lt;= 85 sectors</comment>
-		</line>
-		<line linenr="064" indent="&#160;">
+		<line linenr="057" indent="">
 			<var>$npcScaleFactor.cap</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>400</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<text>(</text>
+			<var>$galaxySize.enum</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>100</var>
+			<text>)</text>
 		</line>
-		<line linenr="065" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="066" indent="" />
-		<line linenr="067" indent="">
+		<line linenr="058" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -431,15 +377,15 @@
 			<text> </text>
 			<var>$npcScaleFactor.cap</var>
 		</line>
-		<line linenr="068" indent="&#160;">
+		<line linenr="059" indent="&#160;">
 			<var>$npcScaleFactor</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$npcScaleFactor.cap</var>
 		</line>
-		<line linenr="069" indent="" />
-		<line linenr="070" indent="">
+		<line linenr="060" indent="" />
+		<line linenr="061" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -455,7 +401,7 @@
 			<text>=</text>
 			<var>$npcScaleFactor</var>
 		</line>
-		<line linenr="071" indent="">
+		<line linenr="062" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -466,20 +412,19 @@
 			<sval type="string" val="ZH.Calculate.Scaling" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="19" />
+			<sval type="int" val="20" />
 			<sval type="int" val="0" />
-			<sval type="array" size="9">
+			<sval type="array" size="8">
 				<sval type="string" val="npcScaleFactor" />
 				<sval type="string" val="currentSupply" />
 				<sval type="string" val="totalSupply" />
 				<sval type="string" val="targetScaleFactor" />
 				<sval type="string" val="difference" />
 				<sval type="string" val="step" />
-				<sval type="string" val="galaxy" />
-				<sval type="string" val="galaxy.size" />
+				<sval type="string" val="galaxySize.enum" />
 				<sval type="string" val="npcScaleFactor.cap" />
 			</sval>
-			<sval type="array" size="37">
+			<sval type="array" size="30">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -777,97 +722,45 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="10">
+				<sval type="array" size="6">
 					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.GetGalaxy" />
+					<sval type="string" val="Mayhem.GetGalaxy.SizeCategory" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
-					<sval type="int" val="2" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
+					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
 					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610605309" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="4" />
-					<sval type="int" val="144" />
-					<sval type="int" val="15" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="200" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="33" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610604539" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="4" />
-					<sval type="int" val="85" />
-					<sval type="int" val="15" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="300" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="33" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
+					<sval type="int" val="5" />
 					<sval type="int" val="4" />
 					<sval type="int" val="400" />
-					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="7" />
 					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-3" />
+					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603768" />
+					<sval type="int" val="-1610605560" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="7" />
 					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 					<sval type="int" val="3" />
@@ -880,7 +773,7 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -898,7 +791,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="38">
+			<sval type="array" size="34">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1041,34 +934,17 @@
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="27" />
+					<sval type="int" val="24" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Large galaxy: 145+ sectors" />
+					<sval type="string" val="Add-Ons 2.2: New helper for galaxy size category. Scaling cap is equal to 400 - 100 * size category." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="30" />
+					<sval type="int" val="24" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Medium galaxy: 86-144 sectors" />
+					<sval type="string" val="Size categories are 0 (small), 1 (medium), 2 (large)." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="32" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="32" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Small galaxy: &lt;= 85 sectors" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="33" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="33" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="28" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
