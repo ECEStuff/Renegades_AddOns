@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.CI.SelectTarget</name>
-	<version>27</version>
+	<version>28</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -5406,7 +5406,7 @@
 			<text>!</text>
 			<var>$claimed</var>
 		</line>
-		<line linenr="660" indent="&#160;">
+		<line linenr="660" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$showDebugZH</var>
@@ -5433,10 +5433,10 @@
 			<text> </text>
 			<var>$t</var>
 		</line>
-		<line linenr="663" indent="">
+		<line linenr="663" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="664" indent="">
+		<line linenr="664" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>[FALSE]</var>
@@ -6131,6 +6131,9 @@
 			<comment>* Add-Ons 1.4: Not for OCV players.</comment>
 		</line>
 		<line linenr="733" indent="">
+			<comment>* Add-Ons 2.2: Standardized infamy.</comment>
+		</line>
+		<line linenr="734" indent="">
 			<var>$OCVplotstage</var>
 			<text> </text>
 			<text>=</text>
@@ -6146,7 +6149,7 @@
 			<text>=</text>
 			<text>'OCVplotstage'</text>
 		</line>
-		<line linenr="734" indent="">
+		<line linenr="735" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$type</var>
@@ -6167,8 +6170,12 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="735" indent="">
-			<text>set</text>
+		<line linenr="736" indent="">
+			<var>$playerInfamy</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
 			<text> </text>
 			<text>global</text>
 			<text> </text>
@@ -6178,20 +6185,27 @@
 			<text>name</text>
 			<text>=</text>
 			<text>'playerInfamy'</text>
-			<text> </text>
-			<text>value</text>
-			<text>=</text>
-			<var>0</var>
 		</line>
-		<line linenr="736" indent="">
-			<var>$t.infamy</var>
+		<line linenr="737" indent="">
+			<var>$reason</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'Your infamy has been wiped clean.'</text>
+			<text>'Targeted by a Coordinated Invasion.'</text>
 		</line>
-		<line linenr="737" indent="" interruptable="@">
-			<text>START</text>
+		<line linenr="738" indent="">
+			<var>$infamy.toRemove</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$playerInfamy</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="739" indent="" interruptable="@">
+			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
 			<text>-&gt;</text>
@@ -6200,27 +6214,23 @@
 			<text> </text>
 			<text>script</text>
 			<text> </text>
-			<call>Mayhem.StackNews</call>
+			<call>Mayhem.Infamy.Add</call>
 			<text> </text>
 			<text>:</text>
 			<text> </text>
-			<text>text</text>
+			<text>amount</text>
 			<text>=</text>
-			<var>$t.infamy</var>
+			<var>$infamy.toRemove</var>
 			<text> </text>
-			<text>addToHistory</text>
+			<text>reason</text>
 			<text>=</text>
-			<var>[FALSE]</var>
-			<text> </text>
-			<text>breakingNews</text>
-			<text>=</text>
-			<var>[FALSE]</var>
+			<var>$reason</var>
 		</line>
-		<line linenr="738" indent="">
+		<line linenr="740" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="739" indent="" />
-		<line linenr="740" indent="">
+		<line linenr="741" indent="" />
+		<line linenr="742" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$target</var>
@@ -6231,9 +6241,9 @@
 			<sval type="string" val="ZH.CI.SelectTarget" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="27" />
+			<sval type="int" val="28" />
 			<sval type="int" val="0" />
-			<sval type="array" size="136">
+			<sval type="array" size="138">
 				<sval type="string" val="race" />
 				<sval type="string" val="type" />
 				<sval type="string" val="showDebugZH" />
@@ -6369,9 +6379,11 @@
 				<sval type="string" val="isRetreating" />
 				<sval type="string" val="squadronName" />
 				<sval type="string" val="command" />
-				<sval type="string" val="t.infamy" />
+				<sval type="string" val="playerInfamy" />
+				<sval type="string" val="reason" />
+				<sval type="string" val="infamy.toRemove" />
 			</sval>
-			<sval type="array" size="546">
+			<sval type="array" size="547">
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610612216" />
@@ -11292,7 +11304,7 @@
 				</sval>
 				<sval type="array" size="31">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610473213" />
+					<sval type="int" val="-1610472957" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -11323,35 +11335,47 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-7" />
 				</sval>
-				<sval type="array" size="5">
-					<sval type="int" val="157" />
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="playerInfamy" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
+					<sval type="int" val="135" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="135" />
+					<sval type="int" val="136" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Your infamy has been wiped clean." />
+					<sval type="string" val="Targeted by a Coordinated Invasion." />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="12">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.StackNews" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="137" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="135" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Infamy.Add" />
+					<sval type="int" val="-2147483647" />
 					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="137" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="136" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -11369,7 +11393,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="265">
+			<sval type="array" size="266">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -12494,12 +12518,17 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.4: Not for OCV players." />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="540" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 2.2: Standardized infamy." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="545" />
+					<sval type="int" val="546" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="545" />
+					<sval type="int" val="546" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
