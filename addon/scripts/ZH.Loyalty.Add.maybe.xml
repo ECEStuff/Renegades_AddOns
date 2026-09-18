@@ -3,19 +3,20 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Loyalty.Add.maybe</name>
-	<version>6</version>
+	<version>10</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
 		<argument index="1" name="raceKilled" type="Var/Race" desc="owner of killed ship" />
 		<argument index="2" name="sector" type="Var/Sector" desc="must have a claimant" />
+		<argument index="3" name="captured" type="Var/Boolean" desc="" />
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
 			<comment>* Awards Loyalty for helping one side of an active territorial claim.</comment>
 		</line>
 		<line linenr="002" indent="">
-			<comment>* $raceKilled is the owner of the destroyed Huge Ship. 2 points are awarded for each Huge Ship destroyed.</comment>
+			<comment>* $raceKilled is the owner of the destroyed/boarded Huge Ship. 2 points are awarded for each Huge Ship destroyed.</comment>
 		</line>
 		<line linenr="003" indent="">
 			<comment>* Add-Ons 2.2: Reworked - instead of random Loyalty, now awards Loyalty during active claims.</comment>
@@ -126,7 +127,7 @@
 			<var>$sectorOwner</var>
 		</line>
 		<line linenr="020" indent="&#160;">
-			<comment>* Destroying the territorial owner's Huge Ship helps the claimant.</comment>
+			<comment>* Eliminating the territorial owner's Huge Ship helps the claimant.</comment>
 		</line>
 		<line linenr="021" indent="&#160;">
 			<var>$loyaltyRace</var>
@@ -148,7 +149,7 @@
 			<var>$claimRace</var>
 		</line>
 		<line linenr="024" indent="&#160;">
-			<comment>* Destroying the claimant's Huge Ship helps the territorial owner.</comment>
+			<comment>* Eliminating the claimant's Huge Ship helps the territorial owner.</comment>
 		</line>
 		<line linenr="025" indent="&#160;">
 			<var>$loyaltyRace</var>
@@ -162,7 +163,7 @@
 		</line>
 		<line linenr="027" indent="" />
 		<line linenr="028" indent="">
-			<comment>* The kill must directly help one side of the dispute.</comment>
+			<comment>* The elimination must directly help one side of the dispute.</comment>
 		</line>
 		<line linenr="029" indent="">
 			<text>skip</text>
@@ -178,9 +179,33 @@
 		</line>
 		<line linenr="031" indent="" />
 		<line linenr="032" indent="">
-			<comment>* Phanon never awards Loyalty.</comment>
+			<comment>* Boarding counts as an elimination only when it assists the Yaki.</comment>
 		</line>
 		<line linenr="033" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$captured</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$loyaltyRace</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>[Yaki]</var>
+		</line>
+		<line linenr="034" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="035" indent="" />
+		<line linenr="036" indent="">
+			<comment>* Phanon never awards Loyalty.</comment>
+		</line>
+		<line linenr="037" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -191,16 +216,16 @@
 			<text> </text>
 			<var>[Phanon]</var>
 		</line>
-		<line linenr="034" indent="&#160;">
+		<line linenr="038" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="035" indent="" />
-		<line linenr="036" indent="">
-			<comment>* 2 Loyalty per Huge Ship destroyed.</comment>
+		<line linenr="039" indent="" />
+		<line linenr="040" indent="">
+			<comment>* 2 Loyalty per Huge Ship destroyed or boarded. However, Loyalty from boarding is approved only by the Yaki.</comment>
 		</line>
-		<line linenr="037" indent="">
+		<line linenr="041" indent="">
 			<var>$reason</var>
 			<text> </text>
 			<text>=</text>
@@ -215,7 +240,7 @@
 			<text> </text>
 			<text>' empire in contested territory.'</text>
 		</line>
-		<line linenr="038" indent="" interruptable="@">
+		<line linenr="042" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -241,8 +266,8 @@
 			<text>=</text>
 			<var>$reason</var>
 		</line>
-		<line linenr="039" indent="" />
-		<line linenr="040" indent="">
+		<line linenr="043" indent="" />
+		<line linenr="044" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -253,31 +278,32 @@
 			<sval type="string" val="ZH.Loyalty.Add.maybe" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="6" />
+			<sval type="int" val="10" />
 			<sval type="int" val="0" />
-			<sval type="array" size="6">
+			<sval type="array" size="7">
 				<sval type="string" val="raceKilled" />
 				<sval type="string" val="sector" />
+				<sval type="string" val="captured" />
 				<sval type="string" val="claimRace" />
 				<sval type="string" val="sectorOwner" />
 				<sval type="string" val="loyaltyRace" />
 				<sval type="string" val="reason" />
 			</sval>
-			<sval type="array" size="19">
+			<sval type="array" size="21">
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_claimRace" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
 					<sval type="int" val="-536870137" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -290,20 +316,20 @@
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="37">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610611192" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="15" />
@@ -311,7 +337,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="10" />
 					<sval type="int" val="14" />
 					<sval type="int" val="15" />
@@ -338,7 +364,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -352,7 +378,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="3" />
@@ -362,10 +388,10 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -380,7 +406,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="3" />
@@ -390,10 +416,10 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -402,7 +428,7 @@
 					<sval type="int" val="-536867321" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -411,12 +437,38 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="19">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610608632" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="10" />
+					<sval type="int" val="19" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-3" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608120" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="15" />
@@ -433,12 +485,12 @@
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="5" />
+					<sval type="int" val="6" />
 					<sval type="int" val="5" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Assisted the " />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -460,11 +512,11 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -472,7 +524,7 @@
 					<sval type="int" val="0" />
 				</sval>
 			</sval>
-			<sval type="array" size="2">
+			<sval type="array" size="3">
 				<sval type="array" size="2">
 					<sval type="int" val="16" />
 					<sval type="string" val="owner of killed ship" />
@@ -481,8 +533,12 @@
 					<sval type="int" val="14" />
 					<sval type="string" val="must have a claimant" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="63" />
+					<sval type="string" val="" />
+				</sval>
 			</sval>
-			<sval type="array" size="22">
+			<sval type="array" size="24">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -491,7 +547,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="$raceKilled is the owner of the destroyed Huge Ship. 2 points are awarded for each Huge Ship destroyed." />
+					<sval type="string" val="$raceKilled is the owner of the destroyed/boarded Huge Ship. 2 points are awarded for each Huge Ship destroyed." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -535,7 +591,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="8" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Destroying the territorial owner's Huge Ship helps the claimant." />
+					<sval type="string" val="Eliminating the territorial owner's Huge Ship helps the claimant." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="9" />
@@ -544,7 +600,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="11" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Destroying the claimant's Huge Ship helps the territorial owner." />
+					<sval type="string" val="Eliminating the claimant's Huge Ship helps the territorial owner." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="12" />
@@ -557,7 +613,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
-					<sval type="string" val="The kill must directly help one side of the dispute." />
+					<sval type="string" val="The elimination must directly help one side of the dispute." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="14" />
@@ -565,20 +621,29 @@
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Boarding counts as an elimination only when it assists the Yaki." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="16" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="16" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Phanon never awards Loyalty." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="16" />
+					<sval type="int" val="18" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="16" />
+					<sval type="int" val="18" />
 					<sval type="int" val="1" />
-					<sval type="string" val="2 Loyalty per Huge Ship destroyed." />
+					<sval type="string" val="2 Loyalty per Huge Ship destroyed or boarded. However, Loyalty from boarding is approved only by the Yaki." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="18" />
+					<sval type="int" val="20" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
