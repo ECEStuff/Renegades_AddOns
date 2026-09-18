@@ -1,6 +1,6 @@
-# Renegades Add-Ons
+# Mayhem Expanded
 
-Add-Ons for Mayhem 3 Renegades, featuring Renegades balance adjustments, milestone scaling refinements, and additional quality-of-life improvements. Please read the changelogs in the releases folder before updating your game!
+Mayhem Expanded (hereafter Expanded) is an expansion of Renegades, which builds upon Mayhem 3 Zero Hour and the original Mayhem 3. Please read the changelogs in the releases folder before updating your game!
 
 Forum thread: https://forum.egosoft.com/viewtopic.php?t=473331
 
@@ -10,21 +10,21 @@ Base Renegades Full Install - Alternative location on Google Drive: https://driv
 
 Russian localization (outdated): https://github.com/alexalsp2/Renegades_AddOns_russian
 
-Modified ZMap for Renegades Add-Ons: https://github.com/ECEStuff/ZMap_AddOns/tree/main
+Modified ZMap for Expanded: https://github.com/ECEStuff/ZMap_Expanded/tree/main
 
 # Fresh installation 
-If you're installing Renegades Add-Ons from scratch:
+If you're installing Expanded from scratch:
 1. Prepare a clean game directory. Obtain a fresh copy of vanilla X3AP.
    - Copy this somewhere to a new location.
-   - Rename it to something like: Mayhem_3_Renegades
-     - This will be referred to as the Renegades directory.
+   - Rename it to something like: Mayhem_Expanded
+     - This will be referred to as the Expanded directory.
    - DO NOT put your copy in your /Program Files or /Program Files (x86) folder.
    - Follow either step a or b, depending on where you purchased your copy of X3AP from.
   
    a. If you purchased X3AP from Steam:
      - Your game must be registered on the Egosoft Forums in order to download the no-Steam executable.
      - Download the no-Steam X3AP.exe here: https://www.egosoft.com/download/x3ap/bonus_en.php
-     - Replace the X3AP.exe inside your Renegades directory with the no-Steam version.
+     - Replace the X3AP.exe inside your Expanded directory with the no-Steam version.
      - Ensure that:
        - The game's language is set to English (check X3AP Steam properties).
        - The bonus package is disabled (not compatible with Mayhem 3).
@@ -35,37 +35,26 @@ If you're installing Renegades Add-Ons from scratch:
 
 2. Install Renegades Base
    - Download the Renegades Full Install from the main Renegades thread OR from Google Drive. (Both are identical. As of July 2025, Base Renegades is version 5.4.)
-   - Extract all contents into your Renegades directory.
+   - Extract all contents into your Expanded directory.
 
-3. Install Add-Ons
-   - Download the Add-Ons zip in Releases.
+3. Install Expanded
+   - Download the Mayhem Expanded zip in Releases.
    - Open the zip and double-click the folder inside. Verify that you see:
      - addon
      - mayhem_data
      - cleanup.bat (updated)
      - Other included files
-   - Extract all contents to the Renegades directory.
+   - Extract all contents to the Expanded directory.
    - Run cleanup.bat
   
-4. Initialize the Galaxy System (Required Order)
-   - Step A: Use Original Galaxy Generator (Initialization Only)
-     - Note: this step initializes dependencies required for ZMap. You will no longer need the original Galaxy Generator after completing step A. Do NOT use the galaxy created from this step for gameplay.
-     - Open Mayhem Galaxy Generator.exe (found in Renegades root).
-     - Click the Default buttons to auto-set:
-       - Root path
-       - Savegame path
-     - Verify paths are correct.
-     - Generate a galaxy.
-     - Confirm that a galaxy appears in mayhem_galaxies. 
-  
-   - Step B: Use ZMap (Actual Galaxy)
-     - From the Renegades root folder, navigate to the ZMap folder.
-     - Open X3_Mayhem_Galaxy_Generator.exe
-     - Set:
-       - Game folder path (Renegades root directory)
-       - Savegame path
-     - Generate your galaxy.
-     - Save it and set it as active.
+4. Use ZMap (Actual Galaxy)
+   - From the Expanded root folder, navigate to the ZMap folder.
+   - Open X3_Mayhem_Galaxy_Generator.exe
+   - Set:
+    - Game folder path (Expanded root directory)
+    - Savegame path
+   - Generate your galaxy.
+   - Save it and set it as active.
 
 5. Optional Configuration
    - You may customize galaxy settings before generating.
@@ -75,12 +64,12 @@ If you're installing Renegades Add-Ons from scratch:
      - /t/9973-L044.xml
     
 6. Final Step
-   - Run X3AP.exe from the Renegades directory.
+   - Run X3AP.exe from the Expanded directory.
    - On the main menu, verify that the active galaxy name appears in the bottom-right corner. If it appears, installation is complete.
     
-# Installation from existing Renegades 5.4 or patching Add-Ons
-If you're installing from Renegades 5.4 or are patching Add-Ons:
-  - Download the latest Add-Ons package and extract its contents into your game's root directory, allowing files to overwrite when prompted.
+# Installation from existing Renegades 5.4 or patching Expanded
+If you're installing from Renegades 5.4 or are patching Expanded:
+  - Download the latest Expanded package and extract its contents into your game's root directory, allowing files to overwrite when prompted.
   - If ZMap is installed outside of the game's root directory, manually copy TShips.txt and TBullets.txt from the release into your existing ZMap folder.
     - This applies only to very old installations where ZMap was installed separately from Renegades.
     - If ZMap is included within Renegades (default setup), no additional action is required.
