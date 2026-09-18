@@ -1,6 +1,8 @@
 # Mayhem Expanded
 
-Mayhem Expanded (hereafter Expanded) is an expansion of Renegades, which builds upon Mayhem 3 Zero Hour and the original Mayhem 3. Please read the changelogs in the releases folder before updating your game!
+Mayhem Expanded (hereafter Expanded) is an expansion of Renegades, which builds upon Mayhem 3 Zero Hour and the original Mayhem 3. 
+
+Before updating an existing installation, read the changelog for the release you are installing.
 
 Forum thread: https://forum.egosoft.com/viewtopic.php?t=473331
 
@@ -16,7 +18,7 @@ Modified ZMap for Expanded: https://github.com/ECEStuff/ZMap_Expanded/tree/main
 If you're installing Expanded from scratch:
 1. Prepare a clean game directory. Obtain a fresh copy of vanilla X3AP.
    - Copy this somewhere to a new location.
-   - Rename it to something like: Mayhem_Expanded
+   - Rename it to something like Mayhem_Expanded
      - This will be referred to as the Expanded directory.
    - DO NOT put your copy in your /Program Files or /Program Files (x86) folder.
    - Follow either step a or b, depending on where you purchased your copy of X3AP from.
@@ -34,11 +36,11 @@ If you're installing Expanded from scratch:
      - Your existing X3AP.exe is compatible. No changes required.
 
 2. Install Renegades Base
-   - Download the Renegades Full Install from the main Renegades thread OR from Google Drive. (Both are identical. As of July 2025, Base Renegades is version 5.4.)
+   - Download the Renegades Full Install from the main Renegades thread or Google Drive. Both downloads are identical. As of July 2025, Base Renegades is version 5.4.
    - Extract all contents into your Expanded directory.
 
 3. Install Expanded
-   - Download the Mayhem Expanded zip in Releases.
+   - Download the latest Mayhem Expanded .zip in Releases.
    - Open the zip and double-click the folder inside. Verify that you see:
      - addon
      - mayhem_data
@@ -47,19 +49,19 @@ If you're installing Expanded from scratch:
    - Extract all contents to the Expanded directory.
    - Run cleanup.bat
   
-4. Use ZMap (Actual Galaxy)
+4. Generate the Galaxy with ZMap
    - From the Expanded root folder, navigate to the ZMap folder.
    - Open X3_Mayhem_Galaxy_Generator.exe
    - Set:
-    - Game folder path (Expanded root directory)
-    - Savegame path
+     - Game folder path (Expanded root directory)
+     - Savegame path
    - Generate your galaxy.
    - Save it and set it as active.
 
 5. Optional Configuration
-   - You may customize galaxy settings before generating.
+   - Customize galaxy settings before generating.
    - In ZMap, you may use the Weapons and Ships Editor (third icon, top-left) to randomize ship and weapon stats.
-   - You may edit configuration files:
+   - Configuration files can also be edited manually:
      - /t/9972-L044.xml
      - /t/9973-L044.xml
     
@@ -67,7 +69,7 @@ If you're installing Expanded from scratch:
    - Run X3AP.exe from the Expanded directory.
    - On the main menu, verify that the active galaxy name appears in the bottom-right corner. If it appears, installation is complete.
     
-# Installation from existing Renegades 5.4 or patching Expanded
+# Updating or Installing over Renegades 5.4
 If you're installing from Renegades 5.4 or are patching Expanded:
   - Download the latest Expanded package and extract its contents into your game's root directory, allowing files to overwrite when prompted.
   - If ZMap is installed outside of the game's root directory, manually copy TShips.txt and TBullets.txt from the release into your existing ZMap folder.
@@ -75,6 +77,7 @@ If you're installing from Renegades 5.4 or are patching Expanded:
     - If ZMap is included within Renegades (default setup), no additional action is required.
 
 # Versioning Policy
-- Major versions (e.g. X.0) change persistent world behavior and introduce new mechanics, requiring a new game.
-- Minor versions (e.g. 1.X) may change persistent world behavior and can require a new game in specific cases.
-- Patch Versions (e.g. 1.5.X) are safe to update mid-save.
+- Major versions (X.0, e.g. 2.0) change persistent world behavior or introduce major new mechanics and requiring a new game.
+- Minor versions (X.Y, e.g. 2.2) may change persistent world behavior and may require a new game. Check the release changelog before updating.
+- Patch versions (X.Y.Z, e.g. 2.1.2) are safe to install mid-save.
+- Hotfix revisions (X.Y.Za, e.g. 2.1.2a) contain small fixes to the corresponding patch release and are safe to install mid-save unless otherwise noted.
